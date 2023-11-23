@@ -1,11 +1,13 @@
 import React from "react";
 import { Icon } from "@chakra-ui/react";
 import {
-  FcHome,
-  FcShop,
-  FcBarChart,
+
   FcBusinessman,
   FcLock,
+  FcMindMap,
+  FcFinePrint,
+  FcSerialTasks,
+  FcSurvey
 } from "react-icons/fc";
 
 // Admin Imports
@@ -23,22 +25,22 @@ const routes = [
     name: "Ecran principal",
     layout: "/admin",
     path: "/default",
-    icon: <Icon as={FcHome} width='20px' height='20px' color='inherit' />,
+    icon: <Icon as={FcSurvey} width='20px' height='20px' color='inherit' />,
     component: MainDashboard,
   },
   {
     name: "Carte",
     layout: "/admin",
-    path: "/nft-marketplace",
-    icon: <Icon as={FcShop} width='20px' height='20px' color='inherit' />,
+    path: "/map",
+    icon: <Icon as={FcMindMap} width='20px' height='20px' color='inherit' />,
     component: NFTMarketplace,
     secondary: true,
   },
   {
-    name: "Journal de bord",
+    name: "Tableau de bord",
     layout: "/admin",
     path: "/data-tables",
-    icon: <Icon as={FcBarChart} width='20px' height='20px' color='inherit' />,
+    icon: <Icon as={FcSerialTasks} width='20px' height='20px' color='inherit' />,
     component: DataTables,
   },
   {
@@ -57,9 +59,9 @@ const routes = [
   },
   {
     name: "Vue d'ensemble administrateur",
-    layout: "/rtl",
-    path: "/rtl-default",
-    icon: <Icon as={FcHome} width='20px' height='20px' color='inherit' />,
+    layout: "/admin",
+    path: "/overview",
+    icon: <Icon as={FcFinePrint} width='20px' height='20px' color='inherit' />,
     component: RTL,
   },
 ];
