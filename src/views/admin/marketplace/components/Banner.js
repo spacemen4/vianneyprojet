@@ -1,25 +1,21 @@
 import React from "react";
 
 // Chakra imports
-import { Button, Flex, Link, Text } from "@chakra-ui/react";
-
-// Assets
-import banner from "assets/img/nfts/NftBanner1.png";
+import { Flex, Text } from "@chakra-ui/react";
 
 export default function Banner() {
   // Chakra Color Mode
   return (
     <Flex
-      direction='column'
-      bgImage={banner}
-      bgSize='cover'
-      py={{ base: "30px", md: "56px" }}
+      direction="column"
+      bgGradient="linear(to-r, blue.200, blue.500, blue.800)" // Gradient from light blue to dark blue
+      py={{ base: "5px", md: "10px" }}
       px={{ base: "30px", md: "64px" }}
-      borderRadius='30px'>
+      borderRadius="30px">
       <Text
         fontSize={{ base: "24px", md: "34px" }}
-        color='white'
-        mb='14px'
+        color="white"
+        mb="5px"
         maxW={{
           base: "100%",
           md: "64%",
@@ -28,13 +24,13 @@ export default function Banner() {
           "2xl": "50%",
           "3xl": "42%",
         }}
-        fontWeight='700'
+        fontWeight="700"
         lineHeight={{ base: "32px", md: "42px" }}>
-        Discover, collect, and sell extraordinary NFTs
+        Carte de l'évênement
       </Text>
       <Text
-        fontSize='md'
-        color='#E3DAFF'
+        fontSize="md"
+        color="#E3DAFF"
         maxW={{
           base: "100%",
           md: "64%",
@@ -43,32 +39,11 @@ export default function Banner() {
           "2xl": "46%",
           "3xl": "34%",
         }}
-        fontWeight='500'
-        mb='40px'
-        lineHeight='28px'>
-        Enter in this creative world. Discover now the latest NFTs or start
-        creating your own!
+        fontWeight="500"
+        mb="10px"
+        lineHeight="28px">
+        Zoomez pour voir les détails
       </Text>
-      <Flex align='center'>
-        <Button
-          bg='white'
-          color='black'
-          _hover={{ bg: "whiteAlpha.900" }}
-          _active={{ bg: "white" }}
-          _focus={{ bg: "white" }}
-          fontWeight='500'
-          fontSize='14px'
-          py='20px'
-          px='27'
-          me='38px'>
-          Discover now
-        </Button>
-        <Link>
-          <Text color='white' fontSize='sm' fontWeight='500'>
-            Watch video
-          </Text>
-        </Link>
-      </Flex>
     </Flex>
   );
 }
