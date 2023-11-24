@@ -92,7 +92,7 @@ function TopCreatorTable(props) {
                 <Tr {...row.getRowProps()} key={index}>
                   {row.cells.map((cell, index) => {
                     let data = "";
-                    if (cell.column.Header === "Name") {
+                    if (cell.column.Header === "nom") {
                       data = (
                         <Flex align='center'>
                           <Avatar

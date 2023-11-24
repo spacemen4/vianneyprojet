@@ -7,7 +7,7 @@ import Card from "components/card/Card.js";
 import { FaEthereum } from "react-icons/fa";
 
 export default function NFT(props) {
-  const { image, name, author, date, price } = props;
+  const { image, nom, author, date, price } = props;
   // Chakra Color Mode
   const textColor = useColorModeValue("brands.900", "white");
   const bgItem = useColorModeValue(
@@ -38,7 +38,7 @@ export default function NFT(props) {
               mb='5px'
               fontWeight='bold'
               me='14px'>
-              {name}
+              {nom}
             </Text>
             <Text
               color='secondaryGray.600'

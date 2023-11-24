@@ -96,7 +96,7 @@ export default function Marketplace() {
             </Flex>
             <SimpleGrid columns={{ base: 1, md: 3 }} gap='20px'>
               <NFT
-                name='Abstract Colors'
+                nom='Abstract Colors'
                 author='By Esthera Jackson'
                 bidders={[
                   Avatar1,
@@ -113,7 +113,7 @@ export default function Marketplace() {
                 download='#'
               />
               <NFT
-                name='ETH AI Brain'
+                nom='ETH AI Brain'
                 author='By Nick Wilson'
                 bidders={[
                   Avatar1,
@@ -130,7 +130,7 @@ export default function Marketplace() {
                 download='#'
               />
               <NFT
-                name='Mesh Gradients '
+                nom='Mesh Gradients '
                 author='By Will Smith'
                 bidders={[
                   Avatar1,
@@ -161,7 +161,7 @@ export default function Marketplace() {
               gap='20px'
               mb={{ base: "20px", xl: "0px" }}>
               <NFT
-                name='Swipe Circles'
+                nom='Swipe Circles'
                 author='By Peter Will'
                 bidders={[
                   Avatar1,
@@ -178,7 +178,7 @@ export default function Marketplace() {
                 download='#'
               />
               <NFT
-                name='Colorful Heaven'
+                nom='Colorful Heaven'
                 author='By Mark Benjamin'
                 bidders={[
                   Avatar1,
@@ -195,7 +195,7 @@ export default function Marketplace() {
                 download='#'
               />
               <NFT
-                name='3D Cubes Art'
+                nom='3D Cubes Art'
                 author='By Manny Gates'
                 bidders={[
                   Avatar1,
@@ -237,42 +237,42 @@ export default function Marketplace() {
             </Flex>
 
             <HistoryItem
-              name='Colorful Heaven'
+              nom='Colorful Heaven'
               author='By Mark Benjamin'
               date='30s ago'
               image={Nft5}
               price='0.91 ETH'
             />
             <HistoryItem
-              name='Abstract Colors'
+              nom='Abstract Colors'
               author='By Esthera Jackson'
               date='58s ago'
               image={Nft1}
               price='0.91 ETH'
             />
             <HistoryItem
-              name='ETH AI Brain'
+              nom='ETH AI Brain'
               author='By Nick Wilson'
               date='1m ago'
               image={Nft2}
               price='0.91 ETH'
             />
             <HistoryItem
-              name='Swipe Circles'
+              nom='Swipe Circles'
               author='By Peter Will'
               date='1m ago'
               image={Nft4}
               price='0.91 ETH'
             />
             <HistoryItem
-              name='Mesh Gradients '
+              nom='Mesh Gradients '
               author='By Will Smith'
               date='2m ago'
               image={Nft3}
               price='0.91 ETH'
             />
             <HistoryItem
-              name='3D Cubes Art'
+              nom='3D Cubes Art'
               author='By Manny Gates'
               date='3m ago'
               image={Nft6}
