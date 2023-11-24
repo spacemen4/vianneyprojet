@@ -58,9 +58,9 @@ function TopCreatorTable(props) {
           mb='10px'
           boxShadow='0px 40px 58px -20px rgba(112, 144, 176, 0.26)'>
           <Text color={textColor} fontSize='xl' fontWeight='600'>
-            Top Creators
+            Les équipiers en interventions
           </Text>
-          <Button variant='action'>See all</Button>
+          <Button variant='action'>Les voir tous</Button>
         </Flex>
         <Table {...getTableProps()} variant='simple' color='gray.500'>
           <Thead>
