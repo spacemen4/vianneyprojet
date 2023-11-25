@@ -116,17 +116,9 @@ export default function Marketplace() {
                 download='#'
               />
             </SimpleGrid>
-            <Text
-              mt='45px'
-              mb='36px'
-              color={textColor}
-              fontSize='2xl'
-              ms='24px'
-              fontWeight='700'>
-              Recently Added
-            </Text>
             <SimpleGrid
               columns={{ base: 1, md: 3 }}
+              mt="20px"
               gap='20px'
               mb={{ base: "20px", xl: "0px" }}>
               <NFT
@@ -200,9 +192,9 @@ export default function Marketplace() {
               px='22px'
               py='18px'>
               <Text color={textColor} fontSize='xl' fontWeight='600'>
-                History
+                Alertes remontées en régie
               </Text>
-              <Button variant='action'>See all</Button>
+              <Button variant='action'>Voir tous les alertes</Button>
             </Flex>
 
             <HistoryItem
