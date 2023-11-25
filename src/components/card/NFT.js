@@ -15,7 +15,7 @@ import {
 import Card from "components/card/Card.js";
 // Assets
 import React, { useState } from "react";
-import { IoHeart, IoHeartOutline } from "react-icons/io5";
+import { FcCameraIdentification, FcCamera } from "react-icons/fc";
 
 export default function NFT(props) {
   const { image, name, author, bidders, download, currentbid } = props;
@@ -51,7 +51,7 @@ export default function NFT(props) {
               transition='0.2s linear'
               w='20px'
               h='20px'
-              as={like ? IoHeart : IoHeartOutline}
+              as={like ? FcCameraIdentification : FcCamera}
               color='brand.500'
             />
           </Button>
@@ -122,7 +122,7 @@ export default function NFT(props) {
             }}
             mt='25px'>
             <Text fontWeight='700' fontSize='sm' color={textColorBid}>
-              Current Bid: {currentbid}
+              Position actuelle: {currentbid}
             </Text>
             <Link
               href={download}
