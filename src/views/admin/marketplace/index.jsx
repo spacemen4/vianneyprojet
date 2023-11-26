@@ -66,30 +66,30 @@ export default function Marketplace() {
             <MapComponent />
           </Box>
           <Flex direction='column'>
-  <Flex
-      mt='45px'
-      mb='20px'
-      justifyContent='space-between'
-      direction={{ base: "column", md: "row" }}
-      align={{ base: "start", md: "center" }}>
-      <Text color={textColor} fontSize='2xl' ms='24px' fontWeight='700'>
-        Les vidéos en direct de l'évênement
-      </Text>
-      </Flex>
-  
-  <SimpleGrid columns={{ base: 1, md: 3 }} gap='20px'>
-    {cameras.map(camera => (
-      <NFT
-        key={camera.id}
-        image={camera.image_url}
-        nom={camera.name}
-        // You can add more properties as per your database schema and NFT component's props
-      />
-    ))}
-  </SimpleGrid>
-</Flex>
-<Box>
-            <CameraForm/>
+            <Flex
+              mt='45px'
+              mb='20px'
+              justifyContent='space-between'
+              direction={{ base: "column", md: "row" }}
+              align={{ base: "start", md: "center" }}>
+              <Text color={textColor} fontSize='2xl' ms='24px' fontWeight='700'>
+                Les vidéos en direct de l'évênement
+              </Text>
+            </Flex>
+
+            <SimpleGrid columns={{ base: 1, md: 3 }} gap='20px'>
+              {cameras.map(camera => (
+                <NFT
+                  key={camera.id}
+                  image={camera.image_url}
+                  nom={camera.name}
+                // You can add more properties as per your database schema and NFT component's props
+                />
+              ))}
+            </SimpleGrid>
+          </Flex>
+          <Box>
+            <CameraForm />
           </Box>
         </Flex>
         <Flex
@@ -158,7 +158,7 @@ export default function Marketplace() {
             />
           </Card>
         </Flex>
-              </Grid>
+      </Grid>
     </Box>
   );
 }
