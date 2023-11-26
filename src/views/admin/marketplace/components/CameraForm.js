@@ -40,24 +40,22 @@ const CameraForm = () => {
       return;
     }
 
-    // Insert camera data into the database
-    const { data, error } = await supabase
+    // Insert camera data along with the image URL into the database
+    const { error: insertError } = await supabase
       .from('vianney_cameras')
-      .insert([{ name: cameraName, location, status: true }])
-      .single();
+      .insert([{
+        name: cameraName,
+        location,
+        status: true,
+        image_url: publicURL
+      }]);
 
-    if (error) {
-      console.error('Error inserting data:', error);
+    if (insertError) {
+      console.error('Error inserting data:', insertError);
       return;
     }
 
-    // Insert image data into the database
-    await supabase.from('vianney_camera_images').insert([
-      {
-        camera_id: data.id,
-        image_url: publicURL,
-      },
-    ]);
+    alert('Camera data added successfully');
   };
 
   return (
