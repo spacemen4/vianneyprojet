@@ -9,7 +9,7 @@ const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYm
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 const MapComponent = () => {
-  const mapRef = useRef(null); // Ref to store the map instance
+  const mapRef = useRef(null);
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
@@ -42,12 +42,26 @@ const MapComponent = () => {
       // Center map on the first user
       mapRef.current.setView([users[0].latitude, users[0].longitude], 13);
 
-      // Add markers for each user
+      // Add markers for each user with custom icons
       users.forEach(user => {
-        L.marker([user.latitude, user.longitude]).addTo(mapRef.current);
+        if (user.photo_profile_url) {
+          const userIcon = L.icon({
+            iconUrl: user.photo_profile_url,
+            iconSize: [50, 50], // Size of the icon
+            iconAnchor: [25, 50], // Point of the icon which will correspond to marker's location
+            popupAnchor: [0, -50] // Point from which the popup should open relative to the iconAnchor
+          });
+
+          L.marker([user.latitude, user.longitude], { icon: userIcon })
+            .addTo(mapRef.current)
+            .bindPopup(`<strong>${user.first_name} ${user.family_name}</strong>`);
+        } else {
+          // Add a default marker if no photo URL is available
+          L.marker([user.latitude, user.longitude]).addTo(mapRef.current);
+        }
       });
     }
-  }, [users]); // Dependency on users array
+  }, [users]);
 
   return <div id="map" style={{ height: '500px', width: '100%' }}></div>;
 };
