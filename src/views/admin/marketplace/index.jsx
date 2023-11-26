@@ -84,11 +84,16 @@ export default function Marketplace() {
             <SimpleGrid columns={{ base: 1, md: 3 }} gap='20px'>
               {cameras?.map(camera => (
                 <NFT
-                  key={camera.id}
-                  image={camera.image_url}
-                  nom={camera.name}
-                // ... (other props)
-                />
+                key={camera.id}
+                image_url={camera.image_url}
+                name={camera.name}
+                location={camera.location}
+                last_active={camera.last_active}
+                latitude={camera.latitude}
+                longitude={camera.longitude}
+                // include other properties from camera if your NFT component uses them
+              />
+              
               ))}
             </SimpleGrid>
           </Flex>

@@ -12,9 +12,13 @@ Icon,
 import { FcCamera, FcCameraIdentification } from "react-icons/fc";
 
 export default function NFT(props) {
-  const { image_url, name, location, last_active, latitude } = props;
+  const { image_url, name, location, last_active, latitude, longitude } = props;
   const [like, setLike] = React.useState(false);
   const textColor = useColorModeValue("navy.700", "white");
+  const handleImageError = (e) => {
+    console.error("Error loading image: ", e);
+    // You can set a fallback image here if necessary
+  };
 
   return (
     <Card p='20px'>
@@ -25,6 +29,8 @@ export default function NFT(props) {
             w={{ base: "100%", "3xl": "100%" }}
             h={{ base: "100%", "3xl": "100%" }}
             borderRadius='20px'
+            onError={handleImageError}
+            alt={`Image for ${name}`}
           />
           {/* Like button */}
           <Button
@@ -66,6 +72,9 @@ export default function NFT(props) {
           {/* Additional details */}
           <Text fontWeight='700' fontSize='sm' color={textColor}>
             Latitude: {latitude}
+          </Text>
+          <Text fontWeight='700' fontSize='sm' color={textColor}>
+            Logitude:{longitude}
           </Text>
         </Flex>
       </Flex>
