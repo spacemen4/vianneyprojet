@@ -32,6 +32,7 @@ import Avatar3 from "assets/img/avatars/avatar3.png";
 import Avatar4 from "assets/img/avatars/avatar4.png";
 import tableDataTopCreators from "views/admin/marketplace/variables/tableDataTopCreators.json";
 import { tableColumnsTopCreators } from "views/admin/marketplace/variables/tableColumnsTopCreators";
+import CameraForm from "./components/CameraForm";
 
 export default function Marketplace() {
   // Chakra Color Mode
@@ -174,6 +175,9 @@ export default function Marketplace() {
               />
             </SimpleGrid>
           </Flex>
+          <Box>
+            <CameraForm/>
+          </Box>
         </Flex>
         <Flex
           flexDirection='column'
