@@ -56,26 +56,24 @@ const MapComponent = () => {
       mapRef.current.setView([users[0].latitude, users[0].longitude], 13);
 
       users.forEach(user => {
-        if (user) { // Check if user is defined
-          // Create the HTML content for the popup
+        if (user) {
+          // Updated HTML content for the popup
           const popupContent = `
             <div>
               <strong>${user.first_name} ${user.family_name}</strong>
-              ${user.photo_profile_url ? `<br/><img src="${user.photo_profile_url}" alt="${user.first_name}" style="width: 100px; height: auto; border-radius: 50%; margin-top: 5px;"/>` : ''}
+              ${user.photo_profile_url ? `<br/><img src="${user.photo_profile_url}" alt="${user.first_name}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%; margin-top: 5px;"/>` : ''}
             </div>
           `;
 
-          const customIcon = createCustomIcon(user); // Moved inside forEach
+          const customIcon = createCustomIcon(); // Custom icon without user photo
 
           L.marker([user.latitude, user.longitude], { icon: customIcon })
             .addTo(mapRef.current)
-            .bindPopup(popupContent); // Bind the custom popup content
+            .bindPopup(popupContent);
         }
       });
     }
   }, [users]);
-
-
 
   return <div id="map" style={{ height: '500px', width: '100%' }}></div>;
 };
