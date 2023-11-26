@@ -10,18 +10,14 @@ const supabaseUrl = 'https://hvjzemvfstwwhhahecwu.supabase.co';
 const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2anplbXZmc3R3d2hoYWhlY3d1Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY5MTQ4Mjc3MCwiZXhwIjoyMDA3MDU4NzcwfQ.6jThCX2eaUjl2qt4WE3ykPbrh6skE8drYcmk-UCNDSw';
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-const createCustomIcon = (user) => {
+const createCustomIcon = () => {
   const placeIconHtml = renderToString(<MdPlace style={{ fontSize: '24px', color: 'red' }} />);
-  const userPhotoHtml = user.photo_profile_url 
-    ? `<img src="${user.photo_profile_url}" alt="User" style="width: 24px; height: 24px; border-radius: 50%; margin-left: 5px;"/>`
-    : '';
-  const iconHtml = `<div style="display: flex; align-items: center;">${placeIconHtml}${userPhotoHtml}</div>`;
-
+  // Only include the MdPlace icon
   return L.divIcon({
-    html: iconHtml,
+    html: placeIconHtml,
     className: 'custom-leaflet-icon',
-    iconSize: L.point(50, 50),
-    iconAnchor: [25, 50],
+    iconSize: L.point(30, 30),
+    iconAnchor: [15, 30],
     popupAnchor: [0, -50]
   });
 };
