@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import { MdPlace } from "react-icons/md";
+import { renderToString } from "react-dom/server";
 import { createClient } from '@supabase/supabase-js';
 
 // Initialize Supabase client
@@ -8,16 +10,20 @@ const supabaseUrl = 'https://hvjzemvfstwwhhahecwu.supabase.co';
 const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2anplbXZmc3R3d2hoYWhlY3d1Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY5MTQ4Mjc3MCwiZXhwIjoyMDA3MDU4NzcwfQ.6jThCX2eaUjl2qt4WE3ykPbrh6skE8drYcmk-UCNDSw';
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-// Define a function to create a custom HTML element for the marker
 const createCustomIcon = (user) => {
-  const icon = L.divIcon({
-    className: 'custom-icon', // custom class for CSS styling
-    html: `<img src="${user.photo_profile_url}" alt="User" style="width: 48px; height: 48px; border-radius: 50%; border: 3px solid white;"/>`,
-    iconSize: [50, 50], // Size of the icon
-    iconAnchor: [25, 50], // Point of the icon which will correspond to marker's location
-    popupAnchor: [0, -50] // Point from which the popup should open relative to the iconAnchor
+  const placeIconHtml = renderToString(<MdPlace style={{ fontSize: '24px', color: 'red' }} />);
+  const userPhotoHtml = user.photo_profile_url 
+    ? `<img src="${user.photo_profile_url}" alt="User" style="width: 24px; height: 24px; border-radius: 50%; margin-left: 5px;"/>`
+    : '';
+  const iconHtml = `<div style="display: flex; align-items: center;">${placeIconHtml}${userPhotoHtml}</div>`;
+
+  return L.divIcon({
+    html: iconHtml,
+    className: 'custom-leaflet-icon',
+    iconSize: L.point(50, 50),
+    iconAnchor: [25, 50],
+    popupAnchor: [0, -50]
   });
-  return icon;
 };
 
 const MapComponent = () => {
@@ -51,23 +57,29 @@ const MapComponent = () => {
     }
 
     if (users.length > 0) {
-      // Center map on the first user
       mapRef.current.setView([users[0].latitude, users[0].longitude], 13);
 
-      // Add custom markers for each user
       users.forEach(user => {
-        if (user.photo_profile_url) {
-          const userIcon = createCustomIcon(user);
-          L.marker([user.latitude, user.longitude], { icon: userIcon })
+        if (user) { // Check if user is defined
+          // Create the HTML content for the popup
+          const popupContent = `
+            <div>
+              <strong>${user.first_name} ${user.family_name}</strong>
+              ${user.photo_profile_url ? `<br/><img src="${user.photo_profile_url}" alt="${user.first_name}" style="width: 100px; height: auto; border-radius: 50%; margin-top: 5px;"/>` : ''}
+            </div>
+          `;
+
+          const customIcon = createCustomIcon(user); // Moved inside forEach
+
+          L.marker([user.latitude, user.longitude], { icon: customIcon })
             .addTo(mapRef.current)
-            .bindPopup(`<strong>${user.first_name} ${user.family_name}</strong>`);
-        } else {
-          // Add a default marker if no photo URL is available
-          L.marker([user.latitude, user.longitude]).addTo(mapRef.current);
+            .bindPopup(popupContent); // Bind the custom popup content
         }
       });
     }
   }, [users]);
+
+
 
   return <div id="map" style={{ height: '500px', width: '100%' }}></div>;
 };
