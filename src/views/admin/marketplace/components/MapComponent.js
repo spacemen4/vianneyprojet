@@ -8,6 +8,18 @@ const supabaseUrl = 'https://hvjzemvfstwwhhahecwu.supabase.co';
 const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2anplbXZmc3R3d2hoYWhlY3d1Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY5MTQ4Mjc3MCwiZXhwIjoyMDA3MDU4NzcwfQ.6jThCX2eaUjl2qt4WE3ykPbrh6skE8drYcmk-UCNDSw';
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
+// Define a function to create a custom HTML element for the marker
+const createCustomIcon = (user) => {
+  const icon = L.divIcon({
+    className: 'custom-icon', // custom class for CSS styling
+    html: `<img src="${user.photo_profile_url}" alt="User" style="width: 48px; height: 48px; border-radius: 50%; border: 3px solid white;"/>`,
+    iconSize: [50, 50], // Size of the icon
+    iconAnchor: [25, 50], // Point of the icon which will correspond to marker's location
+    popupAnchor: [0, -50] // Point from which the popup should open relative to the iconAnchor
+  });
+  return icon;
+};
+
 const MapComponent = () => {
   const mapRef = useRef(null);
   const [users, setUsers] = useState([]);
@@ -42,16 +54,10 @@ const MapComponent = () => {
       // Center map on the first user
       mapRef.current.setView([users[0].latitude, users[0].longitude], 13);
 
-      // Add markers for each user with custom icons
+      // Add custom markers for each user
       users.forEach(user => {
         if (user.photo_profile_url) {
-          const userIcon = L.icon({
-            iconUrl: user.photo_profile_url,
-            iconSize: [50, 50], // Size of the icon
-            iconAnchor: [25, 50], // Point of the icon which will correspond to marker's location
-            popupAnchor: [0, -50] // Point from which the popup should open relative to the iconAnchor
-          });
-
+          const userIcon = createCustomIcon(user);
           L.marker([user.latitude, user.longitude], { icon: userIcon })
             .addTo(mapRef.current)
             .bindPopup(`<strong>${user.first_name} ${user.family_name}</strong>`);
