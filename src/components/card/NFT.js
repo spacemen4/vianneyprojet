@@ -1,37 +1,32 @@
-// Chakra imports
+import React from "react";
 import {
-  AvatarGroup,
-  Avatar,
   Box,
   Button,
   Flex,
-  Icon,
+Icon,
   Image,
-  Link,
   Text,
   useColorModeValue,
+  Card
 } from "@chakra-ui/react";
-// Custom components
-import Card from "components/card/Card.js";
-// Assets
-import React, { useState } from "react";
-import { FcCameraIdentification, FcCamera } from "react-icons/fc";
+import { FcCamera, FcCameraIdentification } from "react-icons/fc";
 
 export default function NFT(props) {
-  const { image, name, author, bidders, download, currentbid } = props;
-  const [like, setLike] = useState(false);
+  const { image_url, name, location, last_active, latitude } = props;
+  const [like, setLike] = React.useState(false);
   const textColor = useColorModeValue("navy.700", "white");
-  const textColorBid = useColorModeValue("brand.500", "white");
+
   return (
     <Card p='20px'>
       <Flex direction={{ base: "column" }} justify='center'>
         <Box mb={{ base: "20px", "2xl": "20px" }} position='relative'>
           <Image
-            src={image}
+            src={image_url}
             w={{ base: "100%", "3xl": "100%" }}
             h={{ base: "100%", "3xl": "100%" }}
             borderRadius='20px'
           />
+          {/* Like button */}
           <Button
             position='absolute'
             bg='white'
@@ -44,107 +39,34 @@ export default function NFT(props) {
             borderRadius='50%'
             minW='36px'
             h='36px'
-            onClick={() => {
-              setLike(!like);
-            }}>
+            onClick={() => setLike(!like)}>
             <Icon
+              as={like ? FcCameraIdentification : FcCamera}
               transition='0.2s linear'
               w='20px'
               h='20px'
-              as={like ? FcCameraIdentification : FcCamera}
               color='brand.500'
             />
           </Button>
         </Box>
         <Flex flexDirection='column' justify='space-between' h='100%'>
-          <Flex
-            justify='space-between'
-            direction={{
-              base: "row",
-              md: "column",
-              lg: "row",
-              xl: "column",
-              "2xl": "row",
-            }}
-            mb='auto'>
-            <Flex direction='column'>
-              <Text
-                color={textColor}
-                fontSize={{
-                  base: "xl",
-                  md: "lg",
-                  lg: "lg",
-                  xl: "lg",
-                  "2xl": "md",
-                  "3xl": "lg",
-                }}
-                mb='5px'
-                fontWeight='bold'
-                me='14px'>
-                {name}
-              </Text>
-              <Text
-                color='secondaryGray.600'
-                fontSize={{
-                  base: "sm",
-                }}
-                fontWeight='400'
-                me='14px'>
-                {author}
-              </Text>
-            </Flex>
-            <AvatarGroup
-              max={3}
-              color={textColorBid}
-              size='sm'
-              mt={{
-                base: "0px",
-                md: "10px",
-                lg: "0px",
-                xl: "10px",
-                "2xl": "0px",
-              }}
-              fontSize='12px'>
-              {bidders.map((avt, key) => (
-                <Avatar key={key} src={avt} />
-              ))}
-            </AvatarGroup>
-          </Flex>
-          <Flex
-            align='start'
-            justify='space-between'
-            direction={{
-              base: "row",
-              md: "column",
-              lg: "row",
-              xl: "column",
-              "2xl": "row",
-            }}
-            mt='25px'>
-            <Text fontWeight='700' fontSize='sm' color={textColorBid}>
-              Position actuelle: {currentbid}
+          <Flex justify='space-between' mb='auto'>
+            <Text
+              color={textColor}
+              fontSize={{ base: "xl", md: "lg", lg: "lg", xl: "lg", "2xl": "md", "3xl": "lg" }}
+              mb='5px'
+              fontWeight='bold'>
+              {name}
             </Text>
-            <Link
-              href={download}
-              mt={{
-                base: "0px",
-                md: "10px",
-                lg: "0px",
-                xl: "10px",
-                "2xl": "0px",
-              }}>
-              <Button
-                variant='darkBrand'
-                color='white'
-                fontSize='sm'
-                fontWeight='500'
-                borderRadius='70px'
-                px='24px'
-                py='5px'>
-                Se connecter
-              </Button>
-            </Link>
+            {/* Location and other details */}
+            <Text color='secondaryGray.600' fontSize='sm' fontWeight='400'>
+              {location} - Last active: {last_active}
+            </Text>
           </Flex>
+          {/* Additional details */}
+          <Text fontWeight='700' fontSize='sm' color={textColor}>
+            Latitude: {latitude}
+          </Text>
         </Flex>
       </Flex>
     </Card>

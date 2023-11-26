@@ -43,8 +43,12 @@ export default function Marketplace() {
         .from('vianney_cameras')
         .select('*');
 
-      if (error) console.log('Error fetching data:', error);
-      else setCameras(data);
+      if (error) {
+        console.log('Error fetching data:', error);
+        setCameras([]); // Set cameras to an empty array in case of error
+      } else {
+        setCameras(data);
+      }
     };
 
     fetchCameras();
@@ -78,12 +82,12 @@ export default function Marketplace() {
             </Flex>
 
             <SimpleGrid columns={{ base: 1, md: 3 }} gap='20px'>
-              {cameras.map(camera => (
+              {cameras?.map(camera => (
                 <NFT
                   key={camera.id}
                   image={camera.image_url}
                   nom={camera.name}
-                // You can add more properties as per your database schema and NFT component's props
+                // ... (other props)
                 />
               ))}
             </SimpleGrid>
