@@ -15,27 +15,28 @@ const CameraForm = () => {
     setImageFile(e.target.files[0]);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-  
-    // Upload image to Supabase Storage
-    const fileExt = imageFile.name.split('.').pop();
-    const fileName = `${Date.now()}.${fileExt}`;
-    let { error: uploadError } = await supabase.storage
-      .from('camera_images')
-      .upload(fileName, imageFile);
-  
-    if (uploadError) {
-      console.error('Error uploading file:', uploadError);
-      return;
-    }
-  
-    // Manually construct the public URL
-    const publicURL = `${supabaseUrl}/storage/v1/object/public/camera_images/${fileName}`;
-  
-    console.log('Image URL:', publicURL); // Log the URL for verification
-  
-    // Insert camera data along with the image URL into the database
+const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  // Upload image to Supabase Storage
+  const fileExt = imageFile.name.split('.').pop();
+  const fileName = `${Date.now()}.${fileExt}`;
+  let uploadResponse = await supabase.storage
+    .from('camera_images')
+    .upload(fileName, imageFile);
+
+  console.log('Upload Response:', uploadResponse); // Log to verify upload success
+
+  if (uploadResponse.error) {
+    console.error('Error uploading file:', uploadResponse.error);
+    return;
+  }
+
+  // Manually construct the public URL (as a fallback)
+  const publicURL = `https://hvjzemvfstwwhhahecwu.supabase.co/storage/v1/object/public/camera_images/${fileName}`;
+  console.log('Image URL:', publicURL); // Log the URL for verification
+
+  // Insert camera data along with the image URL into the database
     const { error: insertError } = await supabase
       .from('vianney_cameras')
       .insert([{
