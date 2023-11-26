@@ -1,6 +1,4 @@
-import React from "react";
-
-// Chakra imports
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   Button,
@@ -10,8 +8,6 @@ import {
   useColorModeValue,
   SimpleGrid,
 } from "@chakra-ui/react";
-
-// Custom components
 import Banner from "views/admin/marketplace/components/Banner";
 import MapComponent from "views/admin/marketplace/components/MapComponent";
 import TableTopCreators from "views/admin/marketplace/components/TableTopCreators";
@@ -26,17 +22,34 @@ import Nft3 from "assets/img/nfts/Nft3.png";
 import Nft4 from "assets/img/nfts/Nft4.png";
 import Nft5 from "assets/img/nfts/Nft5.png";
 import Nft6 from "assets/img/nfts/Nft6.png";
-import Avatar1 from "assets/img/avatars/avatar1.png";
-import Avatar2 from "assets/img/avatars/avatar2.png";
-import Avatar3 from "assets/img/avatars/avatar3.png";
-import Avatar4 from "assets/img/avatars/avatar4.png";
+
 import tableDataTopCreators from "views/admin/marketplace/variables/tableDataTopCreators.json";
 import { tableColumnsTopCreators } from "views/admin/marketplace/variables/tableColumnsTopCreators";
 import CameraForm from "./components/CameraForm";
+import { createClient } from '@supabase/supabase-js';
+
+const supabaseUrl = 'https://hvjzemvfstwwhhahecwu.supabase.co';
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2anplbXZmc3R3d2hoYWhlY3d1Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY5MTQ4Mjc3MCwiZXhwIjoyMDA3MDU4NzcwfQ.6jThCX2eaUjl2qt4WE3ykPbrh6skE8drYcmk-UCNDSw';
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 export default function Marketplace() {
   // Chakra Color Mode
   const textColor = useColorModeValue("secondaryGray.900", "white");
+  const [cameras, setCameras] = useState([]);
+
+  useEffect(() => {
+    const fetchCameras = async () => {
+      const { data, error } = await supabase
+        .from('vianney_cameras')
+        .select('*');
+
+      if (error) console.log('Error fetching data:', error);
+      else setCameras(data);
+    };
+
+    fetchCameras();
+  }, []);
+
   return (
     <Box pt={{ base: "180px", md: "80px", xl: "80px" }}>
       {/* Main Fields */}
@@ -53,129 +66,29 @@ export default function Marketplace() {
             <MapComponent />
           </Box>
           <Flex direction='column'>
-            <Flex
-              mt='45px'
-              mb='20px'
-              justifyContent='space-between'
-              direction={{ base: "column", md: "row" }}
-              align={{ base: "start", md: "center" }}>
-              <Text color={textColor} fontSize='2xl' ms='24px' fontWeight='700'>
-                Les vidéos en direct de l'évênement
-              </Text>
-              </Flex>
-              
-            <SimpleGrid columns={{ base: 1, md: 3 }} gap='20px'>
-              <NFT
-                nom='Abstract Colors'
-                author='By Esthera Jackson'
-                bidders={[
-                  Avatar1,
-                  Avatar2,
-                  Avatar3,
-                  Avatar4,
-                  Avatar1,
-                  Avatar1,
-                  Avatar1,
-                  Avatar1,
-                ]}
-                image={Nft1}
-                currentbid='0.91 ETH'
-                download='#'
-              />
-              <NFT
-                nom='ETH AI Brain'
-                author='By Nick Wilson'
-                bidders={[
-                  Avatar1,
-                  Avatar2,
-                  Avatar3,
-                  Avatar4,
-                  Avatar1,
-                  Avatar1,
-                  Avatar1,
-                  Avatar1,
-                ]}
-                image={Nft2}
-                currentbid='0.91 ETH'
-                download='#'
-              />
-              <NFT
-                nom='Mesh Gradients '
-                author='By Will Smith'
-                bidders={[
-                  Avatar1,
-                  Avatar2,
-                  Avatar3,
-                  Avatar4,
-                  Avatar1,
-                  Avatar1,
-                  Avatar1,
-                  Avatar1,
-                ]}
-                image={Nft3}
-                currentbid='0.91 ETH'
-                download='#'
-              />
-            </SimpleGrid>
-            <SimpleGrid
-              columns={{ base: 1, md: 3 }}
-              mt="20px"
-              gap='20px'
-              mb={{ base: "20px", xl: "0px" }}>
-              <NFT
-                nom='Swipe Circles'
-                author='By Peter Will'
-                bidders={[
-                  Avatar1,
-                  Avatar2,
-                  Avatar3,
-                  Avatar4,
-                  Avatar1,
-                  Avatar1,
-                  Avatar1,
-                  Avatar1,
-                ]}
-                image={Nft4}
-                currentbid='0.91 ETH'
-                download='#'
-              />
-              <NFT
-                nom='Colorful Heaven'
-                author='By Mark Benjamin'
-                bidders={[
-                  Avatar1,
-                  Avatar2,
-                  Avatar3,
-                  Avatar4,
-                  Avatar1,
-                  Avatar1,
-                  Avatar1,
-                  Avatar1,
-                ]}
-                image={Nft5}
-                currentbid='0.91 ETH'
-                download='#'
-              />
-              <NFT
-                nom='3D Cubes Art'
-                author='By Manny Gates'
-                bidders={[
-                  Avatar1,
-                  Avatar2,
-                  Avatar3,
-                  Avatar4,
-                  Avatar1,
-                  Avatar1,
-                  Avatar1,
-                  Avatar1,
-                ]}
-                image={Nft6}
-                currentbid='0.91 ETH'
-                download='#'
-              />
-            </SimpleGrid>
-          </Flex>
-          <Box>
+  <Flex
+      mt='45px'
+      mb='20px'
+      justifyContent='space-between'
+      direction={{ base: "column", md: "row" }}
+      align={{ base: "start", md: "center" }}>
+      <Text color={textColor} fontSize='2xl' ms='24px' fontWeight='700'>
+        Les vidéos en direct de l'évênement
+      </Text>
+      </Flex>
+  
+  <SimpleGrid columns={{ base: 1, md: 3 }} gap='20px'>
+    {cameras.map(camera => (
+      <NFT
+        key={camera.id}
+        image={camera.image_url}
+        nom={camera.name}
+        // You can add more properties as per your database schema and NFT component's props
+      />
+    ))}
+  </SimpleGrid>
+</Flex>
+<Box>
             <CameraForm/>
           </Box>
         </Flex>
@@ -245,8 +158,7 @@ export default function Marketplace() {
             />
           </Card>
         </Flex>
-      </Grid>
-      {/* Delete Product */}
+              </Grid>
     </Box>
   );
 }
