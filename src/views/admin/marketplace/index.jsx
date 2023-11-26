@@ -27,6 +27,7 @@ import tableDataTopCreators from "views/admin/marketplace/variables/tableDataTop
 import { tableColumnsTopCreators } from "views/admin/marketplace/variables/tableColumnsTopCreators";
 import CameraForm from "./components/CameraForm";
 import { createClient } from '@supabase/supabase-js';
+import UserForm from './components/UserForm';
 
 const supabaseUrl = 'https://hvjzemvfstwwhhahecwu.supabase.co';
 const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2anplbXZmc3R3d2hoYWhlY3d1Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY5MTQ4Mjc3MCwiZXhwIjoyMDA3MDU4NzcwfQ.6jThCX2eaUjl2qt4WE3ykPbrh6skE8drYcmk-UCNDSw';
@@ -53,6 +54,13 @@ export default function Marketplace() {
 
     fetchCameras();
   }, []);
+  // New state for controlling the visibility of forms
+  const [showForms, setShowForms] = useState(false);
+
+  // Toggle function for the button
+  const toggleForms = () => {
+    setShowForms(!showForms);
+  };
 
   return (
     <Box pt={{ base: "180px", md: "80px", xl: "80px" }}>
@@ -84,22 +92,32 @@ export default function Marketplace() {
             <SimpleGrid columns={{ base: 1, md: 3 }} gap='20px'>
               {cameras?.map(camera => (
                 <NFT
-                key={camera.id}
-                image_url={camera.image_url}
-                name={camera.name}
-                location={camera.location}
-                last_active={camera.last_active}
-                latitude={camera.latitude}
-                longitude={camera.longitude}
+                  key={camera.id}
+                  image_url={camera.image_url}
+                  name={camera.name}
+                  location={camera.location}
+                  last_active={camera.last_active}
+                  latitude={camera.latitude}
+                  longitude={camera.longitude}
                 // include other properties from camera if your NFT component uses them
-              />
-              
+                />
+
               ))}
             </SimpleGrid>
           </Flex>
-          <Box>
-            <CameraForm />
-          </Box>
+          <Button onClick={toggleForms} mt='4' mb='4'>
+            {showForms ? 'Cacher le formulaire' : 'Montrer le formulaire'}
+          </Button>
+          {showForms && (
+            <>
+              <Box>
+                <CameraForm />
+              </Box>
+              <Box>
+                <UserForm />
+              </Box>
+            </>
+          )}
         </Flex>
         <Flex
           flexDirection='column'
