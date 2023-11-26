@@ -75,7 +75,7 @@ const CameraForm = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div id="mapId" style={{ height: '400px', width: '100%' }}>
+      <div id="mapId" style={{ height: '800px', width: '100%' }}>
         <MapContainer center={[lat, lng]} zoom={13} scrollWheelZoom={false} style={{ height: '100%', width: '100%' }}>
           <TileLayer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
