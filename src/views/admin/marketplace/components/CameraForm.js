@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { createClient } from '@supabase/supabase-js';
+import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
 
 // Initialize Supabase client
 const supabaseUrl = 'https://hvjzemvfstwwhhahecwu.supabase.co';
@@ -10,40 +12,56 @@ const CameraForm = () => {
   const [cameraName, setCameraName] = useState('');
   const [location, setLocation] = useState('');
   const [imageFile, setImageFile] = useState(null);
-
+  const [lat, setLat] = useState(0);
+  const [lng, setLng] = useState(0);
   const handleFileChange = (e) => {
     setImageFile(e.target.files[0]);
   };
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
+  const LocationMarker = () => {
+    const map = useMapEvents({
+      click(e) {
+        setLat(e.latlng.lat);
+        setLng(e.latlng.lng);
+        map.flyTo(e.latlng, map.getZoom());
+      },
+    });
 
-  // Upload image to Supabase Storage
-  const fileExt = imageFile.name.split('.').pop();
-  const fileName = `${Date.now()}.${fileExt}`;
-  let uploadResponse = await supabase.storage
-    .from('camera_images')
-    .upload(fileName, imageFile);
+    return lat !== 0 ? (
+      <Marker position={[lat, lng]}>
+      </Marker>
+    ) : null;
+  };
 
-  console.log('Upload Response:', uploadResponse); // Log to verify upload success
-
-  if (uploadResponse.error) {
-    console.error('Error uploading file:', uploadResponse.error);
-    return;
-  }
-
-  // Manually construct the public URL (as a fallback)
-  const publicURL = `https://hvjzemvfstwwhhahecwu.supabase.co/storage/v1/object/public/camera_images/${fileName}`;
-  console.log('Image URL:', publicURL); // Log the URL for verification
-
-  // Insert camera data along with the image URL into the database
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+  
+    // Upload image to Supabase Storage
+    const fileExt = imageFile.name.split('.').pop();
+    const fileName = `${Date.now()}.${fileExt}`;
+    let uploadResponse = await supabase.storage
+      .from('camera_images')
+      .upload(fileName, imageFile);
+  
+    if (uploadResponse.error) {
+      console.error('Error uploading file:', uploadResponse.error);
+      return;
+    }
+  
+    // Manually construct the public URL (as a fallback)
+    const publicURL = `https://hvjzemvfstwwhhahecwu.supabase.co/storage/v1/object/public/camera_images/${fileName}`;
+  
+    // Insert camera data along with the image URL, latitude, and longitude into the database
     const { error: insertError } = await supabase
       .from('vianney_cameras')
       .insert([{
         name: cameraName,
-        location,
+        location, // This might now be redundant or used for descriptive location
+        latitude: lat,
+        longitude: lng,
         status: true,
-        image_url: publicURL
+        image_url: publicURL,
+        image_timestamp: new Date().toISOString() // Assuming you want to record the current timestamp
       }]);
   
     if (insertError) {
@@ -52,10 +70,19 @@ const handleSubmit = async (e) => {
     }
   
     alert('Camera data added successfully');
-  }; 
+  };
   
+
   return (
     <form onSubmit={handleSubmit}>
+      <div id="mapId" style={{ height: '400px', width: '100%' }}>
+        <MapContainer center={[lat, lng]} zoom={13} scrollWheelZoom={false} style={{ height: '100%', width: '100%' }}>
+          <TileLayer
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
+          <LocationMarker />
+        </MapContainer>
+      </div>
       <input
         type="text"
         placeholder="Camera Name"
