@@ -12,8 +12,8 @@ const CameraForm = () => {
   const [cameraName, setCameraName] = useState('');
   const [location, setLocation] = useState('');
   const [imageFile, setImageFile] = useState(null);
-  const [lat, setLat] = useState(0);
-  const [lng, setLng] = useState(0);
+  const [lat, setLat] = useState(45.75799485263588);
+  const [lng, setLng] = useState(4.825754111294844);
   const handleFileChange = (e) => {
     setImageFile(e.target.files[0]);
   };
@@ -35,22 +35,22 @@ const CameraForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     // Upload image to Supabase Storage
     const fileExt = imageFile.name.split('.').pop();
     const fileName = `${Date.now()}.${fileExt}`;
     let uploadResponse = await supabase.storage
       .from('camera_images')
       .upload(fileName, imageFile);
-  
+
     if (uploadResponse.error) {
       console.error('Error uploading file:', uploadResponse.error);
       return;
     }
-  
+
     // Manually construct the public URL (as a fallback)
     const publicURL = `https://hvjzemvfstwwhhahecwu.supabase.co/storage/v1/object/public/camera_images/${fileName}`;
-  
+
     // Insert camera data along with the image URL, latitude, and longitude into the database
     const { error: insertError } = await supabase
       .from('vianney_cameras')
@@ -63,15 +63,15 @@ const CameraForm = () => {
         image_url: publicURL,
         image_timestamp: new Date().toISOString() // Assuming you want to record the current timestamp
       }]);
-  
+
     if (insertError) {
       console.error('Error inserting data:', insertError);
       return;
     }
-  
+
     alert('Camera data added successfully');
   };
-  
+
 
   return (
     <form onSubmit={handleSubmit}>
