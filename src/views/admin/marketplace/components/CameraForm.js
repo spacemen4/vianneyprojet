@@ -17,29 +17,24 @@ const CameraForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     // Upload image to Supabase Storage
     const fileExt = imageFile.name.split('.').pop();
     const fileName = `${Date.now()}.${fileExt}`;
     let { error: uploadError } = await supabase.storage
       .from('camera_images')
       .upload(fileName, imageFile);
-
+  
     if (uploadError) {
       console.error('Error uploading file:', uploadError);
       return;
     }
-
-    // Get public URL for the uploaded image
-    const { publicURL, error: urlError } = supabase.storage
-      .from('camera_images')
-      .getPublicUrl(fileName);
-
-    if (urlError) {
-      console.error('Error getting public URL:', urlError);
-      return;
-    }
-
+  
+    // Manually construct the public URL
+    const publicURL = `${supabaseUrl}/storage/v1/object/public/camera_images/${fileName}`;
+  
+    console.log('Image URL:', publicURL); // Log the URL for verification
+  
     // Insert camera data along with the image URL into the database
     const { error: insertError } = await supabase
       .from('vianney_cameras')
@@ -49,15 +44,15 @@ const CameraForm = () => {
         status: true,
         image_url: publicURL
       }]);
-
+  
     if (insertError) {
       console.error('Error inserting data:', insertError);
       return;
     }
-
+  
     alert('Camera data added successfully');
-  };
-
+  }; 
+  
   return (
     <form onSubmit={handleSubmit}>
       <input
