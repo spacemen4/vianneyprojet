@@ -117,7 +117,7 @@ export default function Marketplace() {
         <Flex
           flexDirection='column'
           gridArea={{ xl: "1 / 3 / 2 / 4", "2xl": "1 / 2 / 2 / 3" }}>
-          <Box maxWidth={{ base: "50%", md: "50%" }}>
+          <Box maxWidth={{ base: "100%", md: "50%" }}>
             <Card px='0px' mb='20px'>
               <TableTopCreators
                 tableData={tableDataTopCreators}
