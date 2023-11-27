@@ -137,7 +137,6 @@ export default function Marketplace() {
               </Text>
               <Button variant='action'>Voir tous les alertes</Button>
             </Flex>
-
             <HistoryItem
               nom='Colorful Heaven'
               author='By Mark Benjamin'
