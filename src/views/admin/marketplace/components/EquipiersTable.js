@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Table,
   Thead,
@@ -8,8 +8,31 @@ import {
   Td,
   TableContainer
 } from '@chakra-ui/react';
+import { createClient } from '@supabase/supabase-js';
 
-const EquipiersTable = ({ equipiers }) => {
+// Initialize Supabase client
+const supabaseUrl = 'https://hvjzemvfstwwhhahecwu.supabase.co';
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2anplbXZmc3R3d2hoYWhlY3d1Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY5MTQ4Mjc3MCwiZXhwIjoyMDA3MDU4NzcwfQ.6jThCX2eaUjl2qt4WE3ykPbrh6skE8drYcmk-UCNDSw';
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
+const EquipiersTable = () => {
+  const [equipiers, setEquipiers] = useState([]);
+
+  useEffect(() => {
+    const fetchEquipiers = async () => {
+      const { data, error } = await supabase
+        .from('vianney_users_on_the_ground')
+        .select('*');
+      if (error) {
+        console.log('Error fetching data:', error);
+      } else {
+        setEquipiers(data);
+      }
+    };
+
+    fetchEquipiers();
+  }, []);
+
   return (
     <TableContainer>
       <Table variant='simple'>
