@@ -17,11 +17,7 @@ import Card from "components/card/Card.js";
 
 // Assets
 import Nft1 from "assets/img/nfts/Nft1.png";
-import Nft2 from "assets/img/nfts/Nft2.png";
-import Nft3 from "assets/img/nfts/Nft3.png";
-import Nft4 from "assets/img/nfts/Nft4.png";
 import Nft5 from "assets/img/nfts/Nft5.png";
-import Nft6 from "assets/img/nfts/Nft6.png";
 
 import tableDataTopCreators from "views/admin/marketplace/variables/tableDataTopCreators.json";
 import { tableColumnsTopCreators } from "views/admin/marketplace/variables/tableColumnsTopCreators";
@@ -64,7 +60,6 @@ export default function Marketplace() {
 
   return (
     <Box pt={{ base: "180px", md: "80px", xl: "80px" }}>
-      {/* Main Fields */}
       <Grid
         mb='20px'
         gridTemplateColumns={{ xl: "repeat(3, 1fr)", "2xl": "1fr 0.46fr" }}
@@ -122,12 +117,14 @@ export default function Marketplace() {
         <Flex
           flexDirection='column'
           gridArea={{ xl: "1 / 3 / 2 / 4", "2xl": "1 / 2 / 2 / 3" }}>
-          <Card px='0px' mb='20px'>
-            <TableTopCreators
-              tableData={tableDataTopCreators}
-              columnsData={tableColumnsTopCreators}
-            />
-          </Card>
+          <Box maxWidth={{ base: "50%", md: "50%" }}>
+            <Card px='0px' mb='20px'>
+              <TableTopCreators
+                tableData={tableDataTopCreators}
+                columnsData={tableColumnsTopCreators}
+              />
+            </Card>
+          </Box>
           <Card p='0px'>
             <Flex
               align={{ sm: "flex-start", lg: "center" }}
@@ -153,34 +150,6 @@ export default function Marketplace() {
               author='By Esthera Jackson'
               date='58s ago'
               image={Nft1}
-              price='0.91 ETH'
-            />
-            <HistoryItem
-              nom='ETH AI Brain'
-              author='By Nick Wilson'
-              date='1m ago'
-              image={Nft2}
-              price='0.91 ETH'
-            />
-            <HistoryItem
-              nom='Swipe Circles'
-              author='By Peter Will'
-              date='1m ago'
-              image={Nft4}
-              price='0.91 ETH'
-            />
-            <HistoryItem
-              nom='Mesh Gradients '
-              author='By Will Smith'
-              date='2m ago'
-              image={Nft3}
-              price='0.91 ETH'
-            />
-            <HistoryItem
-              nom='3D Cubes Art'
-              author='By Manny Gates'
-              date='3m ago'
-              image={Nft6}
               price='0.91 ETH'
             />
           </Card>
