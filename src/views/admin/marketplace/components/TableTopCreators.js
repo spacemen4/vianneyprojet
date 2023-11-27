@@ -84,7 +84,6 @@ function TopCreatorTable(props) {
               </Tr>
             ))}
           </Thead>
-
           <Tbody {...getTableBodyProps()}>
             {page.map((row, index) => {
               prepareRow(row);
