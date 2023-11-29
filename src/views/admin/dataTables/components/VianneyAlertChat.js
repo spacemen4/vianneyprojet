@@ -19,14 +19,14 @@ function VianneyAlertChat() {
         .from('vianney_alert')
         .select('*')
         .order('timestamp', { ascending: true }); // Changed to true for chronological order
-  
+
       if (error) console.log('Erreur lors de la récupération des alertes:', error);
       else setAlerts(data);
     };
-  
+
     fetchAlerts();
   }, []);
-  
+
 
   const handleStatusChange = (event) => {
     setAlertStatus(event.target.value);
@@ -39,65 +39,69 @@ function VianneyAlertChat() {
   const handleSubmit = async () => {
     if (newAlertText.trim() !== '') {
       const fakeUUID = '123e4567-e89b-12d3-a456-426614174000';
-  
+
       const { error } = await supabase
         .from('vianney_alert')
         .insert([
           { alert_text: newAlertText, user_id: fakeUUID, solved_or_not: alertStatus }
         ]);
-  
-        if (!error) {
-          const newAlert = {
-            alert_text: newAlertText, 
-            user_id: fakeUUID, 
-            solved_or_not: alertStatus,
-            timestamp: new Date().toISOString()
-          };
-          setAlerts([...alerts, newAlert]);
-        }
-  
+
+      if (!error) {
+        const newAlert = {
+          alert_text: newAlertText,
+          user_id: fakeUUID,
+          solved_or_not: alertStatus,
+          timestamp: new Date().toISOString()
+        };
+        setAlerts([...alerts, newAlert]);
+      }
+
       setNewAlertText('');
     }
   };
-  
+
 
   return (
     <Box p={4}>
-      <VStack spacing={4}>
-        {alerts.map((alert, index) => {
-          const alertStatus = ['info', 'warning', 'success', 'error'].includes(alert.solved_or_not)
-            ? alert.solved_or_not
-            : 'info';
+      {/* Card with white background and large border radius */}
+      <Box bg="white" borderRadius="lg" p={4} boxShadow="md">
+        <VStack spacing={4}>
+          {alerts.map((alert, index) => {
+            const alertStatus = ['info', 'warning', 'success', 'error'].includes(alert.solved_or_not)
+              ? alert.solved_or_not
+              : 'info';
 
-          return (
-            <Alert key={index} status={alertStatus}>
-              <AlertIcon />
-              <Box>
-                <Text>{alert.alert_text}</Text>
-                <Text fontSize="sm" color="gray.500">
-                  {new Date(alert.timestamp).toLocaleString()}
-                </Text>
-              </Box>
-            </Alert>
-          );
-        })}
+            return (
+              <Alert key={index} status={alertStatus}>
+                <AlertIcon />
+                <Box>
+                  <Text>{alert.alert_text}</Text>
+                  <Text fontSize="sm" color="gray.500">
+                    {new Date(alert.timestamp).toLocaleString()}
+                  </Text>
+                </Box>
+              </Alert>
+            );
+          })}
 
-      </VStack>
-      <Box mt={4}>
-        <Select placeholder="Sélectionnez le statut" value={alertStatus} onChange={handleStatusChange}>
-          <option value="error">Urgence</option>
-          <option value="success">Problème résolu</option>
-          <option value="warning">Avertissement</option>
-          <option value="info">Information</option>
-        </Select>
-        <Input
-          placeholder="Tapez votre alerte..."
-          value={newAlertText}
-          onChange={handleInputChange}
-        />
-        <Button mt={2} colorScheme="blue" onClick={handleSubmit}>
-          Ajouter une alerte
-        </Button>
+        </VStack>
+        <Box mt={4}>
+          <Select placeholder="Sélectionnez le statut" value={alertStatus} onChange={handleStatusChange}>
+            <option value="error">Urgence</option>
+            <option value="success">Problème résolu</option>
+            <option value="warning">Avertissement</option>
+            <option value="info">Information</option>
+          </Select>
+          <Input
+            placeholder="Tapez votre alerte..."
+            value={newAlertText}
+            onChange={handleInputChange}
+            mt={2}
+          />
+          <Button mt={2} colorScheme="blue" onClick={handleSubmit}>
+            Ajouter une alerte
+          </Button>
+        </Box>
       </Box>
     </Box>
   );
