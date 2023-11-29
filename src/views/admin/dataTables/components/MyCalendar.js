@@ -2,29 +2,38 @@ import React from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
+import resourceTimelinePlugin from '@fullcalendar/resource-timeline'; // Import the resource timeline plugin
 import { Box } from '@chakra-ui/react';
 
 const MyCalendar = () => {
   const events = [
-    // Sample events data
-    { title: 'Team A Meeting', start: '2023-11-29T10:00:00', end: '2023-11-29T12:00:00', groupId: 'teamA' },
-    { title: 'Team B Workshop', start: '2023-11-29T13:00:00', end: '2023-11-29T15:00:00', groupId: 'teamB' },
-    // Add more events here
+    { title: 'Team A Meeting', start: '2023-11-29T10:00:00', end: '2023-11-29T12:00:00', resourceId: 'teamA' },
+    { title: 'Team B Workshop', start: '2023-11-29T13:00:00', end: '2023-11-29T15:00:00', resourceId: 'teamB' },
+    { title: 'Team C Discussion', start: '2023-11-29T16:00:00', end: '2023-11-29T17:00:00', resourceId: 'teamC' },
+    // More events
+  ];
+
+  const resources = [
+    { id: 'teamA', title: 'Team A' },
+    { id: 'teamB', title: 'Team B' },
+    { id: 'teamC', title: 'Team C' },
+    // More resources (teams)
   ];
 
   return (
     <Box p={4} borderWidth="1px" borderRadius="lg">
       <FullCalendar
-        plugins={[dayGridPlugin, timeGridPlugin]}
-        initialView="timeGridDay"
+        plugins={[dayGridPlugin, timeGridPlugin, resourceTimelinePlugin]}
+        initialView="resourceTimelineDay"
         headerToolbar={{
           left: 'prev,next today',
           center: 'title',
-          right: 'dayGridMonth,timeGridWeek,timeGridDay'
+          right: 'dayGridMonth,timeGridWeek,resourceTimelineDay'
         }}
         events={events}
+        resources={resources}
         eventClick={(info) => {
-          // Handle event click, show details
+          // Event click handling
           alert(`Event: ${info.event.title}`);
         }}
       />
