@@ -20,7 +20,7 @@ function VianneyAlertChat() {
         .select('*')
         .order('timestamp', { ascending: false });
 
-      if (error) console.log('Error fetching alerts:', error);
+      if (error) console.log('Erreur lors de la récupération des alertes:', error);
       else setAlerts(data);
     };
 
@@ -31,7 +31,7 @@ function VianneyAlertChat() {
     setAlertStatus(event.target.value);
   };
 
-  const handleInputChange = (event) => { // Define this function
+  const handleInputChange = (event) => {
     setNewAlertText(event.target.value);
   };
 
@@ -46,9 +46,8 @@ function VianneyAlertChat() {
         ]);
 
       if (error) {
-        console.log('Error inserting alert:', error);
+        console.log('Erreur lors de l insertion de l alerte:', error);
       } else if (data) {
-        // Only update state if data is not null
         setAlerts([...alerts, ...data]);
       }
 
@@ -79,19 +78,19 @@ function VianneyAlertChat() {
 
       </VStack>
       <Box mt={4}>
-        <Select placeholder="Select status" value={alertStatus} onChange={handleStatusChange}>
-          <option value="error">Error</option>
-          <option value="success">Success</option>
-          <option value="warning">Warning</option>
-          <option value="info">Info</option>
+        <Select placeholder="Sélectionnez le statut" value={alertStatus} onChange={handleStatusChange}>
+          <option value="error">Urgence</option>
+          <option value="success">Problème résolu</option>
+          <option value="warning">Avertissement</option>
+          <option value="info">Information</option>
         </Select>
         <Input
-          placeholder="Type your alert..."
+          placeholder="Tapez votre alerte..."
           value={newAlertText}
           onChange={handleInputChange}
         />
         <Button mt={2} colorScheme="blue" onClick={handleSubmit}>
-          Add Alert
+          Ajouter une alerte
         </Button>
       </Box>
     </Box>
