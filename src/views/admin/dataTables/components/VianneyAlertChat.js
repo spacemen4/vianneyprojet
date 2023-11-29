@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Input, Button, VStack, Alert, AlertIcon, Text } from '@chakra-ui/react';
+import { Box, Input, Button, VStack, Alert, AlertIcon, Text, Select } from '@chakra-ui/react';
 import { createClient } from '@supabase/supabase-js'
 
 // Initialize Supabase client
@@ -8,6 +8,7 @@ const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYm
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 function VianneyAlertChat() {
+  const [alertStatus, setAlertStatus] = useState('info'); // New state for alert status
   const [alerts, setAlerts] = useState([]);
   const [newAlertText, setNewAlertText] = useState('');
 
@@ -26,7 +27,11 @@ function VianneyAlertChat() {
     fetchAlerts();
   }, []);
 
-  const handleInputChange = (event) => {
+  const handleStatusChange = (event) => {
+    setAlertStatus(event.target.value);
+  };
+
+  const handleInputChange = (event) => { // Define this function
     setNewAlertText(event.target.value);
   };
 
@@ -37,7 +42,7 @@ function VianneyAlertChat() {
       const { data, error } = await supabase
         .from('vianney_alert')
         .insert([
-          { alert_text: newAlertText, user_id: fakeUUID, solved_or_not: 'unsolved' }
+          { alert_text: newAlertText, user_id: fakeUUID, solved_or_not: alertStatus }
         ]);
 
       if (error) {
@@ -54,20 +59,32 @@ function VianneyAlertChat() {
   return (
     <Box p={4}>
       <VStack spacing={4}>
-        {alerts.map((alert, index) => (
-          <Alert key={index} status="info">
-            <AlertIcon />
-            <Box>
-              <Text>{alert.alert_text}</Text> {/* Display the alert text */}
-              {/* Optionally display other details like timestamp */}
-              <Text fontSize="sm" color="gray.500">
-                {new Date(alert.timestamp).toLocaleString()}
-              </Text>
-            </Box>
-          </Alert>
-        ))}
+        {alerts.map((alert, index) => {
+          const alertStatus = ['info', 'warning', 'success', 'error'].includes(alert.solved_or_not)
+            ? alert.solved_or_not
+            : 'info';
+
+          return (
+            <Alert key={index} status={alertStatus}>
+              <AlertIcon />
+              <Box>
+                <Text>{alert.alert_text}</Text>
+                <Text fontSize="sm" color="gray.500">
+                  {new Date(alert.timestamp).toLocaleString()}
+                </Text>
+              </Box>
+            </Alert>
+          );
+        })}
+
       </VStack>
       <Box mt={4}>
+        <Select placeholder="Select status" value={alertStatus} onChange={handleStatusChange}>
+          <option value="error">Error</option>
+          <option value="success">Success</option>
+          <option value="warning">Warning</option>
+          <option value="info">Info</option>
+        </Select>
         <Input
           placeholder="Type your alert..."
           value={newAlertText}
