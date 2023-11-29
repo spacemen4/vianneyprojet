@@ -18,14 +18,15 @@ function VianneyAlertChat() {
       const { data, error } = await supabase
         .from('vianney_alert')
         .select('*')
-        .order('timestamp', { ascending: false });
-
+        .order('timestamp', { ascending: true }); // Changed to true for chronological order
+  
       if (error) console.log('Erreur lors de la récupération des alertes:', error);
       else setAlerts(data);
     };
-
+  
     fetchAlerts();
   }, []);
+  
 
   const handleStatusChange = (event) => {
     setAlertStatus(event.target.value);
@@ -45,18 +46,15 @@ function VianneyAlertChat() {
           { alert_text: newAlertText, user_id: fakeUUID, solved_or_not: alertStatus }
         ]);
   
-      if (error) {
-        console.log('Erreur lors de l insertion de l alerte:', error);
-      } else {
-        // Directly construct the new alert object and add it to the state
-        const newAlert = {
-          alert_text: newAlertText, 
-          user_id: fakeUUID, 
-          solved_or_not: alertStatus,
-          timestamp: new Date().toISOString() // Assuming the timestamp is generated on the client-side
-        };
-        setAlerts([newAlert, ...alerts]);
-      }
+        if (!error) {
+          const newAlert = {
+            alert_text: newAlertText, 
+            user_id: fakeUUID, 
+            solved_or_not: alertStatus,
+            timestamp: new Date().toISOString()
+          };
+          setAlerts([...alerts, newAlert]);
+        }
   
       setNewAlertText('');
     }
