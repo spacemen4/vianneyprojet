@@ -16,6 +16,7 @@ import tableDataCheck from "views/admin/dataTables/variables/tableDataCheck.json
 import tableDataColumns from "views/admin/dataTables/variables/tableDataColumns.json";
 import tableDataComplex from "views/admin/dataTables/variables/tableDataComplex.json";
 import React from "react";
+import VianneyAlertChat from "./components/VianneyAlertChat";
 
 export default function Settings() {
   // Chakra Color Mode
@@ -30,6 +31,7 @@ export default function Settings() {
           tableData={tableDataDevelopment}
         />
         <MyCalendar/>
+        <VianneyAlertChat/>
         <CheckTable columnsData={columnsDataCheck} tableData={tableDataCheck} />
         <ColumnsTable
           columnsData={columnsDataColumns}
