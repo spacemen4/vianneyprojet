@@ -38,22 +38,30 @@ function VianneyAlertChat() {
   const handleSubmit = async () => {
     if (newAlertText.trim() !== '') {
       const fakeUUID = '123e4567-e89b-12d3-a456-426614174000';
-
-      const { data, error } = await supabase
+  
+      const { error } = await supabase
         .from('vianney_alert')
         .insert([
           { alert_text: newAlertText, user_id: fakeUUID, solved_or_not: alertStatus }
         ]);
-
+  
       if (error) {
         console.log('Erreur lors de l insertion de l alerte:', error);
-      } else if (data) {
-        setAlerts([...alerts, ...data]);
+      } else {
+        // Directly construct the new alert object and add it to the state
+        const newAlert = {
+          alert_text: newAlertText, 
+          user_id: fakeUUID, 
+          solved_or_not: alertStatus,
+          timestamp: new Date().toISOString() // Assuming the timestamp is generated on the client-side
+        };
+        setAlerts([newAlert, ...alerts]);
       }
-
+  
       setNewAlertText('');
     }
   };
+  
 
   return (
     <Box p={4}>
