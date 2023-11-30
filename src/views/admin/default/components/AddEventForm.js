@@ -24,7 +24,7 @@ export default function AddEventForm() {
   
     const eventId = uuidv4(); // Generate a new UUID
   
-    const {  error } = await supabase.from('vianney_event').insert([
+    const { error } = await supabase.from('vianney_event').insert([
       {
         id: eventId, // Use the generated UUID here
         event_name: eventName,
@@ -34,7 +34,7 @@ export default function AddEventForm() {
 
     if (error) {
       toast({
-        title: 'Error adding event',
+        title: 'Erreur lors de l\'ajout de l\'événement',
         description: error.message,
         status: 'error',
         duration: 9000,
@@ -42,7 +42,7 @@ export default function AddEventForm() {
       });
     } else {
       toast({
-        title: 'Event added successfully',
+        title: 'Événement ajouté avec succès',
         status: 'success',
         duration: 3000,
         isClosable: true,
@@ -57,7 +57,7 @@ export default function AddEventForm() {
     <Box p={5}>
       <form onSubmit={handleSubmit}>
         <FormControl id='event-name' isRequired>
-          <FormLabel>Event Name</FormLabel>
+          <FormLabel>Nom de l'événement</FormLabel>
           <Input
             type='text'
             value={eventName}
@@ -65,7 +65,7 @@ export default function AddEventForm() {
           />
         </FormControl>
         <FormControl id='event-date' mt={4} isRequired>
-          <FormLabel>Event Date</FormLabel>
+          <FormLabel>Date de l'événement</FormLabel>
           <Input
             type='datetime-local'
             value={eventDate}
@@ -77,7 +77,7 @@ export default function AddEventForm() {
           colorScheme='blue'
           type='submit'
           isDisabled={!eventName || !eventDate}>
-          Add Event
+          Ajouter l'événement
         </Button>
       </form>
     </Box>
