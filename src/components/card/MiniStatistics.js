@@ -3,7 +3,6 @@
 import {
   Flex,
   Stat,
-  StatLabel,
   StatNumber,
   useColorModeValue,
   Text,
@@ -14,9 +13,8 @@ import Card from "components/card/Card.js";
 import React from "react";
 
 export default function Default(props) {
-  const { startContent, endContent, name, growth, value } = props;
+  const { startContent, endContent, growth, value } = props;
   const textColor = useColorModeValue("secondaryGray.900", "white");
-  const textColorSecondary = "secondaryGray.600";
 
   return (
     <Card py='15px'>
@@ -28,18 +26,11 @@ export default function Default(props) {
         {startContent}
 
         <Stat my='auto' ms={startContent ? "18px" : "0px"}>
-          <StatLabel
-            lineHeight='100%'
-            color={textColorSecondary}
-            fontSize={{
-              base: "sm",
-            }}>
-            {name}
-          </StatLabel>
+          
           <StatNumber
             color={textColor}
             fontSize={{
-              base: "2xl",
+              base: "xl",
             }}>
             {value}
           </StatNumber>
