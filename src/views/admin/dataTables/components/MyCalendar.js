@@ -3,7 +3,9 @@ import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline'; // Import the resource timeline plugin
-import { Box } from '@chakra-ui/react';
+import { Box, Text, Flex, useColorModeValue } from '@chakra-ui/react';
+import Card from "components/card/Card";
+import Menu from "components/menu/MainMenu";
 
 const MyCalendar = () => {
   const events = [
@@ -19,25 +21,42 @@ const MyCalendar = () => {
     { id: 'teamC', title: 'Team C' },
     // More resources (teams)
   ];
+  const textColor = useColorModeValue("secondaryGray.900", "white");
 
   return (
-    <Box p={4} borderWidth="1px" borderRadius="lg">
-      <FullCalendar
-        plugins={[dayGridPlugin, timeGridPlugin, resourceTimelinePlugin]}
-        initialView="resourceTimelineDay"
-        headerToolbar={{
-          left: 'prev,next today',
-          center: 'title',
-          right: 'dayGridMonth,timeGridWeek,resourceTimelineDay'
-        }}
-        events={events}
-        resources={resources}
-        eventClick={(info) => {
-          // Event click handling
-          alert(`Event: ${info.event.title}`);
-        }}
-      />
-    </Box>
+    <Card
+      direction='column'
+      w='100%'
+      px='0px'
+      overflowX={{ sm: "scroll", lg: "hidden" }}>
+      <Flex px='25px' justify='space-between' mb='20px' align='center'>
+        <Text
+          color={textColor}
+          fontSize='22px'
+          fontWeight='700'
+          lineHeight='100%'>
+          Check Table
+        </Text>
+        <Menu />
+      </Flex>
+      <Box p={4} borderWidth="1px" borderRadius="lg">
+        <FullCalendar
+          plugins={[dayGridPlugin, timeGridPlugin, resourceTimelinePlugin]}
+          initialView="resourceTimelineDay"
+          headerToolbar={{
+            left: 'prev,next today',
+            center: 'title',
+            right: 'dayGridMonth,timeGridWeek,resourceTimelineDay'
+          }}
+          events={events}
+          resources={resources}
+          eventClick={(info) => {
+            // Event click handling
+            alert(`Event: ${info.event.title}`);
+          }}
+        />
+      </Box >
+    </Card>
   );
 };
 

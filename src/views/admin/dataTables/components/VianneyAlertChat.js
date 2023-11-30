@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Input, Button, VStack, Alert, AlertIcon, Text, Select } from '@chakra-ui/react';
+import { Box, Input, Button, VStack, Alert, AlertIcon, Text, Select, Flex, useColorModeValue } from '@chakra-ui/react';
 import { createClient } from '@supabase/supabase-js'
+import Card from "components/card/Card";
+import Menu from "components/menu/MainMenu";
 
 // Initialize Supabase client
 const supabaseUrl = 'https://hvjzemvfstwwhhahecwu.supabase.co';
@@ -59,51 +61,69 @@ function VianneyAlertChat() {
       setNewAlertText('');
     }
   };
+  const textColor = useColorModeValue("secondaryGray.900", "white");
 
 
   return (
-    <Box p={4}>
-      {/* Card with white background and large border radius */}
-      <Box bg="white" borderRadius="lg" p={4} boxShadow="md">
-        <VStack spacing={4}>
-          {alerts.map((alert, index) => {
-            const alertStatus = ['info', 'warning', 'success', 'error'].includes(alert.solved_or_not)
-              ? alert.solved_or_not
-              : 'info';
 
-            return (
-              <Alert key={index} status={alertStatus}>
-                <AlertIcon />
-                <Box>
-                  <Text>{alert.alert_text}</Text>
-                  <Text fontSize="sm" color="gray.500">
-                    {new Date(alert.timestamp).toLocaleString()}
-                  </Text>
-                </Box>
-              </Alert>
-            );
-          })}
+    <Card
+      direction='column'
+      w='100%'
+      px='0px'
+      overflowX={{ sm: "scroll", lg: "hidden" }}>
+      <Box p={4}>
+          <Flex px='25px' justify='space-between' mb='20px' align='center'>
+            <Text
+              color={textColor}
+              fontSize='22px'
+              fontWeight='700'
+              lineHeight='100%'>
+              Table des alertes
+            </Text>
+            <Menu />
+          </Flex>
 
-        </VStack>
-        <Box mt={4}>
-          <Select placeholder="Sélectionnez le statut" value={alertStatus} onChange={handleStatusChange}>
-            <option value="error">Urgence</option>
-            <option value="success">Problème résolu</option>
-            <option value="warning">Avertissement</option>
-            <option value="info">Information</option>
-          </Select>
-          <Input
-            placeholder="Tapez votre alerte..."
-            value={newAlertText}
-            onChange={handleInputChange}
-            mt={2}
-          />
-          <Button mt={2} colorScheme="blue" onClick={handleSubmit}>
-            Ajouter une alerte
-          </Button>
+
+          <VStack spacing={4}>
+            {alerts.map((alert, index) => {
+              const alertStatus = ['info', 'warning', 'success', 'error'].includes(alert.solved_or_not)
+                ? alert.solved_or_not
+                : 'info';
+
+              return (
+                <Alert key={index} status={alertStatus}>
+                  <AlertIcon />
+                  <Box>
+                    <Text>{alert.alert_text}</Text>
+                    <Text fontSize="sm" color="gray.500">
+                      {new Date(alert.timestamp).toLocaleString()}
+                    </Text>
+                  </Box>
+                </Alert>
+              );
+            })}
+
+          </VStack>
+          <Box mt={4}>
+            <Select placeholder="Sélectionnez le degrès d'urgence" value={alertStatus} onChange={handleStatusChange}>
+              <option value="error">Urgence</option>
+              <option value="success">Problème résolu</option>
+              <option value="warning">Avertissement</option>
+              <option value="info">Information</option>
+            </Select>
+            <Input
+              placeholder="Tapez votre alerte..."
+              value={newAlertText}
+              onChange={handleInputChange}
+              mt={2}
+            />
+            <Button mt={2} colorScheme="blue" onClick={handleSubmit}>
+              Ajouter une alerte
+            </Button>
+          </Box>
+
         </Box>
-      </Box>
-    </Box>
+    </Card>
   );
 }
 
