@@ -1,19 +1,12 @@
 // Chakra imports
 import {
   Box,
-  Icon,
   SimpleGrid,
-  useColorModeValue,
 } from "@chakra-ui/react";
 // Custom components
 import MiniCalendar from "components/calendar/MiniCalendar";
 import MiniStatistics from "components/card/MiniStatistics";
-import IconBox from "components/icons/IconBox";
-import React from "react";
-import {
-  MdAttachMoney,
-  MdBarChart,
-} from "react-icons/md";
+import React, { useState, useEffect } from 'react';
 import CheckTable from "views/admin/default/components/CheckTable";
 import ComplexTable from "views/admin/default/components/ComplexTable";
 import DailyTraffic from "views/admin/default/components/DailyTraffic";
@@ -27,44 +20,41 @@ import {
 } from "views/admin/default/variables/columnsData";
 import tableDataCheck from "views/admin/default/variables/tableDataCheck.json";
 import tableDataComplex from "views/admin/default/variables/tableDataComplex.json";
+import { createClient } from '@supabase/supabase-js'
+import AddEventForm from "./components/AddEventForm";
+
+const supabaseUrl = 'https://hvjzemvfstwwhhahecwu.supabase.co';
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2anplbXZmc3R3d2hoYWhlY3d1Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY5MTQ4Mjc3MCwiZXhwIjoyMDA3MDU4NzcwfQ.6jThCX2eaUjl2qt4WE3ykPbrh6skE8drYcmk-UCNDSw';
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 export default function UserReports() {
-  // Chakra Color Mode
-  const brandColor = useColorModeValue("brand.500", "white");
-  const boxBg = useColorModeValue("secondaryGray.300", "whiteAlpha.100");
+
+  const [events, setEvents] = useState([]);
+
+  useEffect(() => {
+    async function fetchEvents() {
+      let { data: vianney_event, error } = await supabase
+        .from('vianney_event')
+        .select('*');
+
+      if (error) console.log('error', error);
+      else setEvents(vianney_event);
+    }
+
+    fetchEvents();
+  }, []);
+
   return (
     <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
       <SimpleGrid
         columns={{ base: 1, md: 2, lg: 3, "2xl": 6 }}
         gap='20px'
         mb='20px'>
-        <MiniStatistics
-          startContent={
-            <IconBox
-              w='56px'
-              h='56px'
-              bg={boxBg}
-              icon={
-                <Icon w='32px' h='32px' as={MdBarChart} color={brandColor} />
-              }
-            />
-          }
-          event_name='Evenement 1'
-        />
-        <MiniStatistics
-          startContent={
-            <IconBox
-              w='56px'
-              h='56px'
-              bg={boxBg}
-              icon={
-                <Icon w='32px' h='32px' as={MdAttachMoney} color={brandColor} />
-              }
-            />
-          }          
-          event_name='Evenement 2'
-        />
+        {events.map((event, index) => (
+          <MiniStatistics key={index} event_name={event.event_name} date={event.date} />
+        ))}
       </SimpleGrid>
+      <AddEventForm />
 
       <SimpleGrid columns={{ base: 1, md: 2, xl: 2 }} gap='20px' mb='20px'>
         <TotalSpent />
