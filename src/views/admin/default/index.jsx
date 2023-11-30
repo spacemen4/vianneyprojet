@@ -1,7 +1,9 @@
 // Chakra imports
 import {
   Box,
+  Button,
   SimpleGrid,
+  Icon,
 } from "@chakra-ui/react";
 // Custom components
 import MiniCalendar from "components/calendar/MiniCalendar";
@@ -22,12 +24,14 @@ import tableDataCheck from "views/admin/default/variables/tableDataCheck.json";
 import tableDataComplex from "views/admin/default/variables/tableDataComplex.json";
 import { createClient } from '@supabase/supabase-js'
 import AddEventForm from "./components/AddEventForm";
+import { FcPlus } from "react-icons/fc";
 
 const supabaseUrl = 'https://hvjzemvfstwwhhahecwu.supabase.co';
 const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2anplbXZmc3R3d2hoYWhlY3d1Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY5MTQ4Mjc3MCwiZXhwIjoyMDA3MDU4NzcwfQ.6jThCX2eaUjl2qt4WE3ykPbrh6skE8drYcmk-UCNDSw';
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 export default function UserReports() {
+  const [showAddEventForm, setShowAddEventForm] = useState(false);
 
   const [events, setEvents] = useState([]);
 
@@ -44,6 +48,7 @@ export default function UserReports() {
     fetchEvents();
   }, []);
 
+  const toggleAddEventForm = () => setShowAddEventForm(!showAddEventForm);
   return (
     <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
       <SimpleGrid
@@ -53,9 +58,20 @@ export default function UserReports() {
         {events.map((event, index) => (
           <MiniStatistics key={index} event_name={event.event_name} date={event.date} />
         ))}
+        <Button
+          mt="30px"
+          onClick={toggleAddEventForm}
+          leftIcon={<Icon as={FcPlus} />}
+          colorScheme='blue'
+          variant='solid'
+          size='md'
+          boxShadow='sm'
+          _hover={{ boxShadow: 'md' }}
+          _active={{ boxShadow: 'lg' }}>
+          Ajouter un évênement
+        </Button>
       </SimpleGrid>
-      <AddEventForm />
-
+      {showAddEventForm && <AddEventForm />}
       <SimpleGrid columns={{ base: 1, md: 2, xl: 2 }} gap='20px' mb='20px'>
         <TotalSpent />
         <WeeklyRevenue />
