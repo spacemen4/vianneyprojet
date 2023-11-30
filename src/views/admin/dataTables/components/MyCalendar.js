@@ -2,10 +2,11 @@ import React from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
-import resourceTimelinePlugin from '@fullcalendar/resource-timeline'; // Import the resource timeline plugin
+import resourceTimelinePlugin from '@fullcalendar/resource-timeline';
 import { Box, Text, Flex, useColorModeValue } from '@chakra-ui/react';
 import Card from "components/card/Card";
 import Menu from "components/menu/MainMenu";
+import frLocale from '@fullcalendar/core/locales/fr'; // Import the French locale
 
 const MyCalendar = () => {
   const events = [
@@ -16,9 +17,9 @@ const MyCalendar = () => {
   ];
 
   const resources = [
-    { id: 'teamA', title: 'Team A' },
-    { id: 'teamB', title: 'Team B' },
-    { id: 'teamC', title: 'Team C' },
+    { id: 'teamA', title: 'Equipe A' },
+    { id: 'teamB', title: 'Equipe B' },
+    { id: 'teamC', title: 'Equipe C' },
     // More resources (teams)
   ];
   const textColor = useColorModeValue("secondaryGray.900", "white");
@@ -50,9 +51,10 @@ const MyCalendar = () => {
           }}
           events={events}
           resources={resources}
+          locale={frLocale} // Set the locale to French
           eventClick={(info) => {
             // Event click handling
-            alert(`Event: ${info.event.title}`);
+            alert(`Événement : ${info.event.title}`); // Translated alert message
           }}
         />
       </Box >
