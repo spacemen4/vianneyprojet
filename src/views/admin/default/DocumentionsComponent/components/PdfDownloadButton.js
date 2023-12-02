@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Box, Flex, Icon,  SimpleGrid, Stat, StatNumber, StatLabel, useColorModeValue } from "@chakra-ui/react";
+import { Box, Button, Flex, Icon,  SimpleGrid, Stat, StatNumber, StatLabel, useColorModeValue } from "@chakra-ui/react";
 import {FcAdvertising } from "react-icons/fc";
 import { createClient } from "@supabase/supabase-js";
 import Card from "components/card/Card.js"; // Import Card
 import IconBox from "components/icons/IconBox"; // Import IconBox
+import PdfUploader from "views/admin/documentation/components/PdfUploader";
+import { FcPlus } from "react-icons/fc";
 
 const supabaseUrl = "https://nhrsgicthwqsctwggxqz.supabase.co";
 const supabaseKey =
@@ -13,6 +15,7 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 
 const PdfDownloadButton = ({ handlePdfClick }) => {
   const [documents, setDocuments] = useState([]);
+  const [showPdfUploader, setShowPdfUploader] = useState(false);
   const brandColor = useColorModeValue("brand.500", "white");
   const boxBg = useColorModeValue("secondaryGray.300", "whiteAlpha.100");
   const textColor = useColorModeValue("secondaryGray.900", "white");
@@ -35,6 +38,7 @@ const PdfDownloadButton = ({ handlePdfClick }) => {
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
+  const togglePdfUploader = () => setShowPdfUploader(!showPdfUploader);
 
   return (
     <Box>
@@ -65,8 +69,21 @@ const PdfDownloadButton = ({ handlePdfClick }) => {
               </Stat>
             </Flex>
           </Card>
-        ))}
+        ))}      
+        <Button
+          mt="30px"
+          onClick={togglePdfUploader}
+          leftIcon={<Icon as={FcPlus} />}
+          colorScheme='blue'
+          variant='solid'
+          size='md'
+          boxShadow='sm'
+          _hover={{ boxShadow: 'md' }}
+          _active={{ boxShadow: 'lg' }}>
+          Ajouter un évênement
+        </Button>  
       </SimpleGrid>
+      {showPdfUploader && <PdfUploader />}
     </Box>
   );
 };
