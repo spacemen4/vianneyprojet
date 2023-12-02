@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Box, Flex, Icon, Heading, Stat, StatNumber, StatLabel, useColorModeValue } from "@chakra-ui/react";
-import { FcDownload, FcDocument, FcAdvertising } from "react-icons/fc";
+import { Box, Flex, Icon,  SimpleGrid, Stat, StatNumber, StatLabel, useColorModeValue } from "@chakra-ui/react";
+import {FcAdvertising } from "react-icons/fc";
 import { createClient } from "@supabase/supabase-js";
 import Card from "components/card/Card.js"; // Import Card
 import IconBox from "components/icons/IconBox"; // Import IconBox
@@ -38,14 +38,10 @@ const PdfDownloadButton = ({ handlePdfClick }) => {
 
   return (
     <Box>
-      <Box
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        border="1px solid #ccc"
-        borderRadius="md"
-        p="4"
-      >
+      <SimpleGrid
+        columns={{ base: 1, md: 2, lg: 3, "2xl": 6 }}
+        gap='20px'
+        mb='20px'>
         {documents.map((data) => (
           <Card key={data.id} py='15px' cursor="pointer" onClick={() => handlePdfClick(data)}>
             <Flex
@@ -70,7 +66,7 @@ const PdfDownloadButton = ({ handlePdfClick }) => {
             </Flex>
           </Card>
         ))}
-      </Box>
+      </SimpleGrid>
     </Box>
   );
 };
