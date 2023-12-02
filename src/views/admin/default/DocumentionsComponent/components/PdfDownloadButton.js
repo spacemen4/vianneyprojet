@@ -5,7 +5,7 @@ import { createClient } from "@supabase/supabase-js";
 import Card from "components/card/Card.js"; // Import Card
 import IconBox from "components/icons/IconBox"; // Import IconBox
 import PdfUploader from "views/admin/documentation/components/PdfUploader";
-import { FcPlus } from "react-icons/fc";
+import { FcPlus, FcLeft } from "react-icons/fc";
 
 const supabaseUrl = "https://nhrsgicthwqsctwggxqz.supabase.co";
 const supabaseKey =
@@ -73,15 +73,15 @@ const PdfDownloadButton = ({ handlePdfClick }) => {
         <Button
           mt="30px"
           onClick={togglePdfUploader}
-          leftIcon={<Icon as={FcPlus} />}
+          leftIcon={<Icon as={showPdfUploader ? FcLeft : FcPlus} />}
           colorScheme='blue'
           variant='solid'
           size='md'
           boxShadow='sm'
           _hover={{ boxShadow: 'md' }}
           _active={{ boxShadow: 'lg' }}>
-          Ajouter un évênement
-        </Button>  
+          {showPdfUploader ? "Masquer" : "Ajouter un évènement"}
+        </Button> 
       </SimpleGrid>
       {showPdfUploader && <PdfUploader />}
     </Box>

@@ -24,7 +24,7 @@ import tableDataCheck from "views/admin/default/variables/tableDataCheck.json";
 import tableDataComplex from "views/admin/default/variables/tableDataComplex.json";
 import { createClient } from '@supabase/supabase-js'
 import AddEventForm from "./components/AddEventForm";
-import { FcPlus } from "react-icons/fc";
+import { FcPlus, FcLeft } from "react-icons/fc";
 import DocumentationsComponent from "./DocumentionsComponent/DocumentationsComponent";
 
 const supabaseUrl = 'https://hvjzemvfstwwhhahecwu.supabase.co';
@@ -62,14 +62,14 @@ export default function UserReports() {
         <Button
           mt="30px"
           onClick={toggleAddEventForm}
-          leftIcon={<Icon as={FcPlus} />}
+          leftIcon={<Icon as={showAddEventForm ? FcLeft : FcPlus} />}
           colorScheme='blue'
           variant='solid'
           size='md'
           boxShadow='sm'
           _hover={{ boxShadow: 'md' }}
           _active={{ boxShadow: 'lg' }}>
-          Ajouter un évênement
+          {showAddEventForm ? "Masquer" : "Ajouter un évènement"}
         </Button>
       </SimpleGrid>
       {showAddEventForm && <AddEventForm />}
