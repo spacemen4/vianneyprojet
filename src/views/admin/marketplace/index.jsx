@@ -24,6 +24,7 @@ import { tableColumnsTopCreators } from "views/admin/marketplace/variables/table
 import CameraForm from "./components/CameraForm";
 import { createClient } from '@supabase/supabase-js';
 import UserForm from './components/UserForm';
+import VianneyAlertChat from '../dataTables/components/VianneyAlertChat';
 
 const supabaseUrl = 'https://hvjzemvfstwwhhahecwu.supabase.co';
 const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2anplbXZmc3R3d2hoYWhlY3d1Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY5MTQ4Mjc3MCwiZXhwIjoyMDA3MDU4NzcwfQ.6jThCX2eaUjl2qt4WE3ykPbrh6skE8drYcmk-UCNDSw';
@@ -126,31 +127,7 @@ export default function Marketplace() {
             </Card>
           </Box>
           <Card p='0px'>
-            <Flex
-              align={{ sm: "flex-start", lg: "center" }}
-              justify='space-between'
-              w='100%'
-              px='22px'
-              py='18px'>
-              <Text color={textColor} fontSize='xl' fontWeight='600'>
-                Alertes remontées en régie
-              </Text>
-              <Button variant='action'>Voir tous les alertes</Button>
-            </Flex>
-            <HistoryItem
-              nom='Colorful Heaven'
-              author='By Mark Benjamin'
-              date='30s ago'
-              image={Nft5}
-              price='0.91 ETH'
-            />
-            <HistoryItem
-              nom='Abstract Colors'
-              author='By Esthera Jackson'
-              date='58s ago'
-              image={Nft1}
-              price='0.91 ETH'
-            />
+            <VianneyAlertChat/>
           </Card>
         </Flex>
       </Grid>
