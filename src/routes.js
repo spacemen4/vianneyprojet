@@ -1,13 +1,13 @@
 import React from "react";
 import { Icon } from "@chakra-ui/react";
 import {
-
   FcBusinessman,
   FcLock,
   FcMindMap,
   FcFinePrint,
   FcSerialTasks,
-  FcSurvey
+  FcSurvey,
+  // Import a new icon if required
 } from "react-icons/fc";
 
 // Admin Imports
@@ -16,6 +16,7 @@ import NFTMarketplace from "views/admin/marketplace";
 import Profile from "views/admin/profile";
 import DataTables from "views/admin/dataTables";
 import RTL from "views/admin/rtl";
+import Documentation from "views/admin/documentation"; 
 
 // Auth Imports
 import SignInCentered from "views/auth/signIn";
@@ -63,6 +64,13 @@ const routes = [
     path: "/overview",
     icon: <Icon as={FcFinePrint} width='20px' height='20px' color='inherit' />,
     component: RTL,
+  },
+  {
+    name: "Ajouter Documentation",
+    layout: "/admin",
+    path: "/documentation",
+    icon: <Icon as={FcLock} width='20px' height='20px' color='inherit' />, // Replace with appropriate icon
+    component: Documentation, // Replace with your Documentation component
   },
 ];
 
