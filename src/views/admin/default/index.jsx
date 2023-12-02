@@ -11,19 +11,6 @@ import {
 import MiniCalendar from "components/calendar/MiniCalendar";
 import MiniStatistics from "components/card/MiniStatistics";
 import React, { useState, useEffect } from 'react';
-import CheckTable from "views/admin/default/components/CheckTable";
-import ComplexTable from "views/admin/default/components/ComplexTable";
-import DailyTraffic from "views/admin/default/components/DailyTraffic";
-import PieCard from "views/admin/default/components/PieCard";
-import Tasks from "views/admin/default/components/Tasks";
-import TotalSpent from "views/admin/default/components/TotalSpent";
-import WeeklyRevenue from "views/admin/default/components/WeeklyRevenue";
-import {
-  columnsDataCheck,
-  columnsDataComplex,
-} from "views/admin/default/variables/columnsData";
-import tableDataCheck from "views/admin/default/variables/tableDataCheck.json";
-import tableDataComplex from "views/admin/default/variables/tableDataComplex.json";
 import { createClient } from '@supabase/supabase-js'
 import AddEventForm from "./components/AddEventForm";
 import { FcPlus, FcLeft } from "react-icons/fc";
@@ -55,13 +42,13 @@ export default function UserReports() {
   return (
     <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
       <Heading me='auto'
-                color={textColor}
-                fontSize='2xl'
-                fontWeight='700'
-                lineHeight='100%'
-                mb="20px">
-                Evenements
-            </Heading>
+        color={textColor}
+        fontSize='2xl'
+        fontWeight='700'
+        lineHeight='100%'
+        mb="20px">
+        Evènements
+      </Heading>
       <SimpleGrid
         columns={{ base: 1, md: 2, lg: 3, "2xl": 6 }}
         gap='20px'
@@ -83,28 +70,16 @@ export default function UserReports() {
         </Button>
       </SimpleGrid>
       {showAddEventForm && <AddEventForm />}
-      <DocumentationsComponent/>
-      <SimpleGrid columns={{ base: 1, md: 2, xl: 2 }} gap='20px' mb='20px'>
-        <TotalSpent />
-        <WeeklyRevenue />
-      </SimpleGrid>
-      <SimpleGrid columns={{ base: 1, md: 1, xl: 2 }} gap='20px' mb='20px'>
-        <CheckTable columnsData={columnsDataCheck} tableData={tableDataCheck} />
-        <SimpleGrid columns={{ base: 1, md: 2, xl: 2 }} gap='20px'>
-          <DailyTraffic />
-          <PieCard />
-        </SimpleGrid>
-      </SimpleGrid>
-      <SimpleGrid columns={{ base: 1, md: 1, xl: 2 }} gap='20px' mb='20px'>
-        <ComplexTable
-          columnsData={columnsDataComplex}
-          tableData={tableDataComplex}
-        />
-        <SimpleGrid columns={{ base: 1, md: 2, xl: 2 }} gap='20px'>
-          <Tasks />
-          <MiniCalendar h='100%' minW='100%' selectRange={false} />
-        </SimpleGrid>
-      </SimpleGrid>
+      <DocumentationsComponent />
+      <Heading me='auto'
+        color={textColor}
+        fontSize='2xl'
+        fontWeight='700'
+        lineHeight='100%'
+        mb="20px">
+        Le calendrier des évènements
+      </Heading>
+      <MiniCalendar />
     </Box>
   );
 }
