@@ -4,6 +4,8 @@ import {
   Button,
   SimpleGrid,
   Icon,
+  Heading,
+  useColorModeValue,
 } from "@chakra-ui/react";
 // Custom components
 import MiniCalendar from "components/calendar/MiniCalendar";
@@ -33,7 +35,7 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 export default function UserReports() {
   const [showAddEventForm, setShowAddEventForm] = useState(false);
-
+  const textColor = useColorModeValue("secondaryGray.900", "white");
   const [events, setEvents] = useState([]);
 
   useEffect(() => {
@@ -52,6 +54,14 @@ export default function UserReports() {
   const toggleAddEventForm = () => setShowAddEventForm(!showAddEventForm);
   return (
     <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
+      <Heading me='auto'
+                color={textColor}
+                fontSize='2xl'
+                fontWeight='700'
+                lineHeight='100%'
+                mb="20px">
+                Evenements
+            </Heading>
       <SimpleGrid
         columns={{ base: 1, md: 2, lg: 3, "2xl": 6 }}
         gap='20px'

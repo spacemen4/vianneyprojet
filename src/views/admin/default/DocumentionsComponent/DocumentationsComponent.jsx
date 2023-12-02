@@ -12,7 +12,7 @@ const DocumentationsComponent = () => {
   };
 
   return (
-    <Box pt={{ base: "140px", md: "80px", xl: "80px" }}>
+    <Box >
       {!selectedPdf ? (
         <PdfDownloadButton handlePdfClick={handlePdfClick} />
       ) : (
