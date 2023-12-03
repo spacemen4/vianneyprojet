@@ -22,7 +22,7 @@ function TeamSchedule() {
         .select('*');
 
       if (error) {
-        console.error('Error fetching events:', error);
+        console.error('Erreur lors de la récupération des événements:', error);
       } else {
         const formattedEvents = data.map(action => ({
           title: `${action.action_name} - ${action.name_of_the_team}`,
@@ -58,7 +58,7 @@ function TeamSchedule() {
           endAccessor="end"
           eventPropGetter={eventStyleGetter}
           style={{ height: 500 }}
-        />
+                  />
       </Box>
     </ChakraProvider>
   );
