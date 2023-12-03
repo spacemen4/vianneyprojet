@@ -1,11 +1,9 @@
 // Chakra imports
 import { Box, SimpleGrid } from "@chakra-ui/react";
-import MyCalendar from "views/admin/dataTables/components/MyCalendar";
 import React from "react";
 import VianneyAlertChat from "./components/VianneyAlertChat";
 import CreateTeam from "./components/CreateTeam";
 import TeamSchedule from "./components/TeamSchedule";
-import MyScheduler from "./components/MyScheduler";
 import AddActionForm from "./components/AddActionForm";
 
 export default function Settings() {
@@ -16,14 +14,11 @@ export default function Settings() {
         mb='20px'
         columns={{ sm: 1, md: 2 }}
         spacing={{ base: "20px", xl: "20px" }}>
-        <MyCalendar />
+        <TeamSchedule />
         <VianneyAlertChat />
-        
       </SimpleGrid>
-      <CreateTeam/>
-      <AddActionForm/>
-      <TeamSchedule/>
-      <MyScheduler/>
+      <CreateTeam />
+      <AddActionForm />
     </Box>
   );
 }

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Box, ChakraProvider } from '@chakra-ui/react';
-import { Calendar, momentLocalizer } from 'react-big-calendar';
+import { Calendar, momentLocalizer, Views } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import moment from 'moment';
 import { createClient } from '@supabase/supabase-js';
@@ -52,6 +52,8 @@ function TeamSchedule() {
         <Calendar
           localizer={localizer}
           events={events}
+          defaultView={Views.DAY} // Set default view to day
+          views={['day', 'week', 'month', 'agenda']} // Include other views for switching
           startAccessor="start"
           endAccessor="end"
           eventPropGetter={eventStyleGetter}
