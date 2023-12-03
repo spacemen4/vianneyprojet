@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { Box, Button, FormControl, FormLabel, Input, Select, useToast } from '@chakra-ui/react';
+import { Box, Button, FormControl, FormLabel, Input, Select, Alert, AlertIcon, AlertTitle, AlertDescription, CloseButton } from '@chakra-ui/react';
 import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = 'https://hvjzemvfstwwhhahecwu.supabase.co';
@@ -16,7 +16,7 @@ const AddActionForm = () => {
     endingDateTime: '',
     comment: ''
   });
-  const toast = useToast();
+  const [alert, setAlert] = useState({ status: '', message: '', isVisible: false });
 
   useEffect(() => {
     const fetchTeams = async () => {
@@ -49,22 +49,17 @@ const AddActionForm = () => {
   
     if (error) {
       console.error('Erreur lors de l insertion des données: ', error);
-      toast({
-        title: "Erreur",
-        description: "Un problème est survenu lors de l'ajout de l'action.",
-        status: "error",
-        duration: 5000,
-        isClosable: true,
+      setAlert({
+        status: 'error',
+        message: "Un problème est survenu lors de l'ajout de l'action.",
+        isVisible: true
       });
     } else {
-      toast({
-        title: "Action ajoutée",
-        description: "L'action a été ajoutée avec succès.",
-        status: "success",
-        duration: 5000,
-        isClosable: true,
+      setAlert({
+        status: 'success',
+        message: "L'action a été ajoutée avec succès.",
+        isVisible: true
       });
-      // Reset the form or other actions upon successful submission
       setAction({
         teamId: '',
         actionName: '',
@@ -75,8 +70,22 @@ const AddActionForm = () => {
     }
   };
 
+  const closeAlert = () => {
+    setAlert({ ...alert, isVisible: false });
+  };
+
   return (
     <Box p={4}>
+      {alert.isVisible && (
+        <Alert status={alert.status} mb={4}>
+          <AlertIcon />
+          <Box flex="1">
+            <AlertTitle>{alert.status === 'error' ? 'Erreur!' : 'Succès!'}</AlertTitle>
+            <AlertDescription display="block">{alert.message}</AlertDescription>
+          </Box>
+          <CloseButton position="absolute" right="8px" top="8px" onClick={closeAlert} />
+        </Alert>
+      )}
       <form onSubmit={handleSubmit}>
         <FormControl isRequired>
           <FormLabel>Équipe</FormLabel>
