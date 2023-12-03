@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, ChakraProvider } from '@chakra-ui/react';
+import { Box, ChakraProvider, useToast, AlertDialog, AlertDialogBody, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, AlertDialogOverlay, Button } from '@chakra-ui/react';
 import { Calendar, momentLocalizer, Views } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import moment from 'moment';
@@ -17,6 +17,45 @@ const localizer = momentLocalizer(moment);
 
 function TeamSchedule() {
   const [events, setEvents] = useState([]);
+  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [isAlertOpen, setIsAlertOpen] = useState(false);
+  const onClose = () => setIsAlertOpen(false);
+  const cancelRef = React.useRef();
+  const toast = useToast();
+
+  // ... useEffect to fetch events
+
+  const handleEventSelect = (event) => {
+    setSelectedEvent(event);
+    setIsAlertOpen(true);
+  };
+
+  const deleteEvent = async () => {
+    const { error } = await supabase
+      .from('vianney_actions')
+      .delete()
+      .match({ id: selectedEvent.id });
+
+    if (error) {
+      toast({
+        title: "Error deleting event",
+        description: error.message,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    } else {
+      setEvents(events.filter(event => event.id !== selectedEvent.id));
+      toast({
+        title: "Event deleted",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+
+    onClose();
+  };
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -89,8 +128,35 @@ function TeamSchedule() {
           eventPropGetter={eventStyleGetter}
           messages={messages} // Use French messages
           style={{ height: 500 }}
+          onSelectEvent={handleEventSelect}
         />
       </Box>
+
+      {/* Alert Dialog for Confirmation */}
+      <AlertDialog
+        isOpen={isAlertOpen}
+        leastDestructiveRef={cancelRef}
+        onClose={onClose}
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              Delete Event
+            </AlertDialogHeader>
+            <AlertDialogBody>
+              Are you sure you want to delete this event? This action cannot be undone.
+            </AlertDialogBody>
+            <AlertDialogFooter>
+              <Button ref={cancelRef} onClick={onClose}>
+                Cancel
+              </Button>
+              <Button colorScheme="red" onClick={deleteEvent} ml={3}>
+                Delete
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
     </ChakraProvider>
   );
 }
