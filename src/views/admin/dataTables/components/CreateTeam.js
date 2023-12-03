@@ -32,6 +32,7 @@ function CreateTeam() {
     e.preventDefault();
   
     const teamColor = generateRandomColor(); // Generate a random color for the team
+    const timestamp = new Date().toISOString(); // Generate a timestamp
   
     try {
       const { error } = await supabase
@@ -39,13 +40,14 @@ function CreateTeam() {
         .upsert([
           {
             id: uuidv4(),
+            creation_timestamp: timestamp, // Include the timestamp here
             name_of_the_team: teamName,
             persons_working_in_team: teamMembers.split(',').map((member) => member.trim()),
             characteristics_of_the_team: teamCharacteristics.split(',').map((char) => char.trim()),
-            color: teamColor, // Add the generated color here
+            color: teamColor,
           },
         ]);
-
+  
       if (error) {
         setAlertStatus('error');
         setAlertMessage('Erreur lors de la création de l\'équipe. Veuillez réessayer.');
@@ -63,6 +65,7 @@ function CreateTeam() {
       setAlertMessage('Erreur de connexion à Supabase. Veuillez réessayer.');
     }
   };
+  
 
   return (
     <Box>
