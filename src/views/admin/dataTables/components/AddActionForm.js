@@ -32,24 +32,25 @@ const AddActionForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
+    const newAction = {
+      id: uuidv4(), // Generate a new UUID
+      team_to_which_its_attached: action.teamId,
+      action_name: action.actionName,
+      starting_date: action.startingDate,
+      ending_date: action.endingDate,
+      action_comment: action.comment
+    };
+  
     const { data, error } = await supabase
       .from('vianney_actions')
-      .insert([
-        {
-          team_to_which_its_attached: action.teamId,
-          action_name: action.actionName,
-          starting_date: action.startingDate,
-          ending_date: action.endingDate,
-          action_comment: action.comment
-        }
-      ]);
-
+      .insert([newAction]);
+  
     if (error) {
       console.error('Error inserting data: ', error);
     } else {
       console.log('Action added: ', data);
-      // Optionally reset the form or perform other actions upon successful submission
+      // Reset the form or other actions upon successful submission
     }
   };
 
