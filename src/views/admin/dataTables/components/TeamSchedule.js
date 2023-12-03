@@ -29,8 +29,20 @@ function TeamSchedule() {
     setSelectedEvent(event);
     setIsAlertOpen(true);
   };
-
+  
+  // Later in your delete function
   const deleteEvent = async () => {
+    if (!selectedEvent || !selectedEvent.id) {
+      toast({
+        title: "Error",
+        description: "No event selected or event ID is missing.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+      return;
+    }
+  
     const { error } = await supabase
       .from('vianney_actions')
       .delete()
@@ -67,6 +79,7 @@ function TeamSchedule() {
         console.error('Erreur lors de la récupération des événements:', error);
       } else {
         const formattedEvents = data.map(action => ({
+          id: action.id, // Ensure this line is included
           title: `${action.action_name} - ${action.name_of_the_team}`,
           start: new Date(action.starting_date),
           end: new Date(action.ending_date),
