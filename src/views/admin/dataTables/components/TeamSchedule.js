@@ -80,10 +80,10 @@ function TeamSchedule() {
         .select('*');
   
       if (error) {
-        console.error('Erreur lors de la récupération des événements:', error);
+        console.error('Error fetching events:', error);
       } else {
         const formattedEvents = data.map(action => ({
-          id: action.id, 
+          id: action.action_id, // Use 'action_id' instead of 'id'
           title: `${action.action_name} - ${action.name_of_the_team}`,
           start: new Date(action.starting_date),
           end: new Date(action.ending_date),
@@ -96,6 +96,7 @@ function TeamSchedule() {
   
     fetchEvents();
   }, []);
+  
   
 
   const eventStyleGetter = (event) => {
