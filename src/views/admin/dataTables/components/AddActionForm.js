@@ -12,8 +12,8 @@ const AddActionForm = () => {
   const [action, setAction] = useState({
     teamId: '',
     actionName: '',
-    startingDate: '',
-    endingDate: '',
+    startingDateTime: '',
+    endingDateTime: '',
     comment: ''
   });
 
@@ -34,7 +34,7 @@ const AddActionForm = () => {
     e.preventDefault();
   
     const newAction = {
-      id: uuidv4(), // Generate a new UUID
+      id: uuidv4(),
       team_to_which_its_attached: action.teamId,
       action_name: action.actionName,
       starting_date: action.startingDate,
@@ -71,11 +71,11 @@ const AddActionForm = () => {
         </FormControl>
         <FormControl mt={4}>
           <FormLabel>Starting Date</FormLabel>
-          <Input type="date" onChange={(e) => setAction({ ...action, startingDate: e.target.value })} />
+          <Input type="datetime-local" onChange={(e) => setAction({ ...action, startingDate: e.target.value })} />
         </FormControl>
         <FormControl mt={4}>
           <FormLabel>Ending Date</FormLabel>
-          <Input type="date" onChange={(e) => setAction({ ...action, endingDate: e.target.value })} />
+          <Input type="datetime-local" onChange={(e) => setAction({ ...action, endingDate: e.target.value })} />
         </FormControl>
         <FormControl mt={4}>
           <FormLabel>Comment</FormLabel>
