@@ -3,6 +3,7 @@ import { Box, ChakraProvider } from '@chakra-ui/react';
 import { Calendar, momentLocalizer, Views } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import moment from 'moment';
+import 'moment/locale/fr'; // Import French locale
 import { createClient } from '@supabase/supabase-js';
 
 // Initialize Supabase client
@@ -64,12 +65,23 @@ function TeamSchedule() {
     // ... Add other translations as needed
   };
 
+  const formats = {
+    dayFormat: 'DD/MM', // Format for day view
+    weekdayFormat: 'dddd', // Format for week view
+    monthHeaderFormat: 'MMMM YYYY', // Format for month header
+    dayHeaderFormat: 'dddd, MMMM DD', // Format for day header
+    agendaDateFormat: 'dddd, MMMM DD', // Format for agenda view date
+    agendaTimeFormat: 'HH:mm', // Format for agenda view time
+    // ... (add more formats as needed)
+  };
+
   return (
     <ChakraProvider>
       <Box p={4}>
         <Calendar
           localizer={localizer}
           events={events}
+          formats={formats} // Add custom formats
           defaultView={Views.DAY} // Set default view to day
           views={['day', 'week', 'month', 'agenda']} // Include other views for switching
           startAccessor="start"
