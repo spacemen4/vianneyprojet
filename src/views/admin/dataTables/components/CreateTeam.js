@@ -41,6 +41,7 @@ function CreateTeam() {
       if (error) {
         setAlertStatus('error');
         setAlertMessage('Erreur lors de la création de l\'équipe. Veuillez réessayer.');
+        console.log(alertMessage); 
       } else {
         setAlertStatus('success');
         setAlertMessage('Équipe créée avec succès.');
