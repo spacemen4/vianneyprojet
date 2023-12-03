@@ -5,6 +5,7 @@ import React from "react";
 import VianneyAlertChat from "./components/VianneyAlertChat";
 import CreateTeam from "./components/CreateTeam";
 import TeamSchedule from "./components/TeamSchedule";
+import MyScheduler from "./components/MyScheduler";
 
 export default function Settings() {
   // Chakra Color Mode
@@ -20,6 +21,7 @@ export default function Settings() {
       </SimpleGrid>
       <CreateTeam/>
       <TeamSchedule/>
+      <MyScheduler/>
     </Box>
   );
 }
