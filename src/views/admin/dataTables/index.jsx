@@ -3,6 +3,7 @@ import { Box, SimpleGrid } from "@chakra-ui/react";
 import MyCalendar from "views/admin/dataTables/components/MyCalendar";
 import React from "react";
 import VianneyAlertChat from "./components/VianneyAlertChat";
+import CreateTeam from "./components/CreateTeam";
 
 export default function Settings() {
   // Chakra Color Mode
@@ -14,7 +15,9 @@ export default function Settings() {
         spacing={{ base: "20px", xl: "20px" }}>
         <MyCalendar />
         <VianneyAlertChat />
+        
       </SimpleGrid>
+      <CreateTeam/>
     </Box>
   );
 }

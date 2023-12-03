@@ -89,7 +89,9 @@ export default function Marketplace() {
           <Box mt="10px" borderRadius="lg" overflow="hidden">
             <MapComponent />
           </Box>
+          <Box  mt="100px">
           <MyCalendar/>
+          </Box>
           <Flex direction='column'>
             <Flex
               mt='45px'
