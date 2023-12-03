@@ -22,10 +22,17 @@ function CreateTeam() {
   const [teamCharacteristics, setTeamCharacteristics] = useState('');
   const [alertStatus, setAlertStatus] = useState(''); // 'success' or 'error'
   const [alertMessage, setAlertMessage] = useState('');
+  const generateRandomColor = () => {
+    const randomColor = Math.floor(Math.random()*16777215).toString(16);
+    return `#${randomColor}`;
+  };
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
+    const teamColor = generateRandomColor(); // Generate a random color for the team
+  
     try {
       const { error } = await supabase
         .from('vianney_teams')
@@ -35,6 +42,7 @@ function CreateTeam() {
             name_of_the_team: teamName,
             persons_working_in_team: teamMembers.split(',').map((member) => member.trim()),
             characteristics_of_the_team: teamCharacteristics.split(',').map((char) => char.trim()),
+            color: teamColor, // Add the generated color here
           },
         ]);
 
@@ -45,8 +53,6 @@ function CreateTeam() {
       } else {
         setAlertStatus('success');
         setAlertMessage('Équipe créée avec succès.');
-
-        // Clear form fields or navigate to a different page
         setTeamName('');
         setTeamMembers('');
         setTeamCharacteristics('');
