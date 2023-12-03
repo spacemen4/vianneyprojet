@@ -10,6 +10,8 @@ const supabaseUrl = 'https://hvjzemvfstwwhhahecwu.supabase.co';
 const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2anplbXZmc3R3d2hoYWhlY3d1Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY5MTQ4Mjc3MCwiZXhwIjoyMDA3MDU4NzcwfQ.6jThCX2eaUjl2qt4WE3ykPbrh6skE8drYcmk-UCNDSw';
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
+// Set moment to French locale
+moment.locale('fr');
 const localizer = momentLocalizer(moment);
 
 function TeamSchedule() {
@@ -46,6 +48,22 @@ function TeamSchedule() {
     };
   };
 
+  const messages = {
+    allDay: 'Toute la journée',
+    previous: 'Précédent',
+    next: 'Suivant',
+    today: 'Aujourd\'hui',
+    month: 'Mois',
+    week: 'Semaine',
+    day: 'Jour',
+    agenda: 'Agenda',
+    date: 'Date',
+    time: 'Heure',
+    event: 'Événement',
+    noEventsInRange: 'Il n\'y a pas d\'événements dans cette période',
+    // ... Add other translations as needed
+  };
+
   return (
     <ChakraProvider>
       <Box p={4}>
@@ -57,8 +75,9 @@ function TeamSchedule() {
           startAccessor="start"
           endAccessor="end"
           eventPropGetter={eventStyleGetter}
+          messages={messages} // Use French messages
           style={{ height: 500 }}
-                  />
+        />
       </Box>
     </ChakraProvider>
   );
