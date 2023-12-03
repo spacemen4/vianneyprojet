@@ -40,10 +40,10 @@ function CreateTeam() {
 
       if (error) {
         setAlertStatus('error');
-        setAlertMessage('Error creating team. Please try again.');
+        setAlertMessage('Erreur lors de la création de l\'équipe. Veuillez réessayer.');
       } else {
         setAlertStatus('success');
-        setAlertMessage('Team created successfully.');
+        setAlertMessage('Équipe créée avec succès.');
 
         // Clear form fields or navigate to a different page
         setTeamName('');
@@ -51,20 +51,18 @@ function CreateTeam() {
         setTeamCharacteristics('');
       }
     } catch (error) {
-      console.error('Error connecting to Supabase:', error);
+      console.error('Erreur de connexion à Supabase :', error);
       setAlertStatus('error');
-      setAlertMessage('Error connecting to Supabase. Please try again.');
+      setAlertMessage('Erreur de connexion à Supabase. Veuillez réessayer.');
     }
   };
-
-
 
   return (
     <Box>
       <form onSubmit={handleSubmit}>
         <VStack spacing={4}>
           <FormControl id="teamName">
-            <FormLabel>Team Name</FormLabel>
+            <FormLabel>Nom de l'équipe</FormLabel>
             <Input
               type="text"
               value={teamName}
@@ -73,7 +71,7 @@ function CreateTeam() {
             />
           </FormControl>
           <FormControl id="teamMembers">
-            <FormLabel>Team Members</FormLabel>
+            <FormLabel>Membres de l'équipe</FormLabel>
             <Input
               type="text"
               value={teamMembers}
@@ -82,7 +80,7 @@ function CreateTeam() {
             />
           </FormControl>
           <FormControl id="teamCharacteristics">
-            <FormLabel>Team Characteristics</FormLabel>
+            <FormLabel>Caractéristiques de l'équipe</FormLabel>
             <Textarea
               value={teamCharacteristics}
               onChange={(e) => setTeamCharacteristics(e.target.value)}
@@ -90,12 +88,12 @@ function CreateTeam() {
             />
           </FormControl>
           <Button type="submit" colorScheme="teal">
-            Create Team
+            Créer l'équipe
           </Button>
           {alertStatus && (
             <Alert status={alertStatus}>
               <AlertIcon />
-              {alertMessage}
+              {alertStatus === 'success' ? 'Équipe créée avec succès.' : 'Erreur lors de la création de l\'équipe. Veuillez réessayer.'}
             </Alert>
           )}
         </VStack>
