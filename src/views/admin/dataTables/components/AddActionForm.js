@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import { Box, Button, FormControl, FormLabel, Input, Select } from '@chakra-ui/react';
 import { createClient } from '@supabase/supabase-js'
 
@@ -6,7 +7,8 @@ const supabaseUrl = 'https://hvjzemvfstwwhhahecwu.supabase.co';
 const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2anplbXZmc3R3d2hoYWhlY3d1Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY5MTQ4Mjc3MCwiZXhwIjoyMDA3MDU4NzcwfQ.6jThCX2eaUjl2qt4WE3ykPbrh6skE8drYcmk-UCNDSw';
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-const AddActionForm = ({ teams = [] }) => {
+const AddActionForm = () => {
+  const [teams, setTeams] = useState([]);
   const [action, setAction] = useState({
     teamId: '',
     actionName: '',
@@ -14,6 +16,19 @@ const AddActionForm = ({ teams = [] }) => {
     endingDate: '',
     comment: ''
   });
+
+  useEffect(() => {
+    const fetchTeams = async () => {
+      const { data, error } = await supabase.from('vianney_teams').select('*');
+      if (error) {
+        console.error('Error fetching teams:', error);
+      } else {
+        setTeams(data);
+      }
+    };
+
+    fetchTeams();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
