@@ -11,13 +11,8 @@ import {
 import Banner from "views/admin/marketplace/components/Banner";
 import MapComponent from "views/admin/marketplace/components/MapComponent";
 import TableTopCreators from "views/admin/marketplace/components/TableTopCreators";
-import HistoryItem from "views/admin/marketplace/components/HistoryItem";
 import NFT from "components/card/NFT";
 import Card from "components/card/Card.js";
-
-// Assets
-import Nft1 from "assets/img/nfts/Nft1.png";
-import Nft5 from "assets/img/nfts/Nft5.png";
 
 import tableDataTopCreators from "views/admin/marketplace/variables/tableDataTopCreators.json";
 import { tableColumnsTopCreators } from "views/admin/marketplace/variables/tableColumnsTopCreators";
@@ -58,6 +53,26 @@ export default function Marketplace() {
   const toggleForms = () => {
     setShowForms(!showForms);
   };
+
+  const [maxWidth, setMaxWidth] = useState(null);
+
+  // Function to set maxWidth based on screen size
+  const setMaxWidthBasedOnScreen = () => {
+    const screenSize = window.innerWidth;
+    const newMaxWidth = screenSize / 2.5;
+    setMaxWidth(screenSize <= 768 ? '100%' : `${newMaxWidth}px`);
+  };
+
+  // Call the function initially and add event listener for window resize
+  useEffect(() => {
+    setMaxWidthBasedOnScreen();
+    window.addEventListener('resize', setMaxWidthBasedOnScreen);
+
+    // Clean up the event listener when component unmounts
+    return () => {
+      window.removeEventListener('resize', setMaxWidthBasedOnScreen);
+    };
+  }, []);
 
   return (
     <Box pt={{ base: "180px", md: "80px", xl: "80px" }}>
@@ -116,15 +131,15 @@ export default function Marketplace() {
           )}
         </Flex>
         <Flex
-          flexDirection='column'
+        flexDirection='column'
           gridArea={{ xl: "1 / 3 / 2 / 4", "2xl": "1 / 2 / 2 / 3" }}>
-          <Box maxWidth={{ base: "100%", md: "50%" }}>
+          <Box maxWidth={maxWidth}>
             <Card px='0px' mb='20px'>
-              <TableTopCreators
-                tableData={tableDataTopCreators}
-                columnsData={tableColumnsTopCreators}
-              />
-            </Card>
+          <TableTopCreators
+            tableData={tableDataTopCreators}
+            columnsData={tableColumnsTopCreators}
+          />
+</Card>
           </Box>
           <Card p='0px'>
             <VianneyAlertChat/>
