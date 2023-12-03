@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
-import {
-  Box, Button, FormControl, FormLabel, Input, Select
-} from '@chakra-ui/react';
+import { Box, Button, FormControl, FormLabel, Input, Select } from '@chakra-ui/react';
+import { createClient } from '@supabase/supabase-js'
 
-const AddActionForm = ({ teams }) => {
+const supabaseUrl = 'https://hvjzemvfstwwhhahecwu.supabase.co';
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2anplbXZmc3R3d2hoYWhlY3d1Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY5MTQ4Mjc3MCwiZXhwIjoyMDA3MDU4NzcwfQ.6jThCX2eaUjl2qt4WE3ykPbrh6skE8drYcmk-UCNDSw';
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
+const AddActionForm = ({ teams = [] }) => {
   const [action, setAction] = useState({
     teamId: '',
     actionName: '',
@@ -14,7 +17,25 @@ const AddActionForm = ({ teams }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Code to submit data to Supabase goes here
+
+    const { data, error } = await supabase
+      .from('vianney_actions')
+      .insert([
+        {
+          team_to_which_its_attached: action.teamId,
+          action_name: action.actionName,
+          starting_date: action.startingDate,
+          ending_date: action.endingDate,
+          action_comment: action.comment
+        }
+      ]);
+
+    if (error) {
+      console.error('Error inserting data: ', error);
+    } else {
+      console.log('Action added: ', data);
+      // Optionally reset the form or perform other actions upon successful submission
+    }
   };
 
   return (
