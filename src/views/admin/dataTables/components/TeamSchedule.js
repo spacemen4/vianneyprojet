@@ -26,13 +26,17 @@ function TeamSchedule() {
   // ... useEffect to fetch events
 
   const handleEventSelect = (event) => {
+    console.log('Selected event on select:', event); // Log the event on selection
     setSelectedEvent(event);
     setIsAlertOpen(true);
   };
   
-  // Later in your delete function
+  
+  
   const deleteEvent = async () => {
-    if (!selectedEvent || !selectedEvent.id) {
+    console.log('Selected event on delete:', selectedEvent); // Log the event when attempting to delete
+  
+    if (!selectedEvent || typeof selectedEvent.id === 'undefined') {
       toast({
         title: "Error",
         description: "No event selected or event ID is missing.",
@@ -74,12 +78,12 @@ function TeamSchedule() {
       const { data, error } = await supabase
         .from('team_action_view_rendering')
         .select('*');
-
+  
       if (error) {
         console.error('Erreur lors de la récupération des événements:', error);
       } else {
         const formattedEvents = data.map(action => ({
-          id: action.id, // Ensure this line is included
+          id: action.id, 
           title: `${action.action_name} - ${action.name_of_the_team}`,
           start: new Date(action.starting_date),
           end: new Date(action.ending_date),
@@ -89,9 +93,10 @@ function TeamSchedule() {
         setEvents(formattedEvents);
       }
     };
-
+  
     fetchEvents();
   }, []);
+  
 
   const eventStyleGetter = (event) => {
     return {
