@@ -177,12 +177,12 @@ function TeamSchedule() {
     if (g > 255) g = 255;
     else if (g < 0) g = 0;
 
-    return (usePound ? "#" : "") + (g | (b << 8) | (r << 16)).toString(16);
-  }
+      return (usePound ? "#" : "") + (g | (b << 8) | (r << 16)).toString(16);
+}
 
   const eventStyleGetter = (event) => {
     const baseColor = event.color || 'lightgrey';
-    const gradientColor = adjustBrightness(baseColor, -30); // Darken the base color by 30
+    const gradientColor = adjustBrightness(baseColor, -35); // Darken the base color by 30
     return {
       style: {
         backgroundImage: `linear-gradient(to right, ${baseColor}, ${gradientColor})`,
