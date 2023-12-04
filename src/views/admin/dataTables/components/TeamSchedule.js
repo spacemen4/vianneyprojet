@@ -43,7 +43,7 @@ function TeamSchedule() {
 
     if (!selectedEvent || typeof selectedEvent.id === 'undefined') {
       toast({
-        titel: "Error",
+        title: "Error",
         description: "No event selected or event ID is missing.",
         status: "error",
         duration: 5000,
@@ -58,17 +58,19 @@ function TeamSchedule() {
       .match({ id: selectedEvent.id });
 
     if (error) {
+      console.log(messages.errorEventDelete); // Log the error message
       toast({
-        titel: "Error deleting event",
+        title: "Error deleting event",
         description: error.message,
         status: "error",
         duration: 5000,
         isClosable: true,
       });
     } else {
+      console.log(messages.successEventDelete); // Log the success message
       setEvents(events.filter(event => event.id !== selectedEvent.id));
       toast({
-        titel: "Event deleted",
+        title: "Event deleted",
         status: "success",
         duration: 5000,
         isClosable: true,
@@ -76,7 +78,7 @@ function TeamSchedule() {
     }
     onClose();
   };
-
+  
   const updateEvent = async () => {
     // Validation can be added here for updated event details
     const { error } = await supabase
@@ -90,20 +92,21 @@ function TeamSchedule() {
       .match({ id: selectedEvent.id });
 
     if (error) {
+      console.log(messages.errorEventUpdate); // Log the error message
       toast({
-        titel: "Error updating event",
+        title: "Error updating event",
         description: error.message,
         status: "error",
         duration: 5000,
         isClosable: true,
       });
     } else {
-      // Update the event in the events state
+      console.log(messages.successEventUpdate); // Log the success message
       setEvents(events.map(event =>
         event.id === selectedEvent.id ? { ...event, titel: updatedEventName, start: new Date(updatedEventStart), end: new Date(updatedEventEnd) } : event
       ));
       toast({
-        titel: "Event updated",
+        title: "Event updated",
         status: "success",
         duration: 5000,
         isClosable: true,
@@ -199,7 +202,7 @@ function TeamSchedule() {
     allDay: 'Toute la journée',
     previous: 'Précédent',
     next: 'Suivant',
-    today: 'Aujourd\'hui',
+    today: 'Aujourd hui',
     month: 'Mois',
     week: 'Semaine',
     day: 'Jour',
@@ -208,8 +211,20 @@ function TeamSchedule() {
     time: 'Heure',
     event: 'Événement',
     noEventsInRange: 'Aucun événement pour cette période',
-    // ... Add other translations as needed
+    errorEventSelect: 'Erreur lors de la sélection de l\'événement',
+    errorEventUpdate: 'Erreur lors de la mise à jour de l\'événement',
+    errorEventDelete: 'Erreur lors de la suppression de l\'événement',
+    errorMissingEventId: 'Aucun événement sélectionné ou identifiant de l\'événement manquant',
+    successEventDelete: 'Événement supprimé avec succès',
+    successEventUpdate: 'Événement mis à jour avec succès',
+    selectEventToModify: 'Sélectionnez un événement à modifier ou à supprimer.',
+    confirmDelete: 'Êtes-vous sûr de vouloir supprimer cet événement ? Cette action ne peut pas être annulée.',
+    updateEvent: 'Mettre à jour l\'événement',
+    deleteEvent: 'Supprimer l\'événement',
+    successMessage: 'Action réalisée avec succès',
+
   };
+  
 
   const formats = {
     dayFormat: 'DD/MM', // Format for day view
