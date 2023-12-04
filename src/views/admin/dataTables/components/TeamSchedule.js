@@ -187,7 +187,7 @@ function TeamSchedule() {
   return (
     <ChakraProvider>
       <Box p={4}>
-        <Calendar
+      <Calendar
           localizer={localizer}
           events={events}
           formats={formats} // Add custom formats
@@ -201,41 +201,55 @@ function TeamSchedule() {
           onSelectEvent={handleEventSelect}
         />
       </Box>
-      <Button colorScheme="blue" onClick={() => toggleUpdateMode(true)}>Update Mode</Button>
-      <Button colorScheme="red" onClick={() => toggleUpdateMode(false)}>Delete Mode</Button>
-      <AlertDialog
-        isOpen={isAlertOpen}
-        leastDestructiveRef={cancelRef}
-        onClose={onClose}
-      >
-        <AlertDialogOverlay>
-          <AlertDialogContent>
-            <AlertDialogHeader fontSize="lg" fontWeight="bold">
-              {isUpdateMode ? 'Update Event' : 'Delete Event'}
-            </AlertDialogHeader>
-            <AlertDialogBody>
-              {isUpdateMode ? (
-                <Stack spacing={3}>
-                  <Input value={updatedEventName} onChange={(e) => setUpdatedEventName(e.target.value)} placeholder="Event Name" />
-                  <Input type="datetime-local" value={updatedEventStart} onChange={(e) => setUpdatedEventStart(e.target.value)} />
-                  <Input type="datetime-local" value={updatedEventEnd} onChange={(e) => setUpdatedEventEnd(e.target.value)} />
-                </Stack>
-              ) : (
-                'Are you sure you want to delete this event? This action cannot be undone.'
-              )}
-            </AlertDialogBody>
-            <AlertDialogFooter>
-              <Button ref={cancelRef} onClick={onClose}>
-                Cancel
-              </Button>
-              <Button colorScheme={isUpdateMode ? "blue" : "red"} onClick={handleAction} ml={3}>
-                {isUpdateMode ? 'Update' : 'Delete'}
-              </Button>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialogOverlay>
-      </AlertDialog>
-    </ChakraProvider >
+        <AlertDialog
+          isOpen={isAlertOpen}
+          leastDestructiveRef={cancelRef}
+          onClose={onClose}
+        >
+          <AlertDialogOverlay>
+            <AlertDialogContent>
+              <AlertDialogHeader fontSize="lg" fontWeight="bold">
+                Event Options
+              </AlertDialogHeader>
+              <AlertDialogBody>
+                {selectedEvent ? (
+                  <Stack spacing={3}>
+                    <Input 
+                      value={updatedEventName} 
+                      onChange={(e) => setUpdatedEventName(e.target.value)} 
+                      placeholder="Event Name" 
+                    />
+                    <Input 
+                      type="datetime-local" 
+                      value={updatedEventStart} 
+                      onChange={(e) => setUpdatedEventStart(e.target.value)} 
+                    />
+                    <Input 
+                      type="datetime-local" 
+                      value={updatedEventEnd} 
+                      onChange={(e) => setUpdatedEventEnd(e.target.value)} 
+                    />
+                  </Stack>
+                ) : (
+                  'Select an event to modify or delete.'
+                )}
+              </AlertDialogBody>
+              <AlertDialogFooter>
+                <Button ref={cancelRef} onClick={onClose}>
+                  Cancel
+                </Button>
+                <Button colorScheme="blue" onClick={updateEvent} ml={3}>
+                  Update
+                </Button>
+                <Button colorScheme="red" onClick={deleteEvent} ml={3}>
+                  Delete
+                </Button>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialogOverlay>
+        </AlertDialog>
+
+    </ChakraProvider>
   );
 }
 
