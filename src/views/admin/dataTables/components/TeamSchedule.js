@@ -173,7 +173,7 @@ function TeamSchedule() {
     date: 'Date',
     time: 'Heure',
     event: 'Événement',
-    noEventsInRange: 'Il n\'y a pas d\'événements dans cette période',
+    noEventsInRange: 'Aucun événement pour cette période',
     // ... Add other translations as needed
   };
 
@@ -208,24 +208,24 @@ function TeamSchedule() {
         />
       </Box>
       <AlertDialog
-          isOpen={isAlertOpen}
-          leastDestructiveRef={cancelRef}
-          onClose={onClose}
-        >
-          <AlertDialogOverlay>
-            <AlertDialogContent>
-              <AlertDialogHeader fontSize="lg" fontWeight="bold">
-                Event Options
-              </AlertDialogHeader>
-              <AlertDialogBody>
-                {selectedEvent ? (
-                  <Stack spacing={3}>
-                    <Input 
-                      value={updatedEventName} 
-                      onChange={(e) => setUpdatedEventName(e.target.value)} 
-                      placeholder="Event Name" 
-                    />
-                    <Input 
+        isOpen={isAlertOpen}
+        leastDestructiveRef={cancelRef}
+        onClose={onClose}
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              Options de l'événement
+            </AlertDialogHeader>
+            <AlertDialogBody>
+              {selectedEvent ? (
+                <Stack spacing={3}>
+                  <Input 
+                    value={updatedEventName} 
+                    onChange={(e) => setUpdatedEventName(e.target.value)} 
+                    placeholder="Nom de l'événement" 
+                  />
+                  <Input 
                       type="datetime-local" 
                       value={updatedEventStart} 
                       onChange={(e) => setUpdatedEventStart(e.target.value)} 
@@ -235,26 +235,25 @@ function TeamSchedule() {
                       value={updatedEventEnd} 
                       onChange={(e) => setUpdatedEventEnd(e.target.value)} 
                     />
-                  </Stack>
-                ) : (
-                  'Select an event to modify or delete.'
-                )}
-              </AlertDialogBody>
-              <AlertDialogFooter>
-                <Button ref={cancelRef} onClick={onClose}>
-                  Cancel
-                </Button>
-                <Button colorScheme="blue" onClick={updateEvent} ml={3}>
-                  Update
-                </Button>
-                <Button colorScheme="red" onClick={deleteEvent} ml={3}>
-                  Delete
-                </Button>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialogOverlay>
-        </AlertDialog>
-
+                </Stack>
+              ) : (
+                'Sélectionnez un événement à modifier ou à supprimer.'
+              )}
+            </AlertDialogBody>
+            <AlertDialogFooter>
+              <Button ref={cancelRef} onClick={onClose}>
+                Annuler
+              </Button>
+              <Button colorScheme="blue" onClick={updateEvent} ml={3}>
+                Mettre à jour
+              </Button>
+              <Button colorScheme="red" onClick={deleteEvent} ml={3}>
+                Supprimer
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
     </ChakraProvider>
   );
 }
