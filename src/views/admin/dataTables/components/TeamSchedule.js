@@ -32,7 +32,7 @@ function TeamSchedule() {
   const handleEventSelect = (event) => {
     setSelectedEvent(event);
     setIsAlertOpen(true);
-    setUpdatedEventName(event.title);
+    setUpdatedEventName(event.titel);
     setUpdatedEventStart(moment(event.start).format('YYYY-MM-DDTHH:mm'));
     setUpdatedEventEnd(moment(event.end).format('YYYY-MM-DDTHH:mm'));
     // Don't set isUpdateMode here; let the user choose
@@ -43,7 +43,7 @@ function TeamSchedule() {
 
     if (!selectedEvent || typeof selectedEvent.id === 'undefined') {
       toast({
-        title: "Error",
+        titel: "Error",
         description: "No event selected or event ID is missing.",
         status: "error",
         duration: 5000,
@@ -59,7 +59,7 @@ function TeamSchedule() {
 
     if (error) {
       toast({
-        title: "Error deleting event",
+        titel: "Error deleting event",
         description: error.message,
         status: "error",
         duration: 5000,
@@ -68,7 +68,7 @@ function TeamSchedule() {
     } else {
       setEvents(events.filter(event => event.id !== selectedEvent.id));
       toast({
-        title: "Event deleted",
+        titel: "Event deleted",
         status: "success",
         duration: 5000,
         isClosable: true,
@@ -91,7 +91,7 @@ function TeamSchedule() {
 
     if (error) {
       toast({
-        title: "Error updating event",
+        titel: "Error updating event",
         description: error.message,
         status: "error",
         duration: 5000,
@@ -100,10 +100,10 @@ function TeamSchedule() {
     } else {
       // Update the event in the events state
       setEvents(events.map(event =>
-        event.id === selectedEvent.id ? { ...event, title: updatedEventName, start: new Date(updatedEventStart), end: new Date(updatedEventEnd) } : event
+        event.id === selectedEvent.id ? { ...event, titel: updatedEventName, start: new Date(updatedEventStart), end: new Date(updatedEventEnd) } : event
       ));
       toast({
-        title: "Event updated",
+        titel: "Event updated",
         status: "success",
         duration: 5000,
         isClosable: true,
@@ -120,7 +120,7 @@ function TeamSchedule() {
     }
     return data.map(team => ({
       id: team.id,
-      title: team.name_of_the_team,
+      titel: team.name_of_the_team,
       color: team.color // Assuming each team has a unique color
     }));
   };
@@ -133,13 +133,13 @@ function TeamSchedule() {
       const { data: eventsData, error } = await supabase
         .from('team_action_view_rendering')
         .select('*');
-  
+
       if (error) {
         console.error('Error fetching events:', error);
       } else {
         const formattedEvents = eventsData.map(action => ({
           id: action.action_id,
-          title: action.action_name,
+          titel: action.action_name,
           start: new Date(action.starting_date),
           end: new Date(action.ending_date),
           resourceId: action.team_id,
@@ -155,31 +155,31 @@ function TeamSchedule() {
 
   function adjustBrightness(col, amount) {
     let usePound = false;
-  
+
     if (col[0] === "#") {
-        col = col.slice(1);
-        usePound = true;
+      col = col.slice(1);
+      usePound = true;
     }
-  
-    const num = parseInt(col,16);
+
+    const num = parseInt(col, 16);
     let r = (num >> 16) + amount;
-  
+
     if (r > 255) r = 255;
     else if (r < 0) r = 0;
-  
+
     let b = ((num >> 8) & 0x00FF) + amount;
-  
+
     if (b > 255) b = 255;
     else if (b < 0) b = 0;
-  
+
     let g = (num & 0x0000FF) + amount;
-  
+
     if (g > 255) g = 255;
     else if (g < 0) g = 0;
-  
-    return (usePound?"#":"") + (g | (b << 8) | (r << 16)).toString(16);
+
+    return (usePound ? "#" : "") + (g | (b << 8) | (r << 16)).toString(16);
   }
-  
+
   const eventStyleGetter = (event) => {
     const baseColor = event.color || 'lightgrey';
     const gradientColor = adjustBrightness(baseColor, -30); // Darken the base color by 30
@@ -187,9 +187,14 @@ function TeamSchedule() {
       style: {
         backgroundImage: `linear-gradient(to right, ${baseColor}, ${gradientColor})`,
         color: 'white', // Set text color to white for better readability
+        textAlign: 'center', // Center align the text
+        display: 'flex', // Use flexbox for alignment
+        alignItems: 'center', // Align items vertically center
+        justifyContent: 'center', // Align items horizontally center
       },
     };
   };
+  
   const messages = {
     allDay: 'Toute la journée',
     previous: 'Précédent',
@@ -216,6 +221,14 @@ function TeamSchedule() {
     // ... (add more formats as needed)
   };
 
+  const CustomEvent = ({ event }) => (
+    <Tooltip label={event.titel} aria-label="Event Tooltip">
+      <div style={eventStyleGetter(event).style}>
+        {event.titel}
+      </div>
+    </Tooltip>
+  );
+
   return (
     <ChakraProvider>
       <Box p={4}>
@@ -224,7 +237,7 @@ function TeamSchedule() {
           events={events}
           resources={teams}
           resourceIdAccessor="id"
-          resourceTitleAccessor="title"
+          resourcetitelAccessor="titel"
           formats={formats}
           defaultView={Views.DAY}
           views={['day', 'week', 'month', 'agenda']}
@@ -235,13 +248,7 @@ function TeamSchedule() {
           style={{ height: 500 }}
           onSelectEvent={handleEventSelect}
           components={{
-            event: ({ event }) => (
-              <Tooltip label={event.title} aria-label="Event Tooltip">
-                <div style={eventStyleGetter(event).style}>
-                  {event.title}
-                </div>
-              </Tooltip>
-            ),
+            event: CustomEvent, // Use Custom Event Component
           }}
         />
       </Box>
@@ -258,21 +265,21 @@ function TeamSchedule() {
             <AlertDialogBody>
               {selectedEvent ? (
                 <Stack spacing={3}>
-                  <Input 
-                    value={updatedEventName} 
-                    onChange={(e) => setUpdatedEventName(e.target.value)} 
-                    placeholder="Nom de l'événement" 
+                  <Input
+                    value={updatedEventName}
+                    onChange={(e) => setUpdatedEventName(e.target.value)}
+                    placeholder="Nom de l'événement"
                   />
-                  <Input 
-                      type="datetime-local" 
-                      value={updatedEventStart} 
-                      onChange={(e) => setUpdatedEventStart(e.target.value)} 
-                    />
-                    <Input 
-                      type="datetime-local" 
-                      value={updatedEventEnd} 
-                      onChange={(e) => setUpdatedEventEnd(e.target.value)} 
-                    />
+                  <Input
+                    type="datetime-local"
+                    value={updatedEventStart}
+                    onChange={(e) => setUpdatedEventStart(e.target.value)}
+                  />
+                  <Input
+                    type="datetime-local"
+                    value={updatedEventEnd}
+                    onChange={(e) => setUpdatedEventEnd(e.target.value)}
+                  />
                 </Stack>
               ) : (
                 'Sélectionnez un événement à modifier ou à supprimer.'
