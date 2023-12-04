@@ -24,14 +24,10 @@ function TeamSchedule() {
   const onClose = () => setIsAlertOpen(false);
   const cancelRef = React.useRef();
   const toast = useToast();
-  const [isUpdateMode, setIsUpdateMode] = useState(false);
   const [updatedEventName, setUpdatedEventName] = useState('');
   const [updatedEventStart, setUpdatedEventStart] = useState('');
   const [updatedEventEnd, setUpdatedEventEnd] = useState('');
-
-  const toggleUpdateMode = (mode) => {
-    setIsUpdateMode(mode);
-  };
+  const [teams, setTeams] = useState([]);
 
   const handleEventSelect = (event) => {
     setSelectedEvent(event);
@@ -116,44 +112,51 @@ function TeamSchedule() {
     onClose();
   };
 
-  const handleAction = () => {
-    if (isUpdateMode) {
-      updateEvent();
-    } else {
-      deleteEvent();
+  const fetchTeams = async () => {
+    const { data, error } = await supabase.from('vianney_teams').select('*');
+    if (error) {
+      console.error('Error fetching teams:', error);
+      return [];
     }
+    return data.map(team => ({
+      id: team.id,
+      title: team.name_of_the_team,
+      color: team.color // Assuming each team has a unique color
+    }));
   };
 
   useEffect(() => {
-    const fetchEvents = async () => {
-      const { data, error } = await supabase
+    const fetchData = async () => {
+      const teamsData = await fetchTeams();
+      setTeams(teamsData);
+
+      const { data: eventsData, error } = await supabase
         .from('team_action_view_rendering')
         .select('*');
-
+  
       if (error) {
         console.error('Error fetching events:', error);
       } else {
-        const formattedEvents = data.map(action => ({
-          id: action.action_id, // Use 'action_id' instead of 'id'
-          title: `${action.action_name} - ${action.name_of_the_team}`,
+        const formattedEvents = eventsData.map(action => ({
+          id: action.action_id,
+          title: action.action_name,
           start: new Date(action.starting_date),
           end: new Date(action.ending_date),
-          user: action.name_of_the_team,
-          color: action.color
+          resourceId: action.team_id,
+          color: teamsData.find(t => t.id === action.team_id)?.color || 'lightgrey'
         }));
         setEvents(formattedEvents);
       }
     };
 
-    fetchEvents();
+    fetchData();
   }, []);
-
 
 
   const eventStyleGetter = (event) => {
     return {
       style: {
-        backgroundColor: event.color || 'lightgrey', // Use team color or default
+        backgroundColor: event.color || 'lightgrey',
       },
     };
   };
@@ -187,21 +190,24 @@ function TeamSchedule() {
   return (
     <ChakraProvider>
       <Box p={4}>
-      <Calendar
+        <Calendar
           localizer={localizer}
           events={events}
-          formats={formats} // Add custom formats
-          defaultView={Views.DAY} // Set default view to day
-          views={['day', 'week', 'month', 'agenda']} // Include other views for switching
+          resources={teams}
+          resourceIdAccessor="id"
+          resourceTitleAccessor="title"
+          formats={formats}
+          defaultView={Views.DAY}
+          views={['day', 'week', 'month', 'agenda']}
           startAccessor="start"
           endAccessor="end"
           eventPropGetter={eventStyleGetter}
-          messages={messages} // Use French messages
+          messages={messages}
           style={{ height: 500 }}
           onSelectEvent={handleEventSelect}
         />
       </Box>
-        <AlertDialog
+      <AlertDialog
           isOpen={isAlertOpen}
           leastDestructiveRef={cancelRef}
           onClose={onClose}
