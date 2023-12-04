@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Box, ChakraProvider, useToast, AlertDialog, AlertDialogBody, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, AlertDialogOverlay, Button } from '@chakra-ui/react';
+import {
+  Box, ChakraProvider, useToast, AlertDialog, AlertDialogBody, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, AlertDialogOverlay, Button, Input, Stack
+} from '@chakra-ui/react';
 import { Calendar, momentLocalizer, Views } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import moment from 'moment';
@@ -22,17 +24,20 @@ function TeamSchedule() {
   const onClose = () => setIsAlertOpen(false);
   const cancelRef = React.useRef();
   const toast = useToast();
-
-  // ... useEffect to fetch events
+  const [isUpdateMode, setIsUpdateMode] = useState(false);
+  const [updatedEventName, setUpdatedEventName] = useState('');
+  const [updatedEventStart, setUpdatedEventStart] = useState('');
+  const [updatedEventEnd, setUpdatedEventEnd] = useState('');
 
   const handleEventSelect = (event) => {
-    console.log('Selected event on select:', event); // Log the event on selection
     setSelectedEvent(event);
     setIsAlertOpen(true);
+    setUpdatedEventName(event.title);
+    setUpdatedEventStart(moment(event.start).format('YYYY-MM-DDTHH:mm'));
+    setUpdatedEventEnd(moment(event.end).format('YYYY-MM-DDTHH:mm'));
+    setIsUpdateMode(false);
   };
-  
-  
-  
+
   const deleteEvent = async () => {
     console.log('Selected event on delete:', selectedEvent); // Log the event when attempting to delete
   
@@ -46,7 +51,7 @@ function TeamSchedule() {
       });
       return;
     }
-  
+
     const { error } = await supabase
       .from('vianney_actions')
       .delete()
@@ -69,8 +74,50 @@ function TeamSchedule() {
         isClosable: true,
       });
     }
-
     onClose();
+  };
+
+  const updateEvent = async () => {
+    // Validation can be added here for updated event details
+    const { error } = await supabase
+      .from('vianney_actions')
+      .update({
+        action_name: updatedEventName,
+        starting_date: updatedEventStart,
+        ending_date: updatedEventEnd,
+        last_updated: new Date() // update the last updated time
+      })
+      .match({ id: selectedEvent.id });
+
+    if (error) {
+      toast({
+        title: "Error updating event",
+        description: error.message,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    } else {
+      // Update the event in the events state
+      setEvents(events.map(event => 
+        event.id === selectedEvent.id ? { ...event, title: updatedEventName, start: new Date(updatedEventStart), end: new Date(updatedEventEnd) } : event
+      ));
+      toast({
+        title: "Event updated",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+    onClose();
+  };
+
+  const handleAction = () => {
+    if (isUpdateMode) {
+      updateEvent();
+    } else {
+      deleteEvent();
+    }
   };
 
   useEffect(() => {
@@ -160,17 +207,25 @@ function TeamSchedule() {
         <AlertDialogOverlay>
           <AlertDialogContent>
             <AlertDialogHeader fontSize="lg" fontWeight="bold">
-              Delete Event
+              {isUpdateMode ? 'Update Event' : 'Delete Event'}
             </AlertDialogHeader>
             <AlertDialogBody>
-              Are you sure you want to delete this event? This action cannot be undone.
+              {isUpdateMode ? (
+                <Stack spacing={3}>
+                  <Input value={updatedEventName} onChange={(e) => setUpdatedEventName(e.target.value)} placeholder="Event Name" />
+                  <Input type="datetime-local" value={updatedEventStart} onChange={(e) => setUpdatedEventStart(e.target.value)} />
+                  <Input type="datetime-local" value={updatedEventEnd} onChange={(e) => setUpdatedEventEnd(e.target.value)} />
+                </Stack>
+              ) : (
+                'Are you sure you want to delete this event? This action cannot be undone.'
+              )}
             </AlertDialogBody>
             <AlertDialogFooter>
               <Button ref={cancelRef} onClick={onClose}>
                 Cancel
               </Button>
-              <Button colorScheme="red" onClick={deleteEvent} ml={3}>
-                Delete
+              <Button colorScheme={isUpdateMode ? "blue" : "red"} onClick={handleAction} ml={3}>
+                {isUpdateMode ? 'Update' : 'Delete'}
               </Button>
             </AlertDialogFooter>
           </AlertDialogContent>
