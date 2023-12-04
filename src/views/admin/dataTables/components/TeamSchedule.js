@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Box, Text, Menu, Flex, Card, useColorModeValue, ChakraProvider, useToast, Tooltip, AlertDialog, AlertDialogBody, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, AlertDialogOverlay, Button, Input, Stack
+  Box, Text, Flex, Card, useColorModeValue, ChakraProvider, useToast, Tooltip, AlertDialog, AlertDialogBody, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, AlertDialogOverlay, Button, Input, Stack
 } from '@chakra-ui/react';
 import { Calendar, momentLocalizer, Views } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
@@ -8,7 +8,7 @@ import moment from 'moment';
 import 'moment/locale/fr'; // Import French locale
 import { createClient } from '@supabase/supabase-js';
 import './CalendarStyles.css';
-// Initialize Supabase client
+import Menu from "components/menu/MainMenu";
 const supabaseUrl = 'https://hvjzemvfstwwhhahecwu.supabase.co';
 const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2anplbXZmc3R3d2hoYWhlY3d1Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY5MTQ4Mjc3MCwiZXhwIjoyMDA3MDU4NzcwfQ.6jThCX2eaUjl2qt4WE3ykPbrh6skE8drYcmk-UCNDSw';
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
@@ -78,7 +78,7 @@ function TeamSchedule() {
     }
     onClose();
   };
-  
+
   const updateEvent = async () => {
     // Validation can be added here for updated event details
     const { error } = await supabase
@@ -94,7 +94,7 @@ function TeamSchedule() {
     if (error) {
       console.log(messages.errorEventUpdate); // Log the error message
       toast({
-        title:  "Erreur lors de la mise à jour de l'événement",
+        title: "Erreur lors de la mise à jour de l'événement",
         description: error.message,
         status: "error",
         duration: 5000,
@@ -180,8 +180,8 @@ function TeamSchedule() {
     if (g > 255) g = 255;
     else if (g < 0) g = 0;
 
-      return (usePound ? "#" : "") + (g | (b << 8) | (r << 16)).toString(16);
-}
+    return (usePound ? "#" : "") + (g | (b << 8) | (r << 16)).toString(16);
+  }
 
   const eventStyleGetter = (event) => {
     const baseColor = event.color || 'lightgrey';
@@ -197,7 +197,7 @@ function TeamSchedule() {
       },
     };
   };
-  
+
   const messages = {
     allDay: 'Toute la journée',
     previous: 'Précédent',
@@ -224,7 +224,7 @@ function TeamSchedule() {
     successMessage: 'Action réalisée avec succès',
 
   };
-  
+
 
   const formats = {
     dayFormat: 'DD/MM', // Format for day view
@@ -245,94 +245,96 @@ function TeamSchedule() {
   );
 
   return (
-    <ChakraProvider>
-      <Box p={4}>
-      <Card
+    <Card
       direction='column'
       w='100%'
       px='0px'
       overflowX={{ sm: "scroll", lg: "hidden" }}>
       <Box p={4}>
-          <Flex px='25px' justify='space-between' mb='20px' align='center'>
-            <Text
-              color={textColor}
-              fontSize='22px'
-              fontWeight='700'
-              lineHeight='100%'>
-              Emploi du temps
-            </Text>
-            <Menu />
-          </Flex>
-        <Calendar
-          localizer={localizer}
-          events={events}
-          resources={teams}
-          resourceIdAccessor="id"
-          resourcetitelAccessor="titel"
-          formats={formats}
-          defaultView={Views.DAY}
-          views={['day', 'week', 'month', 'agenda']}
-          startAccessor="start"
-          endAccessor="end"
-          eventPropGetter={eventStyleGetter}
-          messages={messages}
-          style={{ height: 500 }}
-          onSelectEvent={handleEventSelect}
-          components={{
-            event: CustomEvent, // Use Custom Event Component
-          }}
-        />
-        </Box>
-    </Card>
+        <ChakraProvider>
+          <Box p={4}>
+            <Flex px='25px' justify='space-between' mb='20px' align='center'>
+              <Text
+                color={textColor}
+                fontSize='22px'
+                fontWeight='700'
+                lineHeight='100%'>
+                Emploi du temps
+              </Text>
+              <Menu />
+            </Flex>
+            <Calendar
+              localizer={localizer}
+              events={events}
+              resources={teams}
+              resourceIdAccessor="id"
+              resourcetitelAccessor="titel"
+              formats={formats}
+              defaultView={Views.DAY}
+              views={['day', 'week', 'month', 'agenda']}
+              startAccessor="start"
+              endAccessor="end"
+              eventPropGetter={eventStyleGetter}
+              messages={messages}
+              style={{ height: 500 }}
+              onSelectEvent={handleEventSelect}
+              components={{
+                event: CustomEvent, // Use Custom Event Component
+              }}
+            />
+
+          </Box>
+          <AlertDialog
+            isOpen={isAlertOpen}
+            leastDestructiveRef={cancelRef}
+            onClose={onClose}
+          >
+            <AlertDialogOverlay>
+              <AlertDialogContent>
+                <AlertDialogHeader fontSize="lg" fontWeight="bold">
+                  Options de l'événement
+                </AlertDialogHeader>
+                <AlertDialogBody>
+                  {selectedEvent ? (
+                    <Stack spacing={3}>
+                      <Input
+                        value={updatedEventName}
+                        onChange={(e) => setUpdatedEventName(e.target.value)}
+                        placeholder="Nom de l'événement"
+                      />
+                      <Input
+                        type="datetime-local"
+                        value={updatedEventStart}
+                        onChange={(e) => setUpdatedEventStart(e.target.value)}
+                      />
+                      <Input
+                        type="datetime-local"
+                        value={updatedEventEnd}
+                        onChange={(e) => setUpdatedEventEnd(e.target.value)}
+                      />
+                    </Stack>
+                  ) : (
+                    'Sélectionnez un événement à modifier ou à supprimer.'
+                  )}
+                </AlertDialogBody>
+                <AlertDialogFooter>
+                  <Button ref={cancelRef} onClick={onClose}>
+                    Annuler
+                  </Button>
+                  <Button colorScheme="blue" onClick={updateEvent} ml={3}>
+                    Mettre à jour
+                  </Button>
+                  <Button colorScheme="red" onClick={deleteEvent} ml={3}>
+                    Supprimer
+                  </Button>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialogOverlay>
+          </AlertDialog>
+        </ChakraProvider>
       </Box>
-      <AlertDialog
-        isOpen={isAlertOpen}
-        leastDestructiveRef={cancelRef}
-        onClose={onClose}
-      >
-        <AlertDialogOverlay>
-          <AlertDialogContent>
-            <AlertDialogHeader fontSize="lg" fontWeight="bold">
-              Options de l'événement
-            </AlertDialogHeader>
-            <AlertDialogBody>
-              {selectedEvent ? (
-                <Stack spacing={3}>
-                  <Input
-                    value={updatedEventName}
-                    onChange={(e) => setUpdatedEventName(e.target.value)}
-                    placeholder="Nom de l'événement"
-                  />
-                  <Input
-                    type="datetime-local"
-                    value={updatedEventStart}
-                    onChange={(e) => setUpdatedEventStart(e.target.value)}
-                  />
-                  <Input
-                    type="datetime-local"
-                    value={updatedEventEnd}
-                    onChange={(e) => setUpdatedEventEnd(e.target.value)}
-                  />
-                </Stack>
-              ) : (
-                'Sélectionnez un événement à modifier ou à supprimer.'
-              )}
-            </AlertDialogBody>
-            <AlertDialogFooter>
-              <Button ref={cancelRef} onClick={onClose}>
-                Annuler
-              </Button>
-              <Button colorScheme="blue" onClick={updateEvent} ml={3}>
-                Mettre à jour
-              </Button>
-              <Button colorScheme="red" onClick={deleteEvent} ml={3}>
-                Supprimer
-              </Button>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialogOverlay>
-      </AlertDialog>
-    </ChakraProvider>
+    </Card >
+
   );
 }
 
