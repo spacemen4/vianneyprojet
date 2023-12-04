@@ -29,18 +29,22 @@ function TeamSchedule() {
   const [updatedEventStart, setUpdatedEventStart] = useState('');
   const [updatedEventEnd, setUpdatedEventEnd] = useState('');
 
+  const toggleUpdateMode = (mode) => {
+    setIsUpdateMode(mode);
+  };
+
   const handleEventSelect = (event) => {
     setSelectedEvent(event);
     setIsAlertOpen(true);
     setUpdatedEventName(event.title);
     setUpdatedEventStart(moment(event.start).format('YYYY-MM-DDTHH:mm'));
     setUpdatedEventEnd(moment(event.end).format('YYYY-MM-DDTHH:mm'));
-    setIsUpdateMode(false);
+    // Don't set isUpdateMode here; let the user choose
   };
 
   const deleteEvent = async () => {
     console.log('Selected event on delete:', selectedEvent); // Log the event when attempting to delete
-  
+
     if (!selectedEvent || typeof selectedEvent.id === 'undefined') {
       toast({
         title: "Error",
@@ -99,7 +103,7 @@ function TeamSchedule() {
       });
     } else {
       // Update the event in the events state
-      setEvents(events.map(event => 
+      setEvents(events.map(event =>
         event.id === selectedEvent.id ? { ...event, title: updatedEventName, start: new Date(updatedEventStart), end: new Date(updatedEventEnd) } : event
       ));
       toast({
@@ -125,7 +129,7 @@ function TeamSchedule() {
       const { data, error } = await supabase
         .from('team_action_view_rendering')
         .select('*');
-  
+
       if (error) {
         console.error('Error fetching events:', error);
       } else {
@@ -140,11 +144,11 @@ function TeamSchedule() {
         setEvents(formattedEvents);
       }
     };
-  
+
     fetchEvents();
   }, []);
-  
-  
+
+
 
   const eventStyleGetter = (event) => {
     return {
@@ -197,8 +201,8 @@ function TeamSchedule() {
           onSelectEvent={handleEventSelect}
         />
       </Box>
-
-      {/* Alert Dialog for Confirmation */}
+      <Button colorScheme="blue" onClick={() => toggleUpdateMode(true)}>Update Mode</Button>
+      <Button colorScheme="red" onClick={() => toggleUpdateMode(false)}>Delete Mode</Button>
       <AlertDialog
         isOpen={isAlertOpen}
         leastDestructiveRef={cancelRef}
@@ -231,7 +235,7 @@ function TeamSchedule() {
           </AlertDialogContent>
         </AlertDialogOverlay>
       </AlertDialog>
-    </ChakraProvider>
+    </ChakraProvider >
   );
 }
 
