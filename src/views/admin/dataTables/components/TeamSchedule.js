@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Box, ChakraProvider, useToast, AlertDialog, AlertDialogBody, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, AlertDialogOverlay, Button, Input, Stack
+  Box, ChakraProvider, useToast, Tooltip, AlertDialog, AlertDialogBody, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, AlertDialogOverlay, Button, Input, Stack
 } from '@chakra-ui/react';
 import { Calendar, momentLocalizer, Views } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
@@ -153,14 +153,43 @@ function TeamSchedule() {
   }, []);
 
 
+  function adjustBrightness(col, amount) {
+    let usePound = false;
+  
+    if (col[0] === "#") {
+        col = col.slice(1);
+        usePound = true;
+    }
+  
+    const num = parseInt(col,16);
+    let r = (num >> 16) + amount;
+  
+    if (r > 255) r = 255;
+    else if (r < 0) r = 0;
+  
+    let b = ((num >> 8) & 0x00FF) + amount;
+  
+    if (b > 255) b = 255;
+    else if (b < 0) b = 0;
+  
+    let g = (num & 0x0000FF) + amount;
+  
+    if (g > 255) g = 255;
+    else if (g < 0) g = 0;
+  
+    return (usePound?"#":"") + (g | (b << 8) | (r << 16)).toString(16);
+  }
+  
   const eventStyleGetter = (event) => {
+    const baseColor = event.color || 'lightgrey';
+    const gradientColor = adjustBrightness(baseColor, -30); // Darken the base color by 30
     return {
       style: {
-        backgroundColor: event.color || 'lightgrey',
+        backgroundImage: `linear-gradient(to right, ${baseColor}, ${gradientColor})`,
+        color: 'white', // Set text color to white for better readability
       },
     };
   };
-
   const messages = {
     allDay: 'Toute la journée',
     previous: 'Précédent',
@@ -205,6 +234,15 @@ function TeamSchedule() {
           messages={messages}
           style={{ height: 500 }}
           onSelectEvent={handleEventSelect}
+          components={{
+            event: ({ event }) => (
+              <Tooltip label={event.title} aria-label="Event Tooltip">
+                <div style={eventStyleGetter(event).style}>
+                  {event.title}
+                </div>
+              </Tooltip>
+            ),
+          }}
         />
       </Box>
       <AlertDialog
