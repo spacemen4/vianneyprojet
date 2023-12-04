@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Box, ChakraProvider, useToast, Tooltip, AlertDialog, AlertDialogBody, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, AlertDialogOverlay, Button, Input, Stack
+  Box, Text, Menu, Flex, Card, useColorModeValue, ChakraProvider, useToast, Tooltip, AlertDialog, AlertDialogBody, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, AlertDialogOverlay, Button, Input, Stack
 } from '@chakra-ui/react';
 import { Calendar, momentLocalizer, Views } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
@@ -28,7 +28,7 @@ function TeamSchedule() {
   const [updatedEventStart, setUpdatedEventStart] = useState('');
   const [updatedEventEnd, setUpdatedEventEnd] = useState('');
   const [teams, setTeams] = useState([]);
-
+  const textColor = useColorModeValue("secondaryGray.900", "white");
   const handleEventSelect = (event) => {
     setSelectedEvent(event);
     setIsAlertOpen(true);
@@ -247,6 +247,22 @@ function TeamSchedule() {
   return (
     <ChakraProvider>
       <Box p={4}>
+      <Card
+      direction='column'
+      w='100%'
+      px='0px'
+      overflowX={{ sm: "scroll", lg: "hidden" }}>
+      <Box p={4}>
+          <Flex px='25px' justify='space-between' mb='20px' align='center'>
+            <Text
+              color={textColor}
+              fontSize='22px'
+              fontWeight='700'
+              lineHeight='100%'>
+              Emploi du temps
+            </Text>
+            <Menu />
+          </Flex>
         <Calendar
           localizer={localizer}
           events={events}
@@ -266,6 +282,8 @@ function TeamSchedule() {
             event: CustomEvent, // Use Custom Event Component
           }}
         />
+        </Box>
+    </Card>
       </Box>
       <AlertDialog
         isOpen={isAlertOpen}
