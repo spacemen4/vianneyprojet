@@ -60,7 +60,7 @@ function TeamSchedule() {
     if (error) {
       console.log(messages.errorEventDelete); // Log the error message
       toast({
-        title: "Error deleting event",
+        title: "Erreur lors de la suppression de l'événement",
         description: error.message,
         status: "error",
         duration: 5000,
@@ -70,7 +70,7 @@ function TeamSchedule() {
       console.log(messages.successEventDelete); // Log the success message
       setEvents(events.filter(event => event.id !== selectedEvent.id));
       toast({
-        title: "Event deleted",
+        title: "Événement supprimé",
         status: "success",
         duration: 5000,
         isClosable: true,
@@ -94,7 +94,7 @@ function TeamSchedule() {
     if (error) {
       console.log(messages.errorEventUpdate); // Log the error message
       toast({
-        title: "Error updating event",
+        title:  "Erreur lors de la mise à jour de l'événement",
         description: error.message,
         status: "error",
         duration: 5000,
@@ -106,7 +106,7 @@ function TeamSchedule() {
         event.id === selectedEvent.id ? { ...event, titel: updatedEventName, start: new Date(updatedEventStart), end: new Date(updatedEventEnd) } : event
       ));
       toast({
-        title: "Event updated",
+        title: "Événement mis à jour",
         status: "success",
         duration: 5000,
         isClosable: true,
