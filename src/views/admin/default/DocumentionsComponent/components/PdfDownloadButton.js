@@ -88,7 +88,7 @@ const PdfDownloadButton = ({ handlePdfClick }) => {
                     boxShadow='sm'
                     _hover={{ boxShadow: 'md' }}
                     _active={{ boxShadow: 'lg' }}>
-                    {showPdfUploader ? "Masquer" : "Ajouter un évènement"}
+                    {showPdfUploader ? "Masquer" : "Ajouter un document"}
                 </Button>
             </SimpleGrid>
             {showPdfUploader && <PdfUploader />}
