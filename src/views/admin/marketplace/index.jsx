@@ -20,7 +20,6 @@ import CameraForm from "./components/CameraForm";
 import { createClient } from '@supabase/supabase-js';
 import UserForm from './components/UserForm';
 import VianneyAlertChat from '../dataTables/components/VianneyAlertChat';
-import MyCalendar from '../dataTables/components/MyCalendar';
 import TeamSchedule from '../dataTables/components/TeamSchedule';
 
 const supabaseUrl = 'https://hvjzemvfstwwhhahecwu.supabase.co';
