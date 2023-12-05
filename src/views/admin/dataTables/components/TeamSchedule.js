@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {
   Box, Text, Flex, Card, useColorModeValue, ChakraProvider, useToast, Tooltip, AlertDialog, AlertDialogBody, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, AlertDialogOverlay, Button, Input, Stack
 } from '@chakra-ui/react';
+import { FcPlus } from "react-icons/fc";
 import { Calendar, momentLocalizer, Views } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import moment from 'moment';
@@ -77,6 +78,15 @@ function TeamSchedule() {
       });
     }
     onClose();
+  };
+
+  const handleAddActionClick = () => {
+    toast({
+      title: "Ajouter une action",
+      status: "info",
+      duration: 5000,
+      isClosable: true,
+    });
   };
 
   const updateEvent = async () => {
@@ -262,6 +272,11 @@ function TeamSchedule() {
                 Emploi du temps
               </Text>
               <Menu />
+              <FcPlus 
+                size="24px" 
+                onClick={handleAddActionClick} 
+                style={{ cursor: 'pointer', position: 'absolute', top: '15px', right: '15px' }}
+              />
             </Flex>
             <Calendar
               localizer={localizer}
@@ -333,8 +348,7 @@ function TeamSchedule() {
           </AlertDialog>
         </ChakraProvider>
       </Box>
-    </Card >
-
+    </Card>
   );
 }
 
