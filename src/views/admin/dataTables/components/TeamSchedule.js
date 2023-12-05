@@ -10,6 +10,7 @@ import 'moment/locale/fr'; // Import French locale
 import { createClient } from '@supabase/supabase-js';
 import './CalendarStyles.css';
 import Menu from "components/menu/MainMenu";
+import AddActionForm from './AddActionForm';
 const supabaseUrl = 'https://hvjzemvfstwwhhahecwu.supabase.co';
 const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2anplbXZmc3R3d2hoYWhlY3d1Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY5MTQ4Mjc3MCwiZXhwIjoyMDA3MDU4NzcwfQ.6jThCX2eaUjl2qt4WE3ykPbrh6skE8drYcmk-UCNDSw';
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
@@ -83,9 +84,11 @@ function TeamSchedule() {
   const handleAddActionClick = () => {
     toast({
       title: "Ajouter une action",
+      description: <AddActionForm/>,
       status: "info",
-      duration: 5000,
+      duration: null, // The toast will stay until manually closed
       isClosable: true,
+      position: "top-right", // You can set the position as per your preference
     });
   };
 
