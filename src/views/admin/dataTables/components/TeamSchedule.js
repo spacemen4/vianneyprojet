@@ -84,13 +84,14 @@ function TeamSchedule() {
   const handleAddActionClick = () => {
     toast({
       title: "Ajouter une action",
-      description: <AddActionForm/>,
+      description: <AddActionForm />,
       status: "info",
       duration: null, // The toast will stay until manually closed
       isClosable: true,
-      position: "top-right", // You can set the position as per your preference
+      position: "top", // Center the toast at the top of the screen
     });
   };
+  
 
   const updateEvent = async () => {
     // Validation can be added here for updated event details
