@@ -275,13 +275,13 @@ function TeamSchedule() {
                 Emploi du temps
               </Text>
               <Menu />
-              <FcPlus 
-                size="24px" 
-                onClick={handleAddActionClick} 
-                style={{ cursor: 'pointer', position: 'absolute', top: '15px', right: '15px' }}
-              />
+              <Tooltip label="Cliquer pour ajouter une action" hasArrow>
+                <Box position='absolute' top='15px' right='15px' cursor='pointer'>
+                  <FcPlus size="24px" onClick={handleAddActionClick}/>
+                </Box>
+              </Tooltip>
             </Flex>
-            <Calendar
+          <Calendar
               localizer={localizer}
               events={events}
               resources={teams}
@@ -301,8 +301,8 @@ function TeamSchedule() {
               }}
             />
 
-          </Box>
-          <AlertDialog
+        </Box>
+        <AlertDialog
             isOpen={isAlertOpen}
             leastDestructiveRef={cancelRef}
             onClose={onClose}
@@ -349,10 +349,10 @@ function TeamSchedule() {
               </AlertDialogContent>
             </AlertDialogOverlay>
           </AlertDialog>
-        </ChakraProvider>
-      </Box>
-    </Card>
-  );
+      </ChakraProvider>
+    </Box>
+  </Card>
+);
 }
 
 export default TeamSchedule;
