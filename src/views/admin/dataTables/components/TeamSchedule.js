@@ -129,23 +129,23 @@ function TeamSchedule() {
     onClose();
   };
 
-  const fetchTeams = async () => {
-    const { data, error } = await supabase.from('vianney_teams').select('*');
-    if (error) {
-      console.error('Error fetching teams:', error);
-      return [];
-    }
-    return data.map(team => ({
-      id: team.id,
-      titel: team.name_of_the_team,
-      color: team.color // Assuming each team has a unique color
-    }));
-  };
+// Fetching team data and setting teams state
+const fetchTeams = async () => {
+  const { data, error } = await supabase.from('vianney_teams').select('*');
+  if (error) {
+    console.error('Error fetching teams:', error);
+    return [];
+  }
+  return data.map(team => ({
+    id: team.id,
+    titel: team.name_of_the_team // Make sure this corresponds to team name
+  }));
+};
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const teamsData = await fetchTeams();
-      setTeams(teamsData);
+useEffect(() => {
+  const fetchData = async () => {
+    const teamsData = await fetchTeams();
+    setTeams(teamsData);
 
       const { data: eventsData, error } = await supabase
         .from('team_action_view_rendering')
@@ -287,7 +287,7 @@ function TeamSchedule() {
               events={events}
               resources={teams}
               resourceIdAccessor="id"
-              resourcetitelAccessor="titel"
+              resourceTitleAccessor="titel"
               formats={formats}
               defaultView={Views.DAY}
               views={['day', 'week', 'month', 'agenda']}
