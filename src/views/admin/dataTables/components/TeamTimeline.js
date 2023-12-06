@@ -43,6 +43,7 @@ function TeamTimeline() {
   
 
   const groupRenderer = ({ group }) => {
+    console.log('Rendering group:', group); // This will log each group object
     return (
       <div style={{ height: '100px', lineHeight: '100px' }}>
         <span className="group-label">{group.title}</span>
@@ -190,16 +191,20 @@ function TeamTimeline() {
     onClose();
   };
 
-  const fetchTeamsAndEvents = async () => {
-    // Fetch teams first
-    const { data: teamsData, error: teamsError } = await supabase.from('vianney_teams').select('*');
-    if (teamsError) {
-      console.error('Error fetching teams:', teamsError);
-    } else {
-      setTeams(teamsData.map(team => ({ id: team.id, title: team.name_of_the_team })));
-    }
-
-    // Fetch events
+    const fetchTeamsAndEvents = async () => {
+      // Fetch teams
+      const { data: teamsData, error: teamsError } = await supabase.from('vianney_teams').select('*');
+      if (teamsError) {
+        console.error('Error fetching teams:', teamsError);
+      } else {
+        const formattedTeams = teamsData.map(team => ({
+          id: team.id,
+          title: team.name_of_the_team, // Ensure this is the correct key
+          color: team.color // Optional, if you want to use team colors
+        }));
+        console.log('Fetched teams:', formattedTeams); // This will log the formatted teams array
+        setTeams(formattedTeams);
+      }
     const { data: eventsData, error: eventsError } = await supabase.from('team_action_view_rendering').select('*');
     if (eventsError) {
       console.error('Error fetching events:', eventsError);
@@ -212,8 +217,8 @@ function TeamTimeline() {
         end_time: moment(event.ending_date),
         // Add other necessary event fields
       })));
-    }
-  };
+}
+    };
 
   useEffect(() => {
     fetchTeamsAndEvents();
