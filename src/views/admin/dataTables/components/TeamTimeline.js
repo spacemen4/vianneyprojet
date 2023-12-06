@@ -271,40 +271,49 @@ const [selectedEvent] = useState(null);
 
   
   const handleItemMove = (itemId, dragTime, newGroupOrder) => {
-    // Find the event and update its time and group based on dragTime and newGroupOrder
+    // Update local state
     const updatedEvents = events.map(event => {
       if (event.id === itemId) {
         return {
           ...event,
-          start_time: moment(dragTime),
-          group: groups[newGroupOrder].id, // assuming group order matches the array index
+          start_time: moment(dragTime), // update start time
+          group: groups[newGroupOrder].id, // update group if necessary
         };
       }
       return event;
     });
     setEvents(updatedEvents);
   
-    // Call a function to update the database
-    updateEventInDatabase(itemId, { start_time: dragTime, group: groups[newGroupOrder].id });
+    // Call function to update database
+    updateEventInDatabase(itemId, {
+      start_time: moment(dragTime).toISOString(), // Convert to ISO string for database
+      group: groups[newGroupOrder].id, // Include other fields if needed
+    });
   };
+  
   
   const handleItemResize = (itemId, newStartTime, newEndTime) => {
-    // Find the event and update its start and end times
+    // Update local state
     const updatedEvents = events.map(event => {
       if (event.id === itemId) {
         return {
           ...event,
-          start_time: moment(newStartTime),
-          end_time: moment(newEndTime),
+          start_time: moment(newStartTime), // update start time
+          end_time: moment(newEndTime), // update end time
         };
       }
       return event;
     });
     setEvents(updatedEvents);
   
-    // Call a function to update the database
-    updateEventInDatabase(itemId, { start_time: newStartTime, end_time: newEndTime });
+    // Call function to update database
+    updateEventInDatabase(itemId, {
+      start_time: moment(newStartTime).toISOString(), // Convert to ISO string for database
+      end_time: moment(newEndTime).toISOString(), // Convert to ISO string for database
+    });
   };
+  
+  
 
   const updateEventInDatabase = async (eventId, updatedData) => {
     try {
