@@ -71,7 +71,7 @@ function TeamTimeline() {
     const itemProps = getItemProps({
       style: {
         backgroundColor: teamColor,
-        height: '50px', // Ensure minimum height of 50px for each item
+        height: '50px', 
       },
       onMouseDown: () => {
         console.log("Item clicked");
