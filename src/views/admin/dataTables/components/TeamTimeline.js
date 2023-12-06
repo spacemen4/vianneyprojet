@@ -21,7 +21,7 @@ moment.locale('fr');
 
 function TeamTimeline() {
   const [events, setEvents] = useState([]);
-  const [selectedEvent] = useState(null);
+const [selectedEvent] = useState(null);
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const onClose = () => setIsAlertOpen(false);
   const cancelRef = React.useRef();
@@ -33,7 +33,7 @@ function TeamTimeline() {
   const textColor = useColorModeValue("secondaryGray.900", "white");
   const [visibleTimeStart, setVisibleTimeStart] = useState(moment().add(-12, 'hour').valueOf());
   const [visibleTimeEnd, setVisibleTimeEnd] = useState(moment().add(12, 'hour').valueOf());
-
+  
   useEffect(() => {
     // Function to fetch teams and events from Supabase
     const fetchTeamsAndEvents = async () => {
@@ -269,6 +269,77 @@ function TeamTimeline() {
 
   };
 
+  
+  const handleItemMove = (itemId, dragTime, newGroupOrder) => {
+    // Find the event and update its time and group based on dragTime and newGroupOrder
+    const updatedEvents = events.map(event => {
+      if (event.id === itemId) {
+        return {
+          ...event,
+          start_time: moment(dragTime),
+          group: groups[newGroupOrder].id, // assuming group order matches the array index
+        };
+      }
+      return event;
+    });
+    setEvents(updatedEvents);
+  
+    // Call a function to update the database
+    updateEventInDatabase(itemId, { start_time: dragTime, group: groups[newGroupOrder].id });
+  };
+  
+  const handleItemResize = (itemId, newStartTime, newEndTime) => {
+    // Find the event and update its start and end times
+    const updatedEvents = events.map(event => {
+      if (event.id === itemId) {
+        return {
+          ...event,
+          start_time: moment(newStartTime),
+          end_time: moment(newEndTime),
+        };
+      }
+      return event;
+    });
+    setEvents(updatedEvents);
+  
+    // Call a function to update the database
+    updateEventInDatabase(itemId, { start_time: newStartTime, end_time: newEndTime });
+  };
+
+  const updateEventInDatabase = async (eventId, updatedData) => {
+    try {
+      const { error } = await supabase
+        .from('vianney_actions')
+        .update({
+          starting_date: moment(updatedData.start_time).toISOString(),
+          ending_date: moment(updatedData.end_time).toISOString(),
+          // Add other fields if needed
+        })
+        .match({ id: eventId });
+  
+      if (error) throw error;
+  
+      toast({
+        title: "Event Updated",
+        description: "The event has been successfully updated.",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+    } catch (error) {
+      console.error('Error updating event:', error);
+      toast({
+        title: "Error",
+        description: "Failed to update the event.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  };
+  
+  
+
 
   
 
@@ -309,6 +380,8 @@ function TeamTimeline() {
               defaultTimeEnd={moment().add(12, 'hour')}
               visibleTimeStart={visibleTimeStart}
               visibleTimeEnd={visibleTimeEnd}
+              onItemMove={handleItemMove}
+  onItemResize={handleItemResize}
 
             />
 
