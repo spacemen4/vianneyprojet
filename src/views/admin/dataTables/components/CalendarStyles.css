@@ -16,4 +16,9 @@
   .rbc-toolbar button:active {
     background-image: linear-gradient(to right, blue, #1e7b92); /* Different gradient for active/clicked state */
   }
+  .react-calendar-timeline .rct-row {
+    min-height: 50px !important;
+  }
+  
+  
   

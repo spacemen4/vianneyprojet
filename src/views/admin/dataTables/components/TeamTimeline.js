@@ -40,14 +40,15 @@ function TeamTimeline() {
     title: team.titel
   }));
   const groupRenderer = ({ group }) => {
+    console.log('Rendering group:', group); // Check what each group contains
     return (
-      <div>
+      <div style={{ height: '100px', lineHeight: '100px' }}>
         <span className="group-label">{group.title}</span>
-        {/* Additional custom rendering logic here */}
       </div>
     );
-  };  
-
+  };
+  
+  
   const items = events.map(event => ({
     id: event.id,
     group: event.resourceId,
@@ -62,18 +63,31 @@ function TeamTimeline() {
     }
   }));
 
-  const itemRenderer = ({ item, timelineContext, itemContext, getItemProps }) => {
-    // Removed unused variables leftResizeProps and rightResizeProps
-    const itemProps = getItemProps();
+  const itemRenderer = ({ item, getItemProps, getResizeProps }) => {
+    const itemProps = getItemProps({
+      style: {
+        // Your custom styles here
+        height: '50px', // Ensure minimum height of 50px for each item
+      },
+      onMouseDown: () => {
+        console.log("Item clicked");
+      },
+    });
+  
+    const { left: leftResizeProps, right: rightResizeProps } = getResizeProps();
+  
     return (
-      <div {...itemProps} onClick={() => handleEventSelect(item)}>
-        {/* Your custom event rendering logic here */}
+      <div {...itemProps}>
+        <div {...leftResizeProps} /> {/* Left resize handle */}
         <div style={eventStyleGetter(item).style}>
           {item.title}
         </div>
+        <div {...rightResizeProps} /> {/* Right resize handle */}
       </div>
     );
   };
+  
+  
   const handleEventSelect = (event) => {
     setSelectedEvent(event);
     setIsAlertOpen(true);
@@ -219,19 +233,19 @@ function TeamTimeline() {
 
 
 
-  // Fetching team data and setting teams state
   const fetchTeams = async () => {
     const { data, error } = await supabase.from('vianney_teams').select('*');
     if (error) {
       console.error('Error fetching teams:', error);
       return [];
     }
+    console.log('Teams data:', data); // Check what the teams data looks like
     return data.map(team => ({
       id: team.id,
-      titel: team.name_of_the_team,
-      color: team.color // Assuming each team has a unique color
+      title: team.name_of_the_team,
+      color: team.color
     }));
-  };
+  }; 
 
   useEffect(() => {
     const fetchData = async () => {
@@ -294,14 +308,20 @@ function TeamTimeline() {
     return {
       style: {
         backgroundImage: `linear-gradient(to right, ${baseColor}, ${gradientColor})`,
-        color: 'white', // Set text color to white for better readability
+        borderRadius: '8px', // Rounded corners
+        boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)', // Subtle shadow
+        color: 'white', // Set text color to white
         textAlign: 'center', // Center align the text
         display: 'flex', // Use flexbox for alignment
         alignItems: 'center', // Align items vertically center
         justifyContent: 'center', // Align items horizontally center
+        padding: '5px 10px', // Padding around text
+        fontSize: '14px', // Font size
+        fontWeight: '500', // Font weight
       },
     };
   };
+  
 
   const messages = {
     allDay: 'Toute la journée',
@@ -364,7 +384,7 @@ function TeamTimeline() {
                 fontSize='22px'
                 fontWeight='700'
                 lineHeight='100%'>
-                Emploi du temps
+                Emploi du temps hello
               </Text>
               <Menu />
               <Tooltip label="Cliquer pour ajouter une action" hasArrow>
