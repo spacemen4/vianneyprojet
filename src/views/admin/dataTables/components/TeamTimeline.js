@@ -37,18 +37,21 @@ function TeamTimeline() {
   const [visibleTimeEnd, setVisibleTimeEnd] = useState(moment().add(12, 'hour').valueOf());
   const groups = teams.map(team => ({
     id: team.id,
-    title: team.titel
+    title: team.name_of_the_team, // Corrected property name
+    color: team.color // If the color is also a property of the team
   }));
+  
+
   const groupRenderer = ({ group }) => {
-    console.log('Rendering group:', group); // Check what each group contains
     return (
       <div style={{ height: '100px', lineHeight: '100px' }}>
         <span className="group-label">{group.title}</span>
       </div>
     );
   };
-  
-  
+
+
+
   const items = events.map(event => ({
     id: event.id,
     group: event.resourceId,
@@ -64,18 +67,19 @@ function TeamTimeline() {
   }));
 
   const itemRenderer = ({ item, getItemProps, getResizeProps }) => {
+    const teamColor = groups.find(group => group.id === item.group)?.color || 'lightgrey';
     const itemProps = getItemProps({
       style: {
-        // Your custom styles here
+        backgroundColor: teamColor,
         height: '50px', // Ensure minimum height of 50px for each item
       },
       onMouseDown: () => {
         console.log("Item clicked");
       },
     });
-  
+
     const { left: leftResizeProps, right: rightResizeProps } = getResizeProps();
-  
+
     return (
       <div {...itemProps}>
         <div {...leftResizeProps} /> {/* Left resize handle */}
@@ -86,8 +90,8 @@ function TeamTimeline() {
       </div>
     );
   };
-  
-  
+
+
   const handleEventSelect = (event) => {
     setSelectedEvent(event);
     setIsAlertOpen(true);
@@ -245,11 +249,12 @@ function TeamTimeline() {
       title: team.name_of_the_team,
       color: team.color
     }));
-  }; 
+  };
 
   useEffect(() => {
     const fetchData = async () => {
       const teamsData = await fetchTeams();
+      console.log('Teams data:', teamsData); // Check what the teams data looks like
       setTeams(teamsData);
 
       const { data: eventsData, error } = await supabase
@@ -321,7 +326,7 @@ function TeamTimeline() {
       },
     };
   };
-  
+
 
   const messages = {
     allDay: 'Toute la journée',
