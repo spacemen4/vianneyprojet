@@ -3,7 +3,7 @@ import { Box, SimpleGrid } from "@chakra-ui/react";
 import React from "react";
 import VianneyAlertChat from "./components/VianneyAlertChat";
 import CreateTeam from "./components/CreateTeam";
-import TeamSchedule from "./components/TeamSchedule";
+import TeamScheduleMadeMySelf from "./components/TeamScheduleMadeMySelf";
 import AddActionForm from "./components/AddActionForm";
 
 export default function Settings() {
@@ -14,7 +14,7 @@ export default function Settings() {
         mb='20px'
         columns={{ sm: 1, md: 2 }}
         spacing={{ base: "20px", xl: "20px" }}>
-        <TeamSchedule />
+        <TeamScheduleMadeMySelf />
         <VianneyAlertChat />
       </SimpleGrid>
       <CreateTeam />
