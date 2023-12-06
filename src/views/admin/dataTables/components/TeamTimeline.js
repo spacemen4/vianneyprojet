@@ -39,6 +39,14 @@ function TeamTimeline() {
     id: team.id,
     title: team.titel
   }));
+  const groupRenderer = ({ group }) => {
+    return (
+      <div>
+        <span className="group-label">{group.title}</span>
+        {/* Additional custom rendering logic here */}
+      </div>
+    );
+  };  
 
   const items = events.map(event => ({
     id: event.id,
@@ -372,6 +380,7 @@ function TeamTimeline() {
 
             <Timeline
               groups={groups}
+              groupRenderer={groupRenderer}
               items={items}
               defaultTimeStart={moment().add(-12, 'hour')}
               defaultTimeEnd={moment().add(12, 'hour')}
