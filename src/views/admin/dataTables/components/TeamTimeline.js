@@ -3,7 +3,6 @@ import {
   Box, Text, Flex, Card, useColorModeValue, ChakraProvider, useToast, Tooltip, AlertDialog, AlertDialogBody, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, AlertDialogOverlay, Button, Input, Stack
 } from '@chakra-ui/react';
 import { FcPlus } from "react-icons/fc";
-import { momentLocalizer, Views } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import Timeline from 'react-calendar-timeline';
 import 'react-calendar-timeline/lib/Timeline.css';
@@ -19,11 +18,10 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 // Set moment to French locale
 moment.locale('fr');
-const localizer = momentLocalizer(moment);
 
 function TeamTimeline() {
   const [events, setEvents] = useState([]);
-  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [selectedEvent] = useState(null);
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const onClose = () => setIsAlertOpen(false);
   const cancelRef = React.useRef();
@@ -35,23 +33,46 @@ function TeamTimeline() {
   const textColor = useColorModeValue("secondaryGray.900", "white");
   const [visibleTimeStart, setVisibleTimeStart] = useState(moment().add(-12, 'hour').valueOf());
   const [visibleTimeEnd, setVisibleTimeEnd] = useState(moment().add(12, 'hour').valueOf());
+
+  useEffect(() => {
+    // Function to fetch teams and events from Supabase
+    const fetchTeamsAndEvents = async () => {
+      try {
+        let { data: teamsData, error: teamsError } = await supabase.from('vianney_teams').select('*');
+        if (teamsError) throw teamsError;
+
+        let { data: eventsData, error: eventsError } = await supabase.from('vianney_actions').select(`
+          id,
+          team_to_which_its_attached,
+          starting_date,
+          ending_date,
+          action_name,
+          color: team_to_which_its_attached (color)
+        `);
+        if (eventsError) throw eventsError;
+
+        setTeams(teamsData);
+        setEvents(eventsData.map(event => ({
+          ...event,
+          group: event.team_to_which_its_attached,
+          start_time: moment(event.starting_date),
+          end_time: moment(event.ending_date)
+        })));
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        toast({ /* ... */ });
+      }
+    };
+
+    fetchTeamsAndEvents();
+  }, [toast]);
+
+  // Map teams to groups
   const groups = teams.map(team => ({
     id: team.id,
-    title: team.name_of_the_team, // Corrected property name
-    color: team.color // If the color is also a property of the team
+    title: team.name_of_the_team,
+    color: team.color
   }));
-  
-
-  const groupRenderer = ({ group }) => {
-    console.log('Rendering group:', group); // This will log each group object
-    return (
-      <div style={{ height: '100px', lineHeight: '100px' }}>
-        <span className="group-label">{group.title}</span>
-      </div>
-    );
-  };
-
-
 
   const items = events.map(event => ({
     id: event.id,
@@ -67,40 +88,9 @@ function TeamTimeline() {
     }
   }));
 
-  const itemRenderer = ({ item, getItemProps, getResizeProps }) => {
-    const teamColor = groups.find(group => group.id === item.group)?.color || 'lightgrey';
-    const itemProps = getItemProps({
-      style: {
-        backgroundColor: teamColor,
-        height: '50px', 
-      },
-      onMouseDown: () => {
-        console.log("Item clicked");
-      },
-    });
-
-    const { left: leftResizeProps, right: rightResizeProps } = getResizeProps();
-
-    return (
-      <div {...itemProps}>
-        <div {...leftResizeProps} /> {/* Left resize handle */}
-        <div style={eventStyleGetter(item).style}>
-          {item.title}
-        </div>
-        <div {...rightResizeProps} /> {/* Right resize handle */}
-      </div>
-    );
-  };
+  
 
 
-  const handleEventSelect = (event) => {
-    setSelectedEvent(event);
-    setIsAlertOpen(true);
-    setUpdatedEventName(event.titel);
-    setUpdatedEventStart(moment(event.start).format('YYYY-MM-DDTHH:mm'));
-    setUpdatedEventEnd(moment(event.end).format('YYYY-MM-DDTHH:mm'));
-    // Don't set isUpdateMode here; let the user choose
-  };
 
   const deleteEvent = async () => {
     console.log('Selected event on delete:', selectedEvent); // Log the event when attempting to delete
@@ -191,43 +181,6 @@ function TeamTimeline() {
     onClose();
   };
 
-    const fetchTeamsAndEvents = async () => {
-      // Fetch teams
-      const { data: teamsData, error: teamsError } = await supabase.from('vianney_teams').select('*');
-      if (teamsError) {
-        console.error('Error fetching teams:', teamsError);
-      } else {
-        const formattedTeams = teamsData.map(team => ({
-          id: team.id,
-          title: team.name_of_the_team, // Ensure this is the correct key
-          color: team.color // Optional, if you want to use team colors
-        }));
-        console.log('Fetched teams:', formattedTeams); // This will log the formatted teams array
-        setTeams(formattedTeams);
-      }
-    const { data: eventsData, error: eventsError } = await supabase.from('team_action_view_rendering').select('*');
-    if (eventsError) {
-      console.error('Error fetching events:', eventsError);
-    } else {
-      setEvents(eventsData.map(event => ({
-        id: event.action_id,
-        group: event.team_id,
-        title: event.action_name,
-        start_time: moment(event.starting_date),
-        end_time: moment(event.ending_date),
-        // Add other necessary event fields
-      })));
-}
-    };
-
-  useEffect(() => {
-    fetchTeamsAndEvents();
-  }, []);
-
-  useEffect(() => {
-    fetchTeamsAndEvents();
-  }, []);
-
   const handleMoveBackward = () => {
     const moveBy = visibleTimeEnd - visibleTimeStart;
     setVisibleTimeStart(visibleTimeStart - moveBy);
@@ -285,53 +238,9 @@ function TeamTimeline() {
   }, []);
 
 
-  function adjustBrightness(col, amount) {
-    let usePound = false;
+  
 
-    if (col[0] === "#") {
-      col = col.slice(1);
-      usePound = true;
-    }
-
-    const num = parseInt(col, 16);
-    let r = (num >> 16) + amount;
-
-    if (r > 255) r = 255;
-    else if (r < 0) r = 0;
-
-    let b = ((num >> 8) & 0x00FF) + amount;
-
-    if (b > 255) b = 255;
-    else if (b < 0) b = 0;
-
-    let g = (num & 0x0000FF) + amount;
-
-    if (g > 255) g = 255;
-    else if (g < 0) g = 0;
-
-    return (usePound ? "#" : "") + (g | (b << 8) | (r << 16)).toString(16);
-  }
-
-  const eventStyleGetter = (event) => {
-    const baseColor = event.color || 'lightgrey';
-    const gradientColor = adjustBrightness(baseColor, -35); // Darken the base color by 30
-    return {
-      style: {
-        backgroundImage: `linear-gradient(to right, ${baseColor}, ${gradientColor})`,
-        borderRadius: '8px', // Rounded corners
-        boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)', // Subtle shadow
-        color: 'white', // Set text color to white
-        textAlign: 'center', // Center align the text
-        display: 'flex', // Use flexbox for alignment
-        alignItems: 'center', // Align items vertically center
-        justifyContent: 'center', // Align items horizontally center
-        padding: '5px 10px', // Padding around text
-        fontSize: '14px', // Font size
-        fontWeight: '500', // Font weight
-      },
-    };
-  };
-
+  
 
   const messages = {
     allDay: 'Toute la journée',
@@ -361,23 +270,7 @@ function TeamTimeline() {
   };
 
 
-  const formats = {
-    dayFormat: 'DD/MM', // Format for day view
-    weekdayFormat: 'dddd', // Format for week view
-    monthHeaderFormat: 'MMMM YYYY', // Format for month header
-    dayHeaderFormat: 'dddd, MMMM DD', // Format for day header
-    agendaDateFormat: 'dddd, MMMM DD', // Format for agenda view date
-    agendaTimeFormat: 'HH:mm', // Format for agenda view time
-    // ... (add more formats as needed)
-  };
-
-  const CustomEvent = ({ event }) => (
-    <Tooltip label={event.titel} aria-label="Event Tooltip">
-      <div style={eventStyleGetter(event).style}>
-        {event.titel}
-      </div>
-    </Tooltip>
-  );
+  
 
   return (
     <Card
@@ -410,39 +303,13 @@ function TeamTimeline() {
 
             <Timeline
               groups={groups}
-              groupRenderer={groupRenderer}
+
               items={items}
               defaultTimeStart={moment().add(-12, 'hour')}
               defaultTimeEnd={moment().add(12, 'hour')}
               visibleTimeStart={visibleTimeStart}
               visibleTimeEnd={visibleTimeEnd}
-              itemRenderer={itemRenderer}
-              onTimeChange={(visibleStart, visibleEnd) => {
-                setVisibleTimeStart(visibleStart);
-                setVisibleTimeEnd(visibleEnd);
-              }}
-              onItemSelect={itemId => {
-                const selectedEvent = items.find(item => item.id === itemId);
-                console.log('Selected event on delete:', selectedEvent); // Log the event when attempting to delete
-                // Handle selected event
-              }}
-              localizer={localizer}
-              events={events}
-              resources={teams}
-              resourceIdAccessor="id"
-              resourceTitleAccessor="titel"
-              formats={formats}
-              defaultView={Views.DAY}
-              views={['day', 'week', 'month', 'agenda']}
-              startAccessor="start"
-              endAccessor="end"
-              eventPropGetter={eventStyleGetter}
-              messages={messages}
-              style={{ height: 500 }}
-              onSelectEvent={handleEventSelect}
-              components={{
-                event: CustomEvent, // Use Custom Event Component
-              }}
+
             />
 
           </Box>
