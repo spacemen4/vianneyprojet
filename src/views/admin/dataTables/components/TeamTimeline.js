@@ -3,7 +3,7 @@ import {
   Box, Text, Flex, Card, useColorModeValue, ChakraProvider, useToast, Tooltip, AlertDialog, AlertDialogBody, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, AlertDialogOverlay, Button, Input, Stack
 } from '@chakra-ui/react';
 import { FcPlus } from "react-icons/fc";
-import { Calendar, momentLocalizer, Views } from 'react-big-calendar';
+import { momentLocalizer, Views } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import Timeline from 'react-calendar-timeline';
 import 'react-calendar-timeline/lib/Timeline.css';
@@ -32,13 +32,30 @@ function TeamTimeline() {
   const [updatedEventStart, setUpdatedEventStart] = useState('');
   const [updatedEventEnd, setUpdatedEventEnd] = useState('');
   const [teams, setTeams] = useState([]);
-  const [groups, setGroups] = useState([]);
-  const [items, setItems] = useState([]);
   const textColor = useColorModeValue("secondaryGray.900", "white");
   const [visibleTimeStart, setVisibleTimeStart] = useState(moment().add(-12, 'hour').valueOf());
   const [visibleTimeEnd, setVisibleTimeEnd] = useState(moment().add(12, 'hour').valueOf());
-  const itemRenderer = ({ item, timelineContext, itemContext, getItemProps, getResizeProps }) => {
-    const { left: leftResizeProps, right: rightResizeProps } = getResizeProps();
+  const groups = teams.map(team => ({
+    id: team.id,
+    title: team.titel
+  }));
+
+  const items = events.map(event => ({
+    id: event.id,
+    group: event.resourceId,
+    title: event.titel,
+    start_time: moment(event.start),
+    end_time: moment(event.end),
+    itemProps: {
+      style: {
+        backgroundColor: event.color || 'lightgrey',
+        color: 'white'
+      }
+    }
+  }));
+
+  const itemRenderer = ({ item, timelineContext, itemContext, getItemProps }) => {
+    // Removed unused variables leftResizeProps and rightResizeProps
     const itemProps = getItemProps();
     return (
       <div {...itemProps} onClick={() => handleEventSelect(item)}>
@@ -148,12 +165,12 @@ function TeamTimeline() {
   };
 
   const fetchTeamsAndEvents = async () => {
-    // Fetch teams
+    // Fetch teams first
     const { data: teamsData, error: teamsError } = await supabase.from('vianney_teams').select('*');
     if (teamsError) {
       console.error('Error fetching teams:', teamsError);
     } else {
-      setGroups(teamsData.map(team => ({ id: team.id, title: team.name_of_the_team })));
+      setTeams(teamsData.map(team => ({ id: team.id, title: team.name_of_the_team })));
     }
 
     // Fetch events
@@ -161,7 +178,7 @@ function TeamTimeline() {
     if (eventsError) {
       console.error('Error fetching events:', eventsError);
     } else {
-      setItems(eventsData.map(event => ({
+      setEvents(eventsData.map(event => ({
         id: event.action_id,
         group: event.team_id,
         title: event.action_name,
@@ -171,6 +188,10 @@ function TeamTimeline() {
       })));
     }
   };
+
+  useEffect(() => {
+    fetchTeamsAndEvents();
+  }, []);
 
   useEffect(() => {
     fetchTeamsAndEvents();
@@ -352,12 +373,19 @@ function TeamTimeline() {
             <Timeline
               groups={groups}
               items={items}
+              defaultTimeStart={moment().add(-12, 'hour')}
+              defaultTimeEnd={moment().add(12, 'hour')}
               visibleTimeStart={visibleTimeStart}
               visibleTimeEnd={visibleTimeEnd}
               itemRenderer={itemRenderer}
               onTimeChange={(visibleStart, visibleEnd) => {
                 setVisibleTimeStart(visibleStart);
                 setVisibleTimeEnd(visibleEnd);
+              }}
+              onItemSelect={itemId => {
+                const selectedEvent = items.find(item => item.id === itemId);
+                console.log('Selected event on delete:', selectedEvent); // Log the event when attempting to delete
+                // Handle selected event
               }}
               localizer={localizer}
               events={events}

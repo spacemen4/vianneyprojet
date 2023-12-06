@@ -5,6 +5,7 @@ import VianneyAlertChat from "./components/VianneyAlertChat";
 import CreateTeam from "./components/CreateTeam";
 import TeamScheduleMadeMySelf from "./components/TeamScheduleMadeMySelf";
 import AddActionForm from "./components/AddActionForm";
+import TeamTimeline from "./components/TeamTimeline";
 
 export default function Settings() {
   // Chakra Color Mode
@@ -15,6 +16,7 @@ export default function Settings() {
         columns={{ sm: 1, md: 2 }}
         spacing={{ base: "20px", xl: "20px" }}>
         <TeamScheduleMadeMySelf />
+        <TeamTimeline/>
         <VianneyAlertChat />
       </SimpleGrid>
       <CreateTeam />
