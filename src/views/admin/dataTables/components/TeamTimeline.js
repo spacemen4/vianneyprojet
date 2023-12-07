@@ -133,6 +133,15 @@ function TeamTimeline() {
     }
   }));
 
+  const handleEventSelect = (event) => {
+    setSelectedEvent(event);
+    setIsAlertOpen(true);
+    setUpdatedEventName(event.titel);
+    setUpdatedEventStart(moment(event.start).format('YYYY-MM-DDTHH:mm'));
+    setUpdatedEventEnd(moment(event.end).format('YYYY-MM-DDTHH:mm'));
+    // Don't set isUpdateMode here; let the user choose
+  };
+
   const deleteEvent = async () => {
     console.log('Selected event on delete:', selectedEvent); // Log the event when attempting to delete
 
@@ -299,6 +308,7 @@ useEffect(() => {
               defaultTimeEnd={moment().add(12, 'minute')}
               visibleTimeStart={visibleTimeStart}
               visibleTimeEnd={visibleTimeEnd}
+              onItemClick={(itemId) => handleEventSelect(itemId)}
             />
 
           </Box>
