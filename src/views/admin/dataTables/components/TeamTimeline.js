@@ -96,11 +96,11 @@ function TeamTimeline() {
     }
   }));
 
-  
 
 
 
-  
+
+
 
   const handleAddActionClick = () => {
     toast({
@@ -173,9 +173,9 @@ function TeamTimeline() {
   }, []);
 
 
-  
 
-  
+
+
 
   const messages = {
     allDay: 'Toute la journée',
@@ -204,11 +204,15 @@ function TeamTimeline() {
 
   };
 
-  
+
   const handleItemMove = (itemId, dragTime, newGroupOrder) => {
     // Log to debug
     console.log("Moving item:", itemId, "to time:", dragTime, "in group:", newGroupOrder);
-  
+
+    if (!dragTime) {
+      return; // Ignore if dragTime is null
+    }
+
     const updatedEvents = events.map(event => {
       if (event.id === itemId) {
         return {
@@ -219,18 +223,24 @@ function TeamTimeline() {
       }
       return event;
     });
-  
+
     setEvents(updatedEvents);
-  
-    updateEventInDatabase(itemId, {
-      start_time: moment(dragTime).toISOString(),
-    });
+
+    if (dragTime) {
+      updateEventInDatabase(itemId, {
+        start_time: moment(dragTime).toISOString(),
+      });
+    }
   };
-  
+
   const handleItemResize = (itemId, newStartTime, newEndTime) => {
     // Log to debug
     console.log("Resizing item:", itemId, "new start time:", newStartTime, "new end time:", newEndTime);
-  
+
+    if (!newStartTime || !newEndTime) {
+      return; // Ignore if new start or end time is null
+    }
+
     const updatedEvents = events.map(event => {
       if (event.id === itemId) {
         return {
@@ -241,20 +251,24 @@ function TeamTimeline() {
       }
       return event;
     });
-  
+
     setEvents(updatedEvents);
-  
-    updateEventInDatabase(itemId, {
-      start_time: moment(newStartTime).toISOString(),
-      end_time: moment(newEndTime).toISOString(),
-    });
+
+    if (newStartTime && newEndTime) {
+      updateEventInDatabase(itemId, {
+        start_time: moment(newStartTime).toISOString(),
+        end_time: moment(newEndTime).toISOString(),
+      });
+    }
   };
-  
-  
-  
 
   const updateEventInDatabase = async (eventId, updatedData) => {
     try {
+      // Check if updatedData contains valid start_time and end_time
+      if (!updatedData.start_time || !updatedData.end_time) {
+        throw new Error("Invalid start_time or end_time.");
+      }
+  
       const { error } = await supabase
         .from('vianney_actions')
         .update({
@@ -284,6 +298,7 @@ function TeamTimeline() {
       });
     }
   };
+  
 
   const handleEventSelect = (event) => {
     setSelectedEvent(event);
@@ -370,7 +385,7 @@ function TeamTimeline() {
     }
     onClose();
   };
-  
+
 
   return (
     <Card
