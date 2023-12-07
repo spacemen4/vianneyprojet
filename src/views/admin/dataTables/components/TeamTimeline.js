@@ -3,8 +3,8 @@ import {
   Box, Text, Flex, Card, useColorModeValue, ChakraProvider, useToast, Tooltip, AlertDialog, AlertDialogBody, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, AlertDialogOverlay, Button, Input, Stack
 } from '@chakra-ui/react';
 import { FcPlus } from "react-icons/fc";
-import 'react-big-calendar/lib/css/react-big-calendar.css';
-import Timeline from 'react-calendar-timeline';
+import 'react-calendar-timeline/lib/Timeline.css';
+
 import 'react-calendar-timeline/lib/Timeline.css';
 import moment from 'moment';
 import 'moment/locale/fr'; // Import French locale
@@ -12,6 +12,14 @@ import { createClient } from '@supabase/supabase-js';
 import './CalendarStyles.css';
 import Menu from "components/menu/MainMenu";
 import AddActionForm from './AddActionForm';
+
+// Import the Timeline components from react-calendar-timeline
+import Timeline, {
+  TimelineHeaders,
+  SidebarHeader,
+  DateHeader
+} from 'react-calendar-timeline';
+
 const supabaseUrl = 'https://hvjzemvfstwwhhahecwu.supabase.co';
 const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2anplbXZmc3R3d2hoYWhlY3d1Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY5MTQ4Mjc3MCwiZXhwIjoyMDA3MDU4NzcwfQ.6jThCX2eaUjl2qt4WE3ykPbrh6skE8drYcmk-UCNDSw';
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
@@ -21,7 +29,7 @@ moment.locale('fr');
 
 function TeamTimeline() {
   const [events, setEvents] = useState([]);
-const [selectedEvent] = useState(null);
+  const [selectedEvent] = useState(null);
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const onClose = () => setIsAlertOpen(false);
   const cancelRef = React.useRef();
@@ -33,7 +41,7 @@ const [selectedEvent] = useState(null);
   const textColor = useColorModeValue("secondaryGray.900", "white");
   const [visibleTimeStart, setVisibleTimeStart] = useState(moment().add(-12, 'hour').valueOf());
   const [visibleTimeEnd, setVisibleTimeEnd] = useState(moment().add(12, 'hour').valueOf());
-  
+
   useEffect(() => {
     // Function to fetch teams and events from Supabase
     const fetchTeamsAndEvents = async () => {
@@ -350,10 +358,6 @@ const [selectedEvent] = useState(null);
     }
   };
   
-  
-
-
-  
 
   return (
     <Card
@@ -384,17 +388,16 @@ const [selectedEvent] = useState(null);
               <Button onClick={handleMoveForward}>Move Forward</Button>
             </Box>
 
+            {/* Replace the Timeline component with react-calendar-timeline */}
             <Timeline
               groups={groups}
-
               items={items}
-              defaultTimeStart={moment().add(-12, 'hour')}
-              defaultTimeEnd={moment().add(12, 'hour')}
+              defaultTimeStart={moment().add(-12, 'minute')}
+              defaultTimeEnd={moment().add(12, 'minute')}
               visibleTimeStart={visibleTimeStart}
               visibleTimeEnd={visibleTimeEnd}
               onItemMove={handleItemMove}
-  onItemResize={handleItemResize}
-
+              onItemResize={handleItemResize}
             />
 
           </Box>

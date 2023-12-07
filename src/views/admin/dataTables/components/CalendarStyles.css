@@ -20,5 +20,15 @@
     min-height: 50px !important;
   }
   
+  /* CustomTimelineStyles.css */
+.react-calendar-timeline .rct-item {
+  background-color: #007bff; /* Change the background color */
+}
+
+.react-calendar-timeline .rct-item-content {
+  font-size: 16px; /* Change the font size */
+  color: #fff; /* Change the font color */
+}
+
   
   
