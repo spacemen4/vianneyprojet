@@ -21,6 +21,7 @@ import { createClient } from '@supabase/supabase-js';
 import UserForm from './components/UserForm';
 import VianneyAlertChat from '../dataTables/components/VianneyAlertChat';
 import TeamSchedule from '../dataTables/components/TeamSchedule';
+import TeamTimeline from '../dataTables/components/TeamTimeline';
 
 const supabaseUrl = 'https://hvjzemvfstwwhhahecwu.supabase.co';
 const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2anplbXZmc3R3d2hoYWhlY3d1Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY5MTQ4Mjc3MCwiZXhwIjoyMDA3MDU4NzcwfQ.6jThCX2eaUjl2qt4WE3ykPbrh6skE8drYcmk-UCNDSw';
@@ -89,8 +90,9 @@ export default function Marketplace() {
           <Box mt="10px" borderRadius="lg" overflow="hidden">
             <MapComponent />
           </Box>
-          <Box  mt="10px">
-          <TeamSchedule/>
+          <Box mt="10px">
+            <TeamSchedule />
+
           </Box>
           <Flex direction='column'>
             <Flex
@@ -135,19 +137,25 @@ export default function Marketplace() {
           )}
         </Flex>
         <Flex
-        flexDirection='column'
+          flexDirection='column'
           gridArea={{ xl: "1 / 3 / 2 / 4", "2xl": "1 / 2 / 2 / 3" }}>
           <Box maxWidth={maxWidth}>
             <Card px='0px' mb='20px'>
-          <TableTopCreators
-            tableData={tableDataTopCreators}
-            columnsData={tableColumnsTopCreators}
-          />
-</Card>
+              <TableTopCreators
+                tableData={tableDataTopCreators}
+                columnsData={tableColumnsTopCreators}
+              />
+            </Card>
           </Box>
           <Card p='0px'>
-            <VianneyAlertChat/>
+            <VianneyAlertChat />
           </Card>
+          <Box maxWidth={maxWidth}>
+            <Card px='0px' mb='20px'>
+            <TeamTimeline/>
+            </Card>
+          </Box>
+
         </Flex>
       </Grid>
     </Box>

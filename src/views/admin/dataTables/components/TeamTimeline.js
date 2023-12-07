@@ -12,12 +12,7 @@ import { createClient } from '@supabase/supabase-js';
 import './CalendarStyles.css';
 import Menu from "components/menu/MainMenu";
 import AddActionForm from './AddActionForm';
-import Timeline, {
-  TimelineHeaders,
-  SidebarHeader,
-  DateHeader,
-  TimelineItem
-} from 'react-calendar-timeline';
+import Timeline from 'react-calendar-timeline';
 
 
 const supabaseUrl = 'https://hvjzemvfstwwhhahecwu.supabase.co';
