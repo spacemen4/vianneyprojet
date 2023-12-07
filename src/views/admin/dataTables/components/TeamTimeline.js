@@ -29,7 +29,6 @@ moment.locale('fr');
 
 function TeamTimeline() {
   const [events, setEvents] = useState([]);
-  const [selectedEvent] = useState(null);
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const onClose = () => setIsAlertOpen(false);
   const cancelRef = React.useRef();
@@ -41,6 +40,7 @@ function TeamTimeline() {
   const textColor = useColorModeValue("secondaryGray.900", "white");
   const [visibleTimeStart, setVisibleTimeStart] = useState(moment().add(-12, 'hour').valueOf());
   const [visibleTimeEnd, setVisibleTimeEnd] = useState(moment().add(12, 'hour').valueOf());
+  const [selectedEvent, setSelectedEvent] = useState(null);
 
   useEffect(() => {
     // Function to fetch teams and events from Supabase
@@ -100,46 +100,7 @@ function TeamTimeline() {
 
 
 
-  const deleteEvent = async () => {
-    console.log('Selected event on delete:', selectedEvent); // Log the event when attempting to delete
-
-    if (!selectedEvent || typeof selectedEvent.id === 'undefined') {
-      toast({
-        title: "Error",
-        description: "No event selected or event ID is missing.",
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-      });
-      return;
-    }
-
-    const { error } = await supabase
-      .from('vianney_actions')
-      .delete()
-      .match({ id: selectedEvent.id });
-
-    if (error) {
-      console.log(messages.errorEventDelete); // Log the error message
-      toast({
-        title: "Erreur lors de la suppression de l'événement",
-        description: error.message,
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-      });
-    } else {
-      console.log(messages.successEventDelete); // Log the success message
-      setEvents(events.filter(event => event.id !== selectedEvent.id));
-      toast({
-        title: "Événement supprimé",
-        status: "success",
-        duration: 5000,
-        isClosable: true,
-      });
-    }
-    onClose();
-  };
+  
 
   const handleAddActionClick = () => {
     toast({
@@ -153,41 +114,7 @@ function TeamTimeline() {
   };
 
 
-  const updateEvent = async () => {
-    // Validation can be added here for updated event details
-    const { error } = await supabase
-      .from('vianney_actions')
-      .update({
-        action_name: updatedEventName,
-        starting_date: updatedEventStart,
-        ending_date: updatedEventEnd,
-        last_updated: new Date() // update the last updated time
-      })
-      .match({ id: selectedEvent.id });
 
-    if (error) {
-      console.log(messages.errorEventUpdate); // Log the error message
-      toast({
-        title: "Erreur lors de la mise à jour de l'événement",
-        description: error.message,
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-      });
-    } else {
-      console.log(messages.successEventUpdate); // Log the success message
-      setEvents(events.map(event =>
-        event.id === selectedEvent.id ? { ...event, titel: updatedEventName, start: new Date(updatedEventStart), end: new Date(updatedEventEnd) } : event
-      ));
-      toast({
-        title: "Événement mis à jour",
-        status: "success",
-        duration: 5000,
-        isClosable: true,
-      });
-    }
-    onClose();
-  };
 
   const handleMoveBackward = () => {
     const moveBy = visibleTimeEnd - visibleTimeStart;
@@ -356,6 +283,92 @@ function TeamTimeline() {
         isClosable: true,
       });
     }
+  };
+
+  const handleEventSelect = (event) => {
+    setSelectedEvent(event);
+    setIsAlertOpen(true);
+    setUpdatedEventName(event.titel);
+    setUpdatedEventStart(moment(event.start).format('YYYY-MM-DDTHH:mm'));
+    setUpdatedEventEnd(moment(event.end).format('YYYY-MM-DDTHH:mm'));
+    // Don't set isUpdateMode here; let the user choose
+  };
+
+  const deleteEvent = async () => {
+    console.log('Selected event on delete:', selectedEvent); // Log the event when attempting to delete
+
+    if (!selectedEvent || typeof selectedEvent.id === 'undefined') {
+      toast({
+        title: "Error",
+        description: "No event selected or event ID is missing.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+      return;
+    }
+
+    const { error } = await supabase
+      .from('vianney_actions')
+      .delete()
+      .match({ id: selectedEvent.id });
+
+    if (error) {
+      console.log(messages.errorEventDelete); // Log the error message
+      toast({
+        title: "Erreur lors de la suppression de l'événement",
+        description: error.message,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    } else {
+      console.log(messages.successEventDelete); // Log the success message
+      setEvents(events.filter(event => event.id !== selectedEvent.id));
+      toast({
+        title: "Événement supprimé",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+    onClose();
+  };
+
+  const updateEvent = async () => {
+    // Validation can be added here for updated event details
+    const { error } = await supabase
+      .from('vianney_actions')
+      .update({
+        action_name: updatedEventName,
+        starting_date: updatedEventStart,
+        ending_date: updatedEventEnd,
+        last_updated: new Date() // update the last updated time
+      })
+      .match({ id: selectedEvent.id });
+
+    if (error) {
+      console.log(messages.errorEventUpdate); // Log the error message
+      toast({
+        title: "Erreur lors de la mise à jour de l'événement",
+        description: error.message,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    } else {
+      console.log(messages.successEventUpdate); // Log the success message
+      setEvents(events.map(event =>
+        event.id === selectedEvent.id ? { ...event, titel: updatedEventName, start: new Date(updatedEventStart), end: new Date(updatedEventEnd) } : event
+      ));
+      toast({
+        title: "Événement mis à jour",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+    onClose();
   };
   
 
