@@ -133,14 +133,15 @@ function TeamTimeline() {
     }
   }));
 
-  const handleEventSelect = (event) => {
-    setSelectedEvent(event);
+  const handleEventSelect = (itemId) => {
+    const selected = items.find((item) => item.id === itemId);
+    setSelectedEvent(selected);
     setIsAlertOpen(true);
-    setUpdatedEventName(event.titel);
-    setUpdatedEventStart(moment(event.start).format('YYYY-MM-DDTHH:mm'));
-    setUpdatedEventEnd(moment(event.end).format('YYYY-MM-DDTHH:mm'));
-    // Don't set isUpdateMode here; let the user choose
+    setUpdatedEventName(selected.title);
+    setUpdatedEventStart(selected.start_time.format('YYYY-MM-DDTHH:mm'));
+    setUpdatedEventEnd(selected.end_time.format('YYYY-MM-DDTHH:mm'));
   };
+  
 
   const deleteEvent = async () => {
     console.log('Selected event on delete:', selectedEvent); // Log the event when attempting to delete
