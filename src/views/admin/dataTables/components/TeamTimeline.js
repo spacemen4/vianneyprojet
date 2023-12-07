@@ -12,13 +12,13 @@ import { createClient } from '@supabase/supabase-js';
 import './CalendarStyles.css';
 import Menu from "components/menu/MainMenu";
 import AddActionForm from './AddActionForm';
-
-// Import the Timeline components from react-calendar-timeline
 import Timeline, {
   TimelineHeaders,
   SidebarHeader,
-  DateHeader
+  DateHeader,
+  TimelineItem
 } from 'react-calendar-timeline';
+
 
 const supabaseUrl = 'https://hvjzemvfstwwhhahecwu.supabase.co';
 const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2anplbXZmc3R3d2hoYWhlY3d1Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY5MTQ4Mjc3MCwiZXhwIjoyMDA3MDU4NzcwfQ.6jThCX2eaUjl2qt4WE3ykPbrh6skE8drYcmk-UCNDSw';
@@ -141,7 +141,7 @@ function TeamTimeline() {
     setUpdatedEventStart(selected.start_time.format('YYYY-MM-DDTHH:mm'));
     setUpdatedEventEnd(selected.end_time.format('YYYY-MM-DDTHH:mm'));
   };
-  
+
 
   const deleteEvent = async () => {
     console.log('Selected event on delete:', selectedEvent); // Log the event when attempting to delete
@@ -231,23 +231,23 @@ function TeamTimeline() {
     onClose();
   };
 
-const fetchTeams = async () => {
-  const { data, error } = await supabase.from('vianney_teams').select('*');
-  if (error) {
-    console.error('Error fetching teams:', error);
-    return [];
-  }
-  return data.map(team => ({
-    id: team.id,
-    titel: team.name_of_the_team,
-    color: team.color // Assuming each team has a unique color
-  }));
-};
+  const fetchTeams = async () => {
+    const { data, error } = await supabase.from('vianney_teams').select('*');
+    if (error) {
+      console.error('Error fetching teams:', error);
+      return [];
+    }
+    return data.map(team => ({
+      id: team.id,
+      titel: team.name_of_the_team,
+      color: team.color // Assuming each team has a unique color
+    }));
+  };
 
-useEffect(() => {
-  const fetchData = async () => {
-    const teamsData = await fetchTeams();
-    setTeams(teamsData);
+  useEffect(() => {
+    const fetchData = async () => {
+      const teamsData = await fetchTeams();
+      setTeams(teamsData);
 
       const { data: eventsData, error } = await supabase
         .from('team_action_view_rendering')
@@ -300,8 +300,6 @@ useEffect(() => {
               <Button mr={2} onClick={handleMoveBackward}>Move Backward</Button>
               <Button onClick={handleMoveForward}>Move Forward</Button>
             </Box>
-
-            {/* Replace the Timeline component with react-calendar-timeline */}
             <Timeline
               groups={groups}
               items={items}
@@ -310,8 +308,8 @@ useEffect(() => {
               visibleTimeStart={visibleTimeStart}
               visibleTimeEnd={visibleTimeEnd}
               onItemClick={(itemId) => handleEventSelect(itemId)}
+             
             />
-
           </Box>
           <AlertDialog
             isOpen={isAlertOpen}
