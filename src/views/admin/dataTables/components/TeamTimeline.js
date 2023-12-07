@@ -75,7 +75,6 @@ function TeamTimeline() {
     fetchTeamsAndEvents();
   }, [toast]);
 
-  // Map teams to groups
   const groups = teams.map(team => ({
     id: team.id,
     title: team.name_of_the_team,
@@ -96,12 +95,6 @@ function TeamTimeline() {
     }
   }));
 
-
-
-
-
-
-
   const handleAddActionClick = () => {
     toast({
       title: "Ajouter une action",
@@ -112,9 +105,6 @@ function TeamTimeline() {
       position: "top", // Center the toast at the top of the screen
     });
   };
-
-
-
 
   const handleMoveBackward = () => {
     const moveBy = visibleTimeEnd - visibleTimeStart;
@@ -127,8 +117,6 @@ function TeamTimeline() {
     setVisibleTimeStart(visibleTimeStart + moveBy);
     setVisibleTimeEnd(visibleTimeEnd + moveBy);
   };
-
-
 
   const fetchTeams = async () => {
     const { data, error } = await supabase.from('vianney_teams').select('*');
@@ -172,11 +160,6 @@ function TeamTimeline() {
     fetchData();
   }, []);
 
-
-
-
-
-
   const messages = {
     allDay: 'Toute la journée',
     previous: 'Précédent',
@@ -202,111 +185,6 @@ function TeamTimeline() {
     deleteEvent: 'Supprimer l\'événement',
     successMessage: 'Action réalisée avec succès',
 
-  };
-
-
-  const handleItemMove = (itemId, dragTime, newGroupOrder) => {
-    // Log to debug
-    console.log("Moving item:", itemId, "to time:", dragTime, "in group:", newGroupOrder);
-
-    if (!dragTime) {
-      return; // Ignore if dragTime is null
-    }
-
-    const updatedEvents = events.map(event => {
-      if (event.id === itemId) {
-        return {
-          ...event,
-          start_time: moment(dragTime),
-          group: groups[newGroupOrder].id,
-        };
-      }
-      return event;
-    });
-
-    setEvents(updatedEvents);
-
-    if (dragTime) {
-      updateEventInDatabase(itemId, {
-        start_time: moment(dragTime).toISOString(),
-      });
-    }
-  };
-
-  const handleItemResize = (itemId, newStartTime, newEndTime) => {
-    // Log to debug
-    console.log("Resizing item:", itemId, "new start time:", newStartTime, "new end time:", newEndTime);
-
-    if (!newStartTime || !newEndTime) {
-      return; // Ignore if new start or end time is null
-    }
-
-    const updatedEvents = events.map(event => {
-      if (event.id === itemId) {
-        return {
-          ...event,
-          start_time: moment(newStartTime),
-          end_time: moment(newEndTime),
-        };
-      }
-      return event;
-    });
-
-    setEvents(updatedEvents);
-
-    if (newStartTime && newEndTime) {
-      updateEventInDatabase(itemId, {
-        start_time: moment(newStartTime).toISOString(),
-        end_time: moment(newEndTime).toISOString(),
-      });
-    }
-  };
-
-  const updateEventInDatabase = async (eventId, updatedData) => {
-    try {
-      // Check if updatedData contains valid start_time and end_time
-      if (!updatedData.start_time || !updatedData.end_time) {
-        throw new Error("Invalid start_time or end_time.");
-      }
-  
-      const { error } = await supabase
-        .from('vianney_actions')
-        .update({
-          starting_date: moment(updatedData.start_time).toISOString(),
-          ending_date: moment(updatedData.end_time).toISOString(),
-          // Add other fields if needed
-        })
-        .match({ id: eventId });
-  
-      if (error) throw error;
-  
-      toast({
-        title: "Event Updated",
-        description: "The event has been successfully updated.",
-        status: "success",
-        duration: 5000,
-        isClosable: true,
-      });
-    } catch (error) {
-      console.error('Error updating event:', error);
-      toast({
-        title: "Error",
-        description: "Failed to update the event.",
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-      });
-    }
-  };
-  
-
-  const handleEventSelect = (event) => {
-    setSelectedEvent(event);
-    setIsAlertOpen(true);
-    setUpdatedEventName(event.titel);
-    setUpdatedEventStart(moment(event.start).format('YYYY-MM-DDTHH:mm'));
-    setUpdatedEventEnd(moment(event.end).format('YYYY-MM-DDTHH:mm'));
-    // Don't set isUpdateMode here; let the user choose
   };
 
   const deleteEvent = async () => {
@@ -424,8 +302,6 @@ function TeamTimeline() {
               defaultTimeEnd={moment().add(12, 'minute')}
               visibleTimeStart={visibleTimeStart}
               visibleTimeEnd={visibleTimeEnd}
-              onItemMove={handleItemMove}
-              onItemResize={handleItemResize}
             />
 
           </Box>
