@@ -41,6 +41,44 @@ function TeamTimeline() {
   const [visibleTimeStart, setVisibleTimeStart] = useState(moment().add(-12, 'hour').valueOf());
   const [visibleTimeEnd, setVisibleTimeEnd] = useState(moment().add(12, 'hour').valueOf());
   const [selectedEvent, setSelectedEvent] = useState(null);
+  const handleMoveBackward = () => {
+    const moveBy = visibleTimeEnd - visibleTimeStart;
+    setVisibleTimeStart(visibleTimeStart - moveBy);
+    setVisibleTimeEnd(visibleTimeEnd - moveBy);
+  };
+
+  const handleMoveForward = () => {
+    const moveBy = visibleTimeEnd - visibleTimeStart;
+    setVisibleTimeStart(visibleTimeStart + moveBy);
+    setVisibleTimeEnd(visibleTimeEnd + moveBy);
+  };
+
+  const messages = {
+    allDay: 'Toute la journée',
+    previous: 'Précédent',
+    next: 'Suivant',
+    today: 'Aujourd hui',
+    month: 'Mois',
+    week: 'Semaine',
+    day: 'Jour',
+    agenda: 'Agenda',
+    date: 'Date',
+    time: 'Heure',
+    event: 'Événement',
+    noEventsInRange: 'Aucun événement pour cette période',
+    errorEventSelect: 'Erreur lors de la sélection de l\'événement',
+    errorEventUpdate: 'Erreur lors de la mise à jour de l\'événement',
+    errorEventDelete: 'Erreur lors de la suppression de l\'événement',
+    errorMissingEventId: 'Aucun événement sélectionné ou identifiant de l\'événement manquant',
+    successEventDelete: 'Événement supprimé avec succès',
+    successEventUpdate: 'Événement mis à jour avec succès',
+    selectEventToModify: 'Sélectionnez un événement à modifier ou à supprimer.',
+    confirmDelete: 'Êtes-vous sûr de vouloir supprimer cet événement ? Cette action ne peut pas être annulée.',
+    updateEvent: 'Mettre à jour l\'événement',
+    deleteEvent: 'Supprimer l\'événement',
+    successMessage: 'Action réalisée avec succès',
+
+  };
 
   useEffect(() => {
     // Function to fetch teams and events from Supabase
@@ -95,98 +133,6 @@ function TeamTimeline() {
     }
   }));
 
-  const handleAddActionClick = () => {
-    toast({
-      title: "Ajouter une action",
-      description: <AddActionForm />,
-      status: "info",
-      duration: null, // The toast will stay until manually closed
-      isClosable: true,
-      position: "top", // Center the toast at the top of the screen
-    });
-  };
-
-  const handleMoveBackward = () => {
-    const moveBy = visibleTimeEnd - visibleTimeStart;
-    setVisibleTimeStart(visibleTimeStart - moveBy);
-    setVisibleTimeEnd(visibleTimeEnd - moveBy);
-  };
-
-  const handleMoveForward = () => {
-    const moveBy = visibleTimeEnd - visibleTimeStart;
-    setVisibleTimeStart(visibleTimeStart + moveBy);
-    setVisibleTimeEnd(visibleTimeEnd + moveBy);
-  };
-
-  const fetchTeams = async () => {
-    const { data, error } = await supabase.from('vianney_teams').select('*');
-    if (error) {
-      console.error('Error fetching teams:', error);
-      return [];
-    }
-    console.log('Teams data:', data); // Check what the teams data looks like
-    return data.map(team => ({
-      id: team.id,
-      title: team.name_of_the_team,
-      color: team.color
-    }));
-  };
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const teamsData = await fetchTeams();
-      console.log('Teams data:', teamsData); // Check what the teams data looks like
-      setTeams(teamsData);
-
-      const { data: eventsData, error } = await supabase
-        .from('team_action_view_rendering')
-        .select('*');
-
-      if (error) {
-        console.error('Error fetching events:', error);
-      } else {
-        const formattedEvents = eventsData.map(action => ({
-          id: action.action_id,
-          titel: action.action_name,
-          start: new Date(action.starting_date),
-          end: new Date(action.ending_date),
-          resourceId: action.team_id,
-          color: teamsData.find(t => t.id === action.team_id)?.color || 'lightgrey'
-        }));
-        setEvents(formattedEvents);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  const messages = {
-    allDay: 'Toute la journée',
-    previous: 'Précédent',
-    next: 'Suivant',
-    today: 'Aujourd hui',
-    month: 'Mois',
-    week: 'Semaine',
-    day: 'Jour',
-    agenda: 'Agenda',
-    date: 'Date',
-    time: 'Heure',
-    event: 'Événement',
-    noEventsInRange: 'Aucun événement pour cette période',
-    errorEventSelect: 'Erreur lors de la sélection de l\'événement',
-    errorEventUpdate: 'Erreur lors de la mise à jour de l\'événement',
-    errorEventDelete: 'Erreur lors de la suppression de l\'événement',
-    errorMissingEventId: 'Aucun événement sélectionné ou identifiant de l\'événement manquant',
-    successEventDelete: 'Événement supprimé avec succès',
-    successEventUpdate: 'Événement mis à jour avec succès',
-    selectEventToModify: 'Sélectionnez un événement à modifier ou à supprimer.',
-    confirmDelete: 'Êtes-vous sûr de vouloir supprimer cet événement ? Cette action ne peut pas être annulée.',
-    updateEvent: 'Mettre à jour l\'événement',
-    deleteEvent: 'Supprimer l\'événement',
-    successMessage: 'Action réalisée avec succès',
-
-  };
-
   const deleteEvent = async () => {
     console.log('Selected event on delete:', selectedEvent); // Log the event when attempting to delete
 
@@ -228,6 +174,17 @@ function TeamTimeline() {
     onClose();
   };
 
+  const handleAddActionClick = () => {
+    toast({
+      title: "Ajouter une action",
+      description: <AddActionForm />,
+      status: "info",
+      duration: null, // The toast will stay until manually closed
+      isClosable: true,
+      position: "top", // Center the toast at the top of the screen
+    });
+  };
+
   const updateEvent = async () => {
     // Validation can be added here for updated event details
     const { error } = await supabase
@@ -263,6 +220,46 @@ function TeamTimeline() {
     }
     onClose();
   };
+
+const fetchTeams = async () => {
+  const { data, error } = await supabase.from('vianney_teams').select('*');
+  if (error) {
+    console.error('Error fetching teams:', error);
+    return [];
+  }
+  return data.map(team => ({
+    id: team.id,
+    titel: team.name_of_the_team,
+    color: team.color // Assuming each team has a unique color
+  }));
+};
+
+useEffect(() => {
+  const fetchData = async () => {
+    const teamsData = await fetchTeams();
+    setTeams(teamsData);
+
+      const { data: eventsData, error } = await supabase
+        .from('team_action_view_rendering')
+        .select('*');
+
+      if (error) {
+        console.error('Error fetching events:', error);
+      } else {
+        const formattedEvents = eventsData.map(action => ({
+          id: action.action_id,
+          titel: action.action_name,
+          start: new Date(action.starting_date),
+          end: new Date(action.ending_date),
+          resourceId: action.team_id,
+          color: teamsData.find(t => t.id === action.team_id)?.color || 'lightgrey'
+        }));
+        setEvents(formattedEvents);
+      }
+    };
+
+    fetchData();
+  }, []);
 
 
   return (
