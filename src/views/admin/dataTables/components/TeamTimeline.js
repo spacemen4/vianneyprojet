@@ -4,7 +4,7 @@ import {
 } from '@chakra-ui/react';
 import { FcPlus } from "react-icons/fc";
 import 'react-calendar-timeline/lib/Timeline.css';
-
+import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import 'react-calendar-timeline/lib/Timeline.css';
 import moment from 'moment';
 import 'moment/locale/fr'; // Import French locale
@@ -297,8 +297,27 @@ function TeamTimeline() {
               </Tooltip>
             </Flex>
             <Box display="flex" justifyContent="center" mb={4}>
-              <Button mr={2} onClick={handleMoveBackward}>Move Backward</Button>
-              <Button onClick={handleMoveForward}>Move Forward</Button>
+              {/* Use Chakra UI Button with custom styles */}
+              <Button
+                mr={2}
+                onClick={handleMoveBackward}
+                colorScheme="blue"
+                size="sm" // Make the button slightly smaller
+                _active={{ backgroundColor: 'blue.600' }}
+                leftIcon={<FaArrowLeft style={{ marginRight: '4px' }} />} // Add some margin to the icon
+              >
+                En arrière
+              </Button>
+              {/* Use Chakra UI Button with custom styles */}
+              <Button
+                onClick={handleMoveForward}
+                colorScheme="blue"
+                size="sm" // Make the button slightly smaller
+                _active={{ backgroundColor: 'blue.600' }}
+                rightIcon={<FaArrowRight style={{ marginLeft: '4px' }} />} // Add some margin to the icon
+              >
+                En avant
+              </Button>
             </Box>
             <Timeline
               groups={groups}
@@ -308,7 +327,7 @@ function TeamTimeline() {
               visibleTimeStart={visibleTimeStart}
               visibleTimeEnd={visibleTimeEnd}
               onItemClick={(itemId) => handleEventSelect(itemId)}
-             
+
             />
           </Box>
           <AlertDialog
