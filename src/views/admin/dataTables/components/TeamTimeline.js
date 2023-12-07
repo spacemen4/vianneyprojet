@@ -327,7 +327,6 @@ function TeamTimeline() {
               visibleTimeStart={visibleTimeStart}
               visibleTimeEnd={visibleTimeEnd}
               onItemClick={(itemId) => handleEventSelect(itemId)}
-
             />
           </Box>
           <AlertDialog
