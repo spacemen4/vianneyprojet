@@ -271,47 +271,50 @@ const [selectedEvent] = useState(null);
 
   
   const handleItemMove = (itemId, dragTime, newGroupOrder) => {
-    // Update local state
+    // Log to debug
+    console.log("Moving item:", itemId, "to time:", dragTime, "in group:", newGroupOrder);
+  
     const updatedEvents = events.map(event => {
       if (event.id === itemId) {
         return {
           ...event,
-          start_time: moment(dragTime), // update start time
-          group: groups[newGroupOrder].id, // update group if necessary
+          start_time: moment(dragTime),
+          group: groups[newGroupOrder].id,
         };
       }
       return event;
     });
+  
     setEvents(updatedEvents);
   
-    // Call function to update database
     updateEventInDatabase(itemId, {
-      start_time: moment(dragTime).toISOString(), // Convert to ISO string for database
-      group: groups[newGroupOrder].id, // Include other fields if needed
+      start_time: moment(dragTime).toISOString(),
     });
   };
-  
   
   const handleItemResize = (itemId, newStartTime, newEndTime) => {
-    // Update local state
+    // Log to debug
+    console.log("Resizing item:", itemId, "new start time:", newStartTime, "new end time:", newEndTime);
+  
     const updatedEvents = events.map(event => {
       if (event.id === itemId) {
         return {
           ...event,
-          start_time: moment(newStartTime), // update start time
-          end_time: moment(newEndTime), // update end time
+          start_time: moment(newStartTime),
+          end_time: moment(newEndTime),
         };
       }
       return event;
     });
+  
     setEvents(updatedEvents);
   
-    // Call function to update database
     updateEventInDatabase(itemId, {
-      start_time: moment(newStartTime).toISOString(), // Convert to ISO string for database
-      end_time: moment(newEndTime).toISOString(), // Convert to ISO string for database
+      start_time: moment(newStartTime).toISOString(),
+      end_time: moment(newEndTime).toISOString(),
     });
   };
+  
   
   
 
