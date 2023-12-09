@@ -151,7 +151,7 @@ const EquipiersTable = () => {
           </Thead>
           <Tbody>
             {equipiers.map((equipier, index) => (
-              <Tr key={index} onClick={() => showDetails(equipier)} cursor="pointer">
+              <Tr key={index} onClick={() => onRowClick(equipier)} cursor="pointer">
                 <Td><img src={equipier.photo_profile_url} alt="Profile" style={{ width: '50px', height: '50px' }} /></Td>
                 <Td>{equipier.name_of_the_team}</Td>
                 <Td>{getLeaderName(equipier.team_members)}</Td>
@@ -161,13 +161,13 @@ const EquipiersTable = () => {
           </Tbody>
         </Table>
       </TableContainer>
+
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} size="xl">
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Team Details</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            {/* Map container */}
             <div id={`map-${selectedEquipier?.id}`} style={{ height: '500px', width: '100%' }}></div>
           </ModalBody>
         </ModalContent>
