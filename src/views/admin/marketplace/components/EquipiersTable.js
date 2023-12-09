@@ -6,7 +6,8 @@ import {
   Tr,
   Th,
   Td,
-  TableContainer
+  TableContainer,
+  useToast
 } from '@chakra-ui/react';
 import { createClient } from '@supabase/supabase-js';
 
@@ -17,6 +18,7 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 const EquipiersTable = () => {
   const [equipiers, setEquipiers] = useState([]);
+  const toast = useToast();
 
   useEffect(() => {
     const fetchEquipiers = async () => {
@@ -38,6 +40,24 @@ const EquipiersTable = () => {
     return leader ? `${leader.firstname} ${leader.familyname}` : 'No Leader';
   };
 
+  const showDetails = (equipier) => {
+    const leaderName = getLeaderName(equipier.team_members);
+    toast({
+      title: 'Team Details',
+      description: `Team: ${equipier.name_of_the_team}
+                    Leader: ${leaderName}
+                    Latitude: ${equipier.latitude}
+                    Longitude: ${equipier.longitude}
+                    Status: ${equipier.status ? 'Active' : 'Inactive'}
+                    Last Active: ${equipier.last_active}
+                    ...`, // Include other details as needed
+      status: 'info',
+      duration: 9000,
+      isClosable: true,
+      position: "top"
+    });
+  };
+
   return (
     <TableContainer>
       <Table variant='simple'>
@@ -47,11 +67,11 @@ const EquipiersTable = () => {
             <Th>Nom de l'équipe</Th>
             <Th>Nom du Leader</Th>
             <Th>Mission</Th> {/* Assuming you have a 'mission' field */}
-          </Tr>
+</Tr>
         </Thead>
         <Tbody>
           {equipiers.map((equipier, index) => (
-            <Tr key={index}>
+            <Tr key={index} onClick={() => showDetails(equipier)} cursor="pointer">
               <Td><img src={equipier.photo_profile_url} alt="Profile" style={{ width: '50px', height: '50px' }}/></Td>
               <Td>{equipier.name_of_the_team}</Td>
               <Td>{getLeaderName(equipier.team_members)}</Td>
