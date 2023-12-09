@@ -9,9 +9,7 @@ const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYm
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 const UserForm = () => {
-  const [familyName, setFamilyName] = useState('');
-  const [firstName, setFirstName] = useState('');
-  const [birthdate, setBirthdate] = useState('');
+  const [nameOfTheTeam, setNameOfTheTeam] = useState('');
   const [profilePhoto, setProfilePhoto] = useState(null);
   const [lat, setLat] = useState(45.75799485263588);
   const [lng, setLng] = useState(4.825754111294844);
@@ -55,9 +53,7 @@ const UserForm = () => {
     const { error: insertError } = await supabase
       .from('vianney_users_on_the_ground')
       .insert([{
-        family_name: familyName,
-        first_name: firstName,
-        birthdate: new Date(birthdate).toISOString(),
+        name_of_the_team: nameOfTheTeam,
         latitude: lat,
         longitude: lng,
         photo_profile_url: publicURL,
@@ -84,20 +80,9 @@ const UserForm = () => {
       </div>
       <input
         type="text"
-        placeholder="Family Name"
-        value={familyName}
-        onChange={(e) => setFamilyName(e.target.value)}
-      />
-      <input
-        type="text"
-        placeholder="First Name"
-        value={firstName}
-        onChange={(e) => setFirstName(e.target.value)}
-      />
-      <input
-        type="date"
-        value={birthdate}
-        onChange={(e) => setBirthdate(e.target.value)}
+        placeholder="Name of the Team"
+        value={nameOfTheTeam}
+        onChange={(e) => setNameOfTheTeam(e.target.value)}
       />
       <input type="file" onChange={handleFileChange} />
       <button type="submit">Add User</button>
@@ -105,4 +90,4 @@ const UserForm = () => {
   );
 };
 
-export default UserForm;
+export default UserForm
