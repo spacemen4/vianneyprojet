@@ -120,7 +120,7 @@ const EquipiersTable = () => {
     return (
       <>
         {photo_profile_url && (
-          <img src={photo_profile_url} alt="Photo de l'équipe" style={{ width: '100px', height: '100px', borderRadius: '50%', objectFit: 'cover', marginBottom: '20px' }} />
+          <img src={photo_profile_url} alt="l'équipe" style={{ width: '100px', height: '100px', borderRadius: '50%', objectFit: 'cover', marginBottom: '20px' }} />
         )}
         <p><strong>Nom de l'équipe :</strong> {name_of_the_team}</p>
         <p><strong>Statut :</strong> {status ? 'Actif' : 'Inactif'}</p>
@@ -168,7 +168,7 @@ const EquipiersTable = () => {
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} size="xl">
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Team Details</ModalHeader>
+          <ModalHeader>Details sur l'équipe</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             {renderTeamDetails()}
