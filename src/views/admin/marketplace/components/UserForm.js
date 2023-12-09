@@ -13,11 +13,25 @@ const UserForm = () => {
   const [profilePhoto, setProfilePhoto] = useState(null);
   const [lat, setLat] = useState(45.75799485263588);
   const [lng, setLng] = useState(4.825754111294844);
+  const [teamMembers, setTeamMembers] = useState([{ id: '', familyname: '', firstname: '', mail: '', phone: '' }]);
 
   const handleFileChange = (e) => {
     setProfilePhoto(e.target.files[0]);
   };
 
+  // Handle change in team members' input fields
+  const handleTeamMemberChange = (index, event) => {
+    const values = [...teamMembers];
+    values[index][event.target.name] = event.target.value;
+    setTeamMembers(values);
+  };
+
+  // Add a new team member input field
+  const handleAddTeamMember = () => {
+    setTeamMembers([...teamMembers, { id: '', familyname: '', firstname: '', mail: '', phone: '' }]);
+  };
+
+  // Map events
   const LocationMarker = () => {
     const map = useMapEvents({
       click(e) {
@@ -57,7 +71,8 @@ const UserForm = () => {
         latitude: lat,
         longitude: lng,
         photo_profile_url: publicURL,
-        last_active: new Date().toISOString()
+        last_active: new Date().toISOString(),
+        team_members: teamMembers // Add team members here
       }]);
 
     if (insertError) {
@@ -85,6 +100,28 @@ const UserForm = () => {
         onChange={(e) => setNameOfTheTeam(e.target.value)}
       />
       <input type="file" onChange={handleFileChange} />
+      <div>
+        {teamMembers.map((teamMember, index) => (
+          <div key={index}>
+            <input
+              type="text"
+              name="id"
+              placeholder="ID"
+              value={teamMember.id}
+              onChange={(e) => handleTeamMemberChange(index, e)}
+            />
+            <input
+              type="text"
+              name="familyname"
+              placeholder="Family Name"
+              value={teamMember.familyname}
+              onChange={(e) => handleTeamMemberChange(index, e)}
+            />
+            {/* ... other input fields for firstname, mail, phone */}
+          </div>
+        ))}
+        <button type="button" onClick={handleAddTeamMember}>Add Team Member</button>
+      </div>
       <button type="submit">Add User</button>
     </form>
   );
