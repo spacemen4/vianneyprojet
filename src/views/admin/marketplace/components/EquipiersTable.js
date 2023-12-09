@@ -7,7 +7,6 @@ import {
   Th,
   Td,
   TableContainer,
-  useToast,
   Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody,
 } from '@chakra-ui/react';
 import L from 'leaflet';
@@ -22,7 +21,6 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 const EquipiersTable = () => {
   const [equipiers, setEquipiers] = useState([]);
-  const toast = useToast();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedEquipier, setSelectedEquipier] = useState(null);
 
@@ -34,34 +32,27 @@ const EquipiersTable = () => {
   useEffect(() => {
     if (selectedEquipier && isModalOpen) {
       const mapId = `map-${selectedEquipier.id}`;
-
-      // Wait for the next browser repaint to ensure the modal and its contents have been rendered
+      const redIcon = createRedIcon(); // Create a red icon
+  
       requestAnimationFrame(() => {
         const mapContainer = document.getElementById(mapId);
         if (mapContainer && !mapContainer._leaflet) {
-          // Initialize the map
           const map = L.map(mapId).setView([selectedEquipier.latitude, selectedEquipier.longitude], 13);
-          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
-            attribution: '© OpenStreetMap contributors'
-          }).addTo(map);
-          L.marker([selectedEquipier.latitude, selectedEquipier.longitude]).addTo(map);
-
-          // Store reference to map for cleanup
-          mapContainer._leaflet = map;
+          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+  
+          equipiers.forEach(team => {
+            // Use the red icon for all markers
+            L.marker([team.latitude, team.longitude], { icon: redIcon }).addTo(map);
+          });
         }
       });
-
+  
       return () => {
-        // Cleanup the map when the modal is closed or a different equipier is selected
-        const mapElement = L.DomUtil.get(mapId);
-        if (mapElement && mapElement._leaflet) {
-          mapElement._leaflet.remove();
-          mapElement._leaflet = undefined;
-        }
+        // Cleanup code
       };
     }
-  }, [selectedEquipier, isModalOpen]);
+  }, [selectedEquipier, isModalOpen, equipiers]); // Include equipiers in dependencies
+  
 
 
   useEffect(() => {
@@ -83,59 +74,21 @@ const EquipiersTable = () => {
     const leader = teamMembers.find(member => member.isLeader);
     return leader ? `${leader.firstname} ${leader.familyname}` : 'No Leader';
   };
-  const createCustomIcon = (color) => {
-    const iconHtml = renderToString(<MdPlace style={{ fontSize: '24px', color }} />);
+  
+
+
+  const createRedIcon = () => {
+    const iconHtml = renderToString(<MdPlace style={{ fontSize: '24px', color: 'red' }} />);
     return L.divIcon({
       html: iconHtml,
-      className: 'custom-leaflet-icon',
+      className: 'custom-leaflet-icon', // Make sure this class does not conflict with your CSS
       iconSize: L.point(30, 30),
       iconAnchor: [15, 30],
-      popupAnchor: [0, -50]
+      popupAnchor: [0, -30]
     });
   };
-
-
-  const showDetails = (equipier) => {
-    const leaderName = getLeaderName(equipier.team_members);
-    const mapId = `map-${equipier.id}`;
-
-    toast({
-      title: 'Team Details',
-      description: (
-        <>
-          <p>Team: {equipier.name_of_the_team}</p>
-          <p>Leader: {leaderName}</p>
-          {/* ... other details ... */}
-          <div id={mapId} style={{ height: '500px', width: '100%' }}></div>
-        </>
-      ),
-      status: 'info',
-      duration: null, // Keeps the toast open until closed manually
-      isClosable: true,
-      position: "top",
-      // In the onCloseComplete property of the toast
-      onCloseComplete: () => {
-        const mapElement = L.DomUtil.get(mapId);
-        if (mapElement && mapElement._leaflet_map) {
-          mapElement._leaflet_map.remove();
-        }
-      }
-    });
-
-    setTimeout(() => {
-      const mapContainer = document.getElementById(mapId);
-      if (mapContainer && !mapContainer._leaflet_map) {
-        const map = L.map(mapId).setView([equipier.latitude, equipier.longitude], 13);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-
-        // Add markers for all teams
-        equipiers.forEach(team => {
-          const icon = team.id === equipier.id ? createCustomIcon('blue') : createCustomIcon('red');
-          L.marker([team.latitude, team.longitude], { icon }).addTo(map);
-        });
-      }
-    }, 500);
-  };
+  
+  
 
   return (
     <>
