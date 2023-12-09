@@ -38,9 +38,7 @@ const EquipiersTable = () => {
       <Table variant='simple'>
         <Thead>
           <Tr>
-            <Th>Family Name</Th>
-            <Th>First Name</Th>
-            <Th>Birthdate</Th>
+            <Th>Name of the Team</Th>
             <Th>Latitude</Th>
             <Th>Longitude</Th>
             <Th>Photo</Th>
@@ -59,9 +57,7 @@ const EquipiersTable = () => {
         <Tbody>
           {equipiers.map((equipier, index) => (
             <Tr key={index}>
-              <Td>{equipier.family_name}</Td>
-              <Td>{equipier.first_name}</Td>
-              <Td>{equipier.birthdate}</Td>
+              <Td>{equipier.name_of_the_team}</Td>
               <Td>{equipier.latitude}</Td>
               <Td>{equipier.longitude}</Td>
               <Td><img src={equipier.photo_profile_url} alt="Profile"/></Td>
