@@ -9,6 +9,8 @@ import {
   TableContainer,
   useToast
 } from '@chakra-ui/react';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 import { createClient } from '@supabase/supabase-js';
 
 // Initialize Supabase client
@@ -42,22 +44,36 @@ const EquipiersTable = () => {
 
   const showDetails = (equipier) => {
     const leaderName = getLeaderName(equipier.team_members);
+  
+    const mapId = `map-${equipier.id}`; // Unique ID for each map
+  
     toast({
       title: 'Team Details',
-      description: `Team: ${equipier.name_of_the_team}
-                    Leader: ${leaderName}
-                    Latitude: ${equipier.latitude}
-                    Longitude: ${equipier.longitude}
-                    Status: ${equipier.status ? 'Active' : 'Inactive'}
-                    Last Active: ${equipier.last_active}
-                    ...`, // Include other details as needed
+      description: (
+        <>
+          <p>Team: {equipier.name_of_the_team}</p>
+          <p>Leader: {leaderName}</p>
+          {/* ... other details ... */}
+          <div id={mapId} style={{ height: '150px', width: '100%' }}></div>
+        </>
+      ),
       status: 'info',
-      duration: 9000,
+      duration: null, // Keeps the toast open until closed manually
       isClosable: true,
-      position: "top"
+      position: "top",
+      onCloseComplete: () => L.map(mapId).remove(), // Clean up the map when toast is closed
+      onRender: () => {
+        // Initialize the map after the toast is rendered
+        const map = L.map(mapId).setView([equipier.latitude, equipier.longitude], 13);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          maxZoom: 19,
+          attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        L.marker([equipier.latitude, equipier.longitude]).addTo(map);
+      }
     });
   };
-
+  
   return (
     <TableContainer>
       <Table variant='simple'>
