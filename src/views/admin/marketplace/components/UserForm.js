@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { v4 as uuidv4 } from 'uuid'; 
 import { createClient } from '@supabase/supabase-js';
 import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -28,60 +29,66 @@ const UserForm = () => {
 
   // Add a new team member input field
   const handleAddTeamMember = () => {
-    setTeamMembers([...teamMembers, { id: '', familyname: '', firstname: '', mail: '', phone: '' }]);
+    setTeamMembers([...teamMembers, { 
+      id: uuidv4(), // Generate unique ID for new team member
+      familyname: '', 
+      firstname: '', 
+      mail: '', 
+      phone: '' 
+    }]);
   };
 
-  // Map events
-  const LocationMarker = () => {
-    const map = useMapEvents({
-      click(e) {
-        setLat(e.latlng.lat);
-        setLng(e.latlng.lng);
-        map.flyTo(e.latlng, map.getZoom());
-      },
-    });
+// Map events
+const LocationMarker = () => {
+  const map = useMapEvents({
+    click(e) {
+      setLat(e.latlng.lat);
+      setLng(e.latlng.lng);
+      map.flyTo(e.latlng, map.getZoom());
+    },
+  });
 
-    return lat !== 0 ? (
-      <Marker position={[lat, lng]}></Marker>
-    ) : null;
-  };
+  return lat !== 0 ? (
+    <Marker position={[lat, lng]}></Marker>
+  ) : null;
+};
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    // Upload image to Supabase Storage
-    const fileExt = profilePhoto.name.split('.').pop();
-    const fileName = `${Date.now()}.${fileExt}`;
-    let uploadResponse = await supabase.storage
-      .from('users_on_the_ground')
-      .upload(fileName, profilePhoto);
+  // Upload image to Supabase Storage
+  const fileExt = profilePhoto.name.split('.').pop();
+  const fileName = `${Date.now()}.${fileExt}`;
+  let uploadResponse = await supabase.storage
+    .from('users_on_the_ground')
+    .upload(fileName, profilePhoto);
 
-    if (uploadResponse.error) {
-      console.error('Error uploading file:', uploadResponse.error);
-      return;
-    }
+  if (uploadResponse.error) {
+    console.error('Error uploading file:', uploadResponse.error);
+    return;
+  }
 
-    const publicURL = `https://hvjzemvfstwwhhahecwu.supabase.co/storage/v1/object/public/users_on_the_ground/${fileName}`;
+  const publicURL = `https://hvjzemvfstwwhhahecwu.supabase.co/storage/v1/object/public/users_on_the_ground/${fileName}`;
 
-    // Insert user data into the database
-    const { error: insertError } = await supabase
-      .from('vianney_users_on_the_ground')
-      .insert([{
-        name_of_the_team: nameOfTheTeam,
-        latitude: lat,
-        longitude: lng,
-        photo_profile_url: publicURL,
-        last_active: new Date().toISOString(),
-        team_members: teamMembers // Add team members here
-      }]);
+  // Insert user data into the database
+  const { error: insertError } = await supabase
+    .from('vianney_users_on_the_ground')
+    .insert([{
+      name_of_the_team: nameOfTheTeam,
+      latitude: lat,
+      longitude: lng,
+      photo_profile_url: publicURL,
+      last_active: new Date().toISOString(),
+      team_members: teamMembers // Add team members here
+    }]);
 
-    if (insertError) {
-      console.error('Error inserting data:', insertError);
-      return;
-    }
+  if (insertError) {
+    console.error('Error inserting data:', insertError);
+    return;
+  }
 
-    alert('User data added successfully');
-  };
+  alert('User data added successfully');
+};
 
   return (
     <form onSubmit={handleSubmit}>
@@ -109,6 +116,7 @@ const UserForm = () => {
               placeholder="ID"
               value={teamMember.id}
               onChange={(e) => handleTeamMemberChange(index, e)}
+              readOnly // Make the ID field read-only
             />
             <input
               type="text"
@@ -117,7 +125,27 @@ const UserForm = () => {
               value={teamMember.familyname}
               onChange={(e) => handleTeamMemberChange(index, e)}
             />
-            {/* ... other input fields for firstname, mail, phone */}
+            <input
+              type="text"
+              name="firstname"
+              placeholder="First Name"
+              value={teamMember.firstname}
+              onChange={(e) => handleTeamMemberChange(index, e)}
+            />
+            <input
+              type="text"
+              name="mail"
+              placeholder="Email"
+              value={teamMember.mail}
+              onChange={(e) => handleTeamMemberChange(index, e)}
+            />
+            <input
+              type="text"
+              name="phone"
+              placeholder="Phone"
+              value={teamMember.phone}
+              onChange={(e) => handleTeamMemberChange(index, e)}
+            />
           </div>
         ))}
         <button type="button" onClick={handleAddTeamMember}>Add Team Member</button>
