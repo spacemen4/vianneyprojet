@@ -16,9 +16,9 @@ import {
   Box,
   VStack,
   HStack,
+  Checkbox,
 } from '@chakra-ui/react';
 
-// ... [rest of your imports and Supabase initialization]
 
 const UserForm = () => {
   const [nameOfTheTeam, setNameOfTheTeam] = useState('');
@@ -30,17 +30,21 @@ const UserForm = () => {
     familyname: '', 
     firstname: '', 
     mail: '', 
-    phone: '' 
+    phone: '', 
+    isLeader: false, // Added isLeader property
   }]);
 
   const handleFileChange = (e) => {
     setProfilePhoto(e.target.files[0]);
   };
 
-  // Handle change in team members' input fields
   const handleTeamMemberChange = (index, event) => {
     const values = [...teamMembers];
-    values[index][event.target.name] = event.target.value;
+    if(event.target.name === 'isLeader') {
+      values[index][event.target.name] = event.target.checked; // For checkbox, use 'checked' instead of 'value'
+    } else {
+      values[index][event.target.name] = event.target.value;
+    }
     setTeamMembers(values);
   };
 
@@ -133,9 +137,9 @@ const LocationMarker = () => {
           <Input id='profile-photo' type="file" onChange={handleFileChange} />
         </FormControl>
 
-        {teamMembers.map((teamMember, index) => (
-  <HStack key={index} spacing={2}>
-    <Input
+    {teamMembers.map((teamMember, index) => (
+      <HStack key={index} spacing={2}>
+        <Input
       type="text"
       name="familyname" // Add this line
       placeholder="Nom de famille"
@@ -163,9 +167,16 @@ const LocationMarker = () => {
       value={teamMember.phone}
       onChange={(e) => handleTeamMemberChange(index, e)}
     />
-  </HStack>
-))}
-
+        <Checkbox 
+          name="isLeader"
+          isChecked={teamMember.isLeader}
+          onChange={(e) => handleTeamMemberChange(index, e)}
+        >
+          Leader ?
+        </Checkbox>
+      </HStack>
+    ))}
+    
 
         <Button colorScheme="blue" onClick={handleAddTeamMember}>Ajouter un membre de l'équipe</Button>
       </VStack>
