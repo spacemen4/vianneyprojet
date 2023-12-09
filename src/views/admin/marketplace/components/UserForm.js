@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { v4 as uuidv4 } from 'uuid'; 
+import { v4 as uuidv4 } from 'uuid';
 import { createClient } from '@supabase/supabase-js';
 import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -14,7 +14,13 @@ const UserForm = () => {
   const [profilePhoto, setProfilePhoto] = useState(null);
   const [lat, setLat] = useState(45.75799485263588);
   const [lng, setLng] = useState(4.825754111294844);
-  const [teamMembers, setTeamMembers] = useState([{ id: '', familyname: '', firstname: '', mail: '', phone: '' }]);
+  const [teamMembers, setTeamMembers] = useState([{ 
+    id: uuidv4(), // Generate unique ID for the first team member
+    familyname: '', 
+    firstname: '', 
+    mail: '', 
+    phone: '' 
+  }]);
 
   const handleFileChange = (e) => {
     setProfilePhoto(e.target.files[0]);
@@ -27,7 +33,6 @@ const UserForm = () => {
     setTeamMembers(values);
   };
 
-  // Add a new team member input field
   const handleAddTeamMember = () => {
     setTeamMembers([...teamMembers, { 
       id: uuidv4(), // Generate unique ID for new team member
@@ -38,7 +43,7 @@ const UserForm = () => {
     }]);
   };
 
-// Map events
+  // Map events
 const LocationMarker = () => {
   const map = useMapEvents({
     click(e) {
@@ -53,24 +58,29 @@ const LocationMarker = () => {
   ) : null;
 };
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  // Upload image to Supabase Storage
-  const fileExt = profilePhoto.name.split('.').pop();
-  const fileName = `${Date.now()}.${fileExt}`;
-  let uploadResponse = await supabase.storage
-    .from('users_on_the_ground')
-    .upload(fileName, profilePhoto);
+    // Check if profilePhoto is not null before accessing its properties
+    if (!profilePhoto) {
+      console.error('No profile photo selected');
+      return;
+    }
 
-  if (uploadResponse.error) {
-    console.error('Error uploading file:', uploadResponse.error);
-    return;
-  }
+    const fileExt = profilePhoto.name.split('.').pop();
+    const fileName = `${Date.now()}.${fileExt}`;
+    let uploadResponse = await supabase.storage
+      .from('users_on_the_ground')
+      .upload(fileName, profilePhoto);
 
-  const publicURL = `https://hvjzemvfstwwhhahecwu.supabase.co/storage/v1/object/public/users_on_the_ground/${fileName}`;
+    if (uploadResponse.error) {
+      console.error('Error uploading file:', uploadResponse.error);
+      return;
+    }
 
-  // Insert user data into the database
+    const publicURL = `https://hvjzemvfstwwhhahecwu.supabase.co/storage/v1/object/public/users_on_the_ground/${fileName}`;
+
+    // Insert user data into the database
   const { error: insertError } = await supabase
     .from('vianney_users_on_the_ground')
     .insert([{
@@ -87,8 +97,8 @@ const handleSubmit = async (e) => {
     return;
   }
 
-  alert('User data added successfully');
-};
+    alert('User data added successfully');
+  };
 
   return (
     <form onSubmit={handleSubmit}>
