@@ -32,13 +32,13 @@ const EquipiersTable = () => {
   useEffect(() => {
     if (selectedEquipier && isModalOpen) {
       const mapId = `map-${selectedEquipier.id}`;
-      
+
       requestAnimationFrame(() => {
         const mapContainer = document.getElementById(mapId);
         if (mapContainer && !mapContainer._leaflet) {
           const map = L.map(mapId).setView([selectedEquipier.latitude, selectedEquipier.longitude], 13);
           L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-  
+
           equipiers.forEach(team => {
             // Use a different color for the selected team
             const icon = team.id === selectedEquipier.id ? createCustomIcon('blue') : createCustomIcon();
@@ -46,14 +46,14 @@ const EquipiersTable = () => {
           });
         }
       });
-  
+
       return () => {
         // Cleanup code
       };
     }
   }, [selectedEquipier, isModalOpen, equipiers]);
-  
-  
+
+
 
 
   useEffect(() => {
@@ -75,10 +75,10 @@ const EquipiersTable = () => {
     const leader = teamMembers.find(member => member.isLeader);
     return leader ? `${leader.firstname} ${leader.familyname}` : 'No Leader';
   };
-  
 
 
-  
+
+
 
   const createCustomIcon = (color = 'red') => {
     const iconHtml = renderToString(<MdPlace style={{ fontSize: '24px', color }} />);
@@ -90,9 +90,57 @@ const EquipiersTable = () => {
       popupAnchor: [0, -30]
     });
   };
-  
-  
-  
+  const renderTeamDetails = () => {
+    if (!selectedEquipier) return null;
+
+    // Extracting team details
+    const {
+      name_of_the_team,
+      status,
+      last_active,
+      type_d_equipe,
+      numero_d_equipier,
+      specialite,
+      role_de_l_equipier,
+      numero_de_telephone,
+      mail,
+      type_de_vehicule,
+      immatriculation,
+      photo_profile_url,
+      latitude,
+      longitude,
+      team_members,
+    } = selectedEquipier;
+
+    // Formatting the team members list
+    const teamMembersList = team_members?.map(member => (
+      <li key={member.id}>
+        {member.firstname} {member.familyname} - {member.isLeader ? 'Leader' : 'Member'}
+      </li>
+    ));
+
+
+
+
+    return (
+      <>
+        <p><strong>Team Name:</strong> {name_of_the_team}</p>
+        <p><strong>Status:</strong> {status ? 'Active' : 'Inactive'}</p>
+        <p><strong>Last Active:</strong> {last_active}</p>
+        <p><strong>Team Type:</strong> {type_d_equipe}</p>
+        <p><strong>Team Member Number:</strong> {numero_d_equipier}</p>
+        <p><strong>Specialty:</strong> {specialite}</p>
+        <p><strong>Role:</strong> {role_de_l_equipier}</p>
+        <p><strong>Phone Number:</strong> {numero_de_telephone}</p>
+        <p><strong>Email:</strong> {mail}</p>
+        <p><strong>Vehicle Type:</strong> {type_de_vehicule}</p>
+        <p><strong>Registration Number:</strong> {immatriculation}</p>
+        <p><strong>Location:</strong> Latitude: {latitude}, Longitude: {longitude}</p>
+        <p><strong>Team Members:</strong></p>
+        <ul>{teamMembersList}</ul>
+      </>
+    );
+  };
 
   return (
     <>
@@ -125,6 +173,7 @@ const EquipiersTable = () => {
           <ModalHeader>Team Details</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
+            {renderTeamDetails()}
             <div id={`map-${selectedEquipier?.id}`} style={{ height: '500px', width: '100%' }}></div>
           </ModalBody>
         </ModalContent>
