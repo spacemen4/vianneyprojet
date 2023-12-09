@@ -93,7 +93,6 @@ const EquipiersTable = () => {
   const renderTeamDetails = () => {
     if (!selectedEquipier) return null;
 
-    // Extracting team details
     const {
       name_of_the_team,
       status,
@@ -112,34 +111,30 @@ const EquipiersTable = () => {
       team_members,
     } = selectedEquipier;
 
-    // Formatting the team members list
     const teamMembersList = team_members?.map(member => (
       <li key={member.id}>
-        {member.firstname} {member.familyname} - {member.isLeader ? 'Leader' : 'Member'}
+        {member.firstname} {member.familyname} - {member.isLeader ? 'Responsable' : 'Membre'}
       </li>
     ));
 
-
-
-
-  return (
-    <>
-      {photo_profile_url && (
-        <img src={photo_profile_url} alt="Team Photo" style={{ width: '100%', height: 'auto', marginBottom: '20px' }} />
-      )}
-      <p><strong>Team Name:</strong> {name_of_the_team}</p>
-        <p><strong>Status:</strong> {status ? 'Active' : 'Inactive'}</p>
-        <p><strong>Last Active:</strong> {last_active}</p>
-        <p><strong>Team Type:</strong> {type_d_equipe}</p>
-        <p><strong>Team Member Number:</strong> {numero_d_equipier}</p>
-        <p><strong>Specialty:</strong> {specialite}</p>
-        <p><strong>Role:</strong> {role_de_l_equipier}</p>
-        <p><strong>Phone Number:</strong> {numero_de_telephone}</p>
-        <p><strong>Email:</strong> {mail}</p>
-        <p><strong>Vehicle Type:</strong> {type_de_vehicule}</p>
-        <p><strong>Registration Number:</strong> {immatriculation}</p>
-        <p><strong>Location:</strong> Latitude: {latitude}, Longitude: {longitude}</p>
-        <p><strong>Team Members:</strong></p>
+    return (
+      <>
+        {photo_profile_url && (
+          <img src={photo_profile_url} alt="Photo de l'équipe" style={{ width: '100px', height: '100px', borderRadius: '50%', objectFit: 'cover', marginBottom: '20px' }} />
+        )}
+        <p><strong>Nom de l'équipe :</strong> {name_of_the_team}</p>
+        <p><strong>Statut :</strong> {status ? 'Actif' : 'Inactif'}</p>
+        <p><strong>Dernière activité :</strong> {new Date(last_active).toLocaleDateString('fr-FR')}</p>
+        <p><strong>Type d'équipe :</strong> {type_d_equipe}</p>
+        <p><strong>Numéro de membre :</strong> {numero_d_equipier}</p>
+        <p><strong>Spécialité :</strong> {specialite}</p>
+        <p><strong>Rôle :</strong> {role_de_l_equipier}</p>
+        <p><strong>Numéro de téléphone :</strong> {numero_de_telephone}</p>
+        <p><strong>Email :</strong> {mail}</p>
+        <p><strong>Type de véhicule :</strong> {type_de_vehicule}</p>
+        <p><strong>Numéro d'immatriculation :</strong> {immatriculation}</p>
+        <p><strong>Localisation :</strong> Latitude: {latitude}, Longitude: {longitude}</p>
+        <p><strong>Membres de l'équipe :</strong></p>
         <ul>{teamMembersList}</ul>
       </>
     );
