@@ -118,25 +118,27 @@ const EquipiersTable = () => {
     ));
 
     return (
-      <>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '20px', backgroundColor: 'linear-gradient(135deg, #6e8efb, #a777e3)', padding: '20px', borderRadius: '10px', color: 'black' }}>
         {photo_profile_url && (
-          <img src={photo_profile_url} alt="l'équipe" style={{ width: '100px', height: '100px', borderRadius: '50%', objectFit: 'cover', marginBottom: '20px' }} />
+          <img src={photo_profile_url} alt="l'équipe" style={{ width: '100px', height: '100px', borderRadius: '50%', objectFit: 'cover' }} />
         )}
-        <p><strong>Nom de l'équipe :</strong> {name_of_the_team}</p>
-        <p><strong>Statut :</strong> {status ? 'Actif' : 'Inactif'}</p>
-        <p><strong>Dernière activité :</strong> {new Date(last_active).toLocaleDateString('fr-FR')}</p>
-        <p><strong>Type d'équipe :</strong> {type_d_equipe}</p>
-        <p><strong>Numéro de membre :</strong> {numero_d_equipier}</p>
-        <p><strong>Spécialité :</strong> {specialite}</p>
-        <p><strong>Rôle :</strong> {role_de_l_equipier}</p>
-        <p><strong>Numéro de téléphone :</strong> {numero_de_telephone}</p>
-        <p><strong>Email :</strong> {mail}</p>
-        <p><strong>Type de véhicule :</strong> {type_de_vehicule}</p>
-        <p><strong>Numéro d'immatriculation :</strong> {immatriculation}</p>
-        <p><strong>Localisation :</strong> Latitude: {latitude}, Longitude: {longitude}</p>
-        <p><strong>Membres de l'équipe :</strong></p>
-        <ul>{teamMembersList}</ul>
-      </>
+        <div>
+          <p><strong>Nom de l'équipe :</strong> {name_of_the_team}</p>
+          <p><strong>Statut :</strong> {status ? 'Actif' : 'Inactif'}</p>
+          <p><strong>Dernière activité :</strong> {new Date(last_active).toLocaleDateString('fr-FR')}</p>
+          <p><strong>Type d'équipe :</strong> {type_d_equipe}</p>
+          <p><strong>Numéro de membre :</strong> {numero_d_equipier}</p>
+          <p><strong>Spécialité :</strong> {specialite}</p>
+          <p><strong>Rôle :</strong> {role_de_l_equipier}</p>
+          <p><strong>Numéro de téléphone :</strong> {numero_de_telephone}</p>
+          <p><strong>Email :</strong> {mail}</p>
+          <p><strong>Type de véhicule :</strong> {type_de_vehicule}</p>
+          <p><strong>Numéro d'immatriculation :</strong> {immatriculation}</p>
+          <p><strong>Localisation :</strong> Latitude: {latitude}, Longitude: {longitude}</p>
+          <p><strong>Membres de l'équipe :</strong></p>
+          <ul>{teamMembersList}</ul>
+        </div>
+      </div>
     );
   };
 
