@@ -32,8 +32,7 @@ const EquipiersTable = () => {
   useEffect(() => {
     if (selectedEquipier && isModalOpen) {
       const mapId = `map-${selectedEquipier.id}`;
-      const redIcon = createRedIcon(); // Create a red icon
-  
+      
       requestAnimationFrame(() => {
         const mapContainer = document.getElementById(mapId);
         if (mapContainer && !mapContainer._leaflet) {
@@ -41,8 +40,9 @@ const EquipiersTable = () => {
           L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
   
           equipiers.forEach(team => {
-            // Use the red icon for all markers
-            L.marker([team.latitude, team.longitude], { icon: redIcon }).addTo(map);
+            // Use a different color for the selected team
+            const icon = team.id === selectedEquipier.id ? createCustomIcon('blue') : createCustomIcon();
+            L.marker([team.latitude, team.longitude], { icon }).addTo(map);
           });
         }
       });
@@ -51,7 +51,8 @@ const EquipiersTable = () => {
         // Cleanup code
       };
     }
-  }, [selectedEquipier, isModalOpen, equipiers]); // Include equipiers in dependencies
+  }, [selectedEquipier, isModalOpen, equipiers]);
+  
   
 
 
@@ -77,16 +78,19 @@ const EquipiersTable = () => {
   
 
 
-  const createRedIcon = () => {
-    const iconHtml = renderToString(<MdPlace style={{ fontSize: '24px', color: 'red' }} />);
+  
+
+  const createCustomIcon = (color = 'red') => {
+    const iconHtml = renderToString(<MdPlace style={{ fontSize: '24px', color }} />);
     return L.divIcon({
       html: iconHtml,
-      className: 'custom-leaflet-icon', // Make sure this class does not conflict with your CSS
+      className: 'custom-leaflet-icon',
       iconSize: L.point(30, 30),
       iconAnchor: [15, 30],
       popupAnchor: [0, -30]
     });
   };
+  
   
   
 
