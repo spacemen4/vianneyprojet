@@ -4,10 +4,7 @@ import { createClient } from '@supabase/supabase-js';
 import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 
-// Initialize Supabase client
-const supabaseUrl = 'https://hvjzemvfstwwhhahecwu.supabase.co';
-const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2anplbXZmc3R3d2hoYWhlY3d1Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY5MTQ4Mjc3MCwiZXhwIjoyMDA3MDU4NzcwfQ.6jThCX2eaUjl2qt4WE3ykPbrh6skE8drYcmk-UCNDSw';
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
 import {
   FormControl,
   FormLabel,
@@ -18,7 +15,10 @@ import {
   HStack,
   Checkbox,
 } from '@chakra-ui/react';
-
+// Initialize Supabase client
+const supabaseUrl = 'https://hvjzemvfstwwhhahecwu.supabase.co';
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2anplbXZmc3R3d2hoYWhlY3d1Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY5MTQ4Mjc3MCwiZXhwIjoyMDA3MDU4NzcwfQ.6jThCX2eaUjl2qt4WE3ykPbrh6skE8drYcmk-UCNDSw';
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 const UserForm = () => {
   const [nameOfTheTeam, setNameOfTheTeam] = useState('');
