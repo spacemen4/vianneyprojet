@@ -122,9 +122,12 @@ const EquipiersTable = () => {
 
 
 
-    return (
-      <>
-        <p><strong>Team Name:</strong> {name_of_the_team}</p>
+  return (
+    <>
+      {photo_profile_url && (
+        <img src={photo_profile_url} alt="Team Photo" style={{ width: '100%', height: 'auto', marginBottom: '20px' }} />
+      )}
+      <p><strong>Team Name:</strong> {name_of_the_team}</p>
         <p><strong>Status:</strong> {status ? 'Active' : 'Inactive'}</p>
         <p><strong>Last Active:</strong> {last_active}</p>
         <p><strong>Team Type:</strong> {type_d_equipe}</p>
