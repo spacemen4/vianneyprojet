@@ -39,14 +39,20 @@ const UserForm = () => {
   };
 
   const handleTeamMemberChange = (index, event) => {
-    const values = [...teamMembers];
-    if(event.target.name === 'isLeader') {
-      values[index][event.target.name] = event.target.checked; // For checkbox, use 'checked' instead of 'value'
+    let values = [...teamMembers];
+  
+    if (event.target.name === 'isLeader') {
+      // Set all isLeader properties to false
+      values = values.map(member => ({ ...member, isLeader: false }));
+      // Set isLeader to true for the selected member
+      values[index][event.target.name] = event.target.checked;
     } else {
       values[index][event.target.name] = event.target.value;
     }
+  
     setTeamMembers(values);
   };
+  
 
   const handleAddTeamMember = () => {
     setTeamMembers([...teamMembers, { 

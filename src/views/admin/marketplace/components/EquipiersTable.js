@@ -33,44 +33,29 @@ const EquipiersTable = () => {
     fetchEquipiers();
   }, []);
 
+  const getLeaderName = (teamMembers) => {
+    const leader = teamMembers.find(member => member.isLeader);
+    return leader ? `${leader.firstname} ${leader.familyname}` : 'No Leader';
+  };
+
   return (
     <TableContainer>
       <Table variant='simple'>
         <Thead>
           <Tr>
-            <Th>Name of the Team</Th>
-            <Th>Latitude</Th>
-            <Th>Longitude</Th>
             <Th>Photo</Th>
-            <Th>Status</Th>
-            <Th>Last Active</Th>
-            <Th>Type d'équipe</Th>
-            <Th>Numéro d'équipier</Th>
-            <Th>Spécialité</Th>
-            <Th>Rôle de l'équipier</Th>
-            <Th>Numéro de téléphone</Th>
-            <Th>Mail</Th>
-            <Th>Type de véhicule</Th>
-            <Th>Immatriculation</Th>
+            <Th>Nom de l'équipe</Th>
+            <Th>Nom du Leader</Th>
+            <Th>Mission</Th> {/* Assuming you have a 'mission' field */}
           </Tr>
         </Thead>
         <Tbody>
           {equipiers.map((equipier, index) => (
             <Tr key={index}>
+              <Td><img src={equipier.photo_profile_url} alt="Profile" style={{ width: '50px', height: '50px' }}/></Td>
               <Td>{equipier.name_of_the_team}</Td>
-              <Td>{equipier.latitude}</Td>
-              <Td>{equipier.longitude}</Td>
-              <Td><img src={equipier.photo_profile_url} alt="Profile"/></Td>
-              <Td>{equipier.status ? 'Active' : 'Inactive'}</Td>
-              <Td>{equipier.last_active}</Td>
-              <Td>{equipier.type_d_equipe}</Td>
-              <Td>{equipier.numero_d_equipier}</Td>
-              <Td>{equipier.specialite}</Td>
-              <Td>{equipier.role_de_l_equipier}</Td>
-              <Td>{equipier.numero_de_telephone}</Td>
-              <Td>{equipier.mail}</Td>
-              <Td>{equipier.type_de_vehicule}</Td>
-              <Td>{equipier.immatriculation}</Td>
+              <Td>{getLeaderName(equipier.team_members)}</Td>
+              <Td>{equipier.mission}</Td> {/* Example field */}
             </Tr>
           ))}
         </Tbody>
