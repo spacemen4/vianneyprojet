@@ -10,7 +10,7 @@ import moment from 'moment';
 import 'moment/locale/fr'; // Import French locale
 import { createClient } from '@supabase/supabase-js';
 import './CalendarStyles.css';
-import Menu from "components/menu/MainMenu";
+import Menu from "components/menu/MainMenuTeamTimeline";
 import AddActionForm from './AddActionForm';
 import Timeline from 'react-calendar-timeline';
 
@@ -37,7 +37,8 @@ function TeamTimeline() {
   const [visibleTimeEnd, setVisibleTimeEnd] = useState(moment().add(12, 'hour').valueOf());
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [timelineView, setTimelineView] = useState('day');
-  const timelineMaxWidth = '800px'; 
+  const timelineMaxWidth = '800px';
+  const [enableScroll, setEnableScroll] = useState(false);
   const handleMoveBackward = () => {
     const moveBy = visibleTimeEnd - visibleTimeStart;
     setVisibleTimeStart(visibleTimeStart - moveBy);
@@ -302,7 +303,7 @@ function TeamTimeline() {
       <Box p={4}>
         <ChakraProvider>
           <Box p={4}>
-          <Flex px='25px' justify='space-between' mb='20px' align='center'>
+            <Flex px='25px' justify='space-between' mb='20px' align='center'>
               <Text
                 color={textColor}
                 fontSize='22px'
@@ -310,7 +311,7 @@ function TeamTimeline() {
                 lineHeight='100%'>
                 Chronologie de l'évênement
               </Text>
-              <Menu />
+              <Menu onAllowScrollingToggle={() => setEnableScroll(!enableScroll)} />
               <Tooltip label="Cliquer pour ajouter une action" hasArrow>
                 <Box position='absolute' top='15px' right='15px' cursor='pointer'>
                   <FcPlus size="24px" onClick={handleAddActionClick} />
@@ -318,7 +319,6 @@ function TeamTimeline() {
               </Tooltip>
             </Flex>
             <Flex justify='space-between' align='center' mb={4}>
-              {/* Buttons for navigating timeline */}
               <Flex align='center'>
                 <Button
                   mr={2}
@@ -354,9 +354,11 @@ function TeamTimeline() {
                 <option value="month">Mois</option>
               </Select>
             </Flex>
-            
-            {/* Timeline component */}
-            <Box maxWidth={timelineMaxWidth} overflowX="auto">
+            <Box
+              maxWidth={timelineMaxWidth}
+              overflowX="auto"
+              style={{ maxHeight: enableScroll ? "150px" : "none" }}
+            >
               <Timeline
                 groups={groups}
                 items={items}
@@ -367,8 +369,8 @@ function TeamTimeline() {
                 onItemClick={(itemId) => handleEventSelect(itemId)}
               />
             </Box>
-            </Box>
-            <AlertDialog
+          </Box>
+          <AlertDialog
             isOpen={isAlertOpen}
             leastDestructiveRef={cancelRef}
             onClose={onClose}
