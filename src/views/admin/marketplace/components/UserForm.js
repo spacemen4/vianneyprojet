@@ -33,7 +33,10 @@ const UserForm = () => {
     phone: '', 
     isLeader: false, // Added isLeader property
   }]);
-
+  const generateRandomColor = () => {
+    const randomColor = Math.floor(Math.random()*16777215).toString(16);
+    return `#${randomColor}`;
+  };
   const handleFileChange = (e) => {
     setProfilePhoto(e.target.files[0]);
   };
@@ -82,7 +85,8 @@ const LocationMarker = () => {
 const handleSubmit = async (e) => {
   e.preventDefault();
 
-    // Check if profilePhoto is not null before accessing its properties
+  const teamColor = generateRandomColor(); // Generate a random color for the team
+  const timestamp = new Date().toISOString(); // Generate a timestamp
     if (!profilePhoto) {
       console.error('No profile photo selected');
       return;
@@ -111,7 +115,9 @@ const handleSubmit = async (e) => {
       longitude: lng,
       photo_profile_url: publicURL,
       last_active: new Date().toISOString(),
-      team_members: teamMembers // Add team members here
+      team_members: teamMembers,
+      color: teamColor,
+      creation_timestamp: timestamp,
     }]);
 
   if (insertError) {
