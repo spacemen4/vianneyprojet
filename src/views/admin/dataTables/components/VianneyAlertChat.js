@@ -224,8 +224,8 @@ function VianneyAlertChat() {
                     {new Date(alert.timestamp).toLocaleString()}
                   </Text>
                 </Box>
-                <Button onClick={() => handleSolveAlert(alert.id)}><FcOk /></Button>
-                <Button onClick={() => openConfirmModal(alert.id)}><FcDeleteDatabase /></Button>
+                <Button mr="2px" onClick={() => handleSolveAlert(alert.id)}><FcOk /></Button>
+                <Button mr="2px" onClick={() => openConfirmModal(alert.id)}><FcDeleteDatabase /></Button>
                 <Button onClick={() => openEditModal(alert)}><FcInfo /></Button>
               </Alert>
             );
