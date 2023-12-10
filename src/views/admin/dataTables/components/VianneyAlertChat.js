@@ -57,9 +57,34 @@ function VianneyAlertChat() {
       console.error('Error updating alert:', error);
     }
   };
-  const handleSolveAlert = (alertId) => {
-    // Implement solving the alert
+  const handleSolveAlert = async (alertId) => {
+    const {  error } = await supabase
+      .from('vianney_alert')
+      .update({ solved_or_not: 'success' })
+      .match({ id: alertId });
+  
+    if (error) {
+      console.error('Error updating alert:', error);
+      toast({
+        title: "Erreur",
+        description: "Nous ne sommes pas arrivés à mettre à jour le statut de l'alerte.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    } else {
+      // Update the alerts state to reflect the change
+      setAlerts(alerts.map(alert => alert.id === alertId ? { ...alert, solved_or_not: 'success' } : alert));
+      toast({
+        title: "Succès",
+        description: "Statut de l'alerte mis à jour avec succès.",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
   };
+  
 
   const closeConfirmModal = () => {
     setIsConfirmOpen(false);
