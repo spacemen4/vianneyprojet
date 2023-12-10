@@ -323,10 +323,10 @@ function TeamTimeline() {
               onChange={(e) => setTimelineView(e.target.value)}
               mb={4}
             >
-              <option value="hour">Hour</option>
-              <option value="day">Day</option>
-              <option value="week">Week</option>
-              <option value="month">Month</option>
+              <option value="hour">Heure</option>
+              <option value="day">Jour</option>
+              <option value="week">Semaine</option>
+              <option value="month">Mois</option>
             </Select>
             <Box display="flex" justifyContent="center" mb={4}>
               {/* Use Chakra UI Button with custom styles */}
