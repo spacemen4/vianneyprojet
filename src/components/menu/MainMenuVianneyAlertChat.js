@@ -13,11 +13,9 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 // Assets
+import { FcApproval, FcAdvertising, FcBookmark } from "react-icons/fc";
 import {
   MdOutlineMoreHoriz,
-  MdOutlinePerson,
-  MdOutlineCardTravel,
-  MdOutlineLightbulb,
 } from "react-icons/md";
 
 export default function Banner(props) {
@@ -105,7 +103,7 @@ export default function Banner(props) {
           }}
           mb='10px'>
           <Flex align='center'>
-            <Icon as={MdOutlinePerson} h='16px' w='16px' me='8px' />
+          <Icon as={FcAdvertising} h='16px' w='16px' me='8px' />
             <Text fontSize='sm' fontWeight='400'>
               All Alerts
             </Text>
@@ -125,7 +123,7 @@ export default function Banner(props) {
           }}
           mb='10px' onClick={handleSuccessAlertsClick}>
           <Flex align='center'>
-            <Icon as={MdOutlineCardTravel} h='16px' w='16px' me='8px' />
+          <Icon as={FcApproval} h='16px' w='16px' me='8px' />
             <Text fontSize='sm' fontWeight='400'>
               Alert Success Only
             </Text>
@@ -146,7 +144,7 @@ export default function Banner(props) {
           }}
           mb='10px'>
           <Flex align='center'>
-            <Icon as={MdOutlineLightbulb} h='16px' w='16px' me='8px' />
+          <Icon as={FcBookmark} h='16px' w='16px' me='8px' />
             <Text fontSize='sm' fontWeight='400'>
               Urgent Alert
             </Text>
