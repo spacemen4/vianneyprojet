@@ -317,40 +317,45 @@ function TeamTimeline() {
                 </Box>
               </Tooltip>
             </Flex>
-            <Select
-              placeholder="Select View"
-              value={timelineView}
-              onChange={(e) => setTimelineView(e.target.value)}
-              mb={4}
-            >
-              <option value="hour">Heure</option>
-              <option value="day">Jour</option>
-              <option value="week">Semaine</option>
-              <option value="month">Mois</option>
-            </Select>
-            <Box display="flex" justifyContent="center" mb={4}>
-              {/* Use Chakra UI Button with custom styles */}
-              <Button
-                mr={2}
-                onClick={handleMoveBackward}
-                colorScheme="blue"
-                size="sm" // Make the button slightly smaller
-                _active={{ backgroundColor: 'blue.600' }}
-                leftIcon={<FaArrowLeft style={{ marginRight: '4px' }} />} // Add some margin to the icon
+            <Flex justify='space-between' align='center' mb={4}>
+              {/* Buttons for navigating timeline */}
+              <Flex align='center'>
+                <Button
+                  mr={2}
+                  onClick={handleMoveBackward}
+                  colorScheme="blue"
+                  size="sm"
+                  _active={{ backgroundColor: 'blue.600' }}
+                  leftIcon={<FaArrowLeft />}
+                >
+                  En arrière
+                </Button>
+                <Button
+                  onClick={handleMoveForward}
+                  colorScheme="blue"
+                  size="sm"
+                  _active={{ backgroundColor: 'blue.600' }}
+                  rightIcon={<FaArrowRight />}
+                >
+                  En avant
+                </Button>
+              </Flex>
+
+              {/* Select for changing view */}
+              <Select
+                size="sm" // Make the select smaller
+                width="auto" // Adjust width to content
+                value={timelineView}
+                onChange={(e) => setTimelineView(e.target.value)}
               >
-                En arrière
-              </Button>
-              {/* Use Chakra UI Button with custom styles */}
-              <Button
-                onClick={handleMoveForward}
-                colorScheme="blue"
-                size="sm" // Make the button slightly smaller
-                _active={{ backgroundColor: 'blue.600' }}
-                rightIcon={<FaArrowRight style={{ marginLeft: '4px' }} />} // Add some margin to the icon
-              >
-                En avant
-              </Button>
-            </Box>
+                <option value="hour">Heure</option>
+                <option value="day">Jour</option>
+                <option value="week">Semaine</option>
+                <option value="month">Mois</option>
+              </Select>
+            </Flex>
+            
+            {/* Timeline component */}
             <Box maxWidth={timelineMaxWidth} overflowX="auto">
               <Timeline
                 groups={groups}
