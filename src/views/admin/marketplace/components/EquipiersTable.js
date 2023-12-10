@@ -16,6 +16,7 @@ import {
   ModalCloseButton,
   ModalBody,
   Box,
+  Text,
 } from '@chakra-ui/react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -35,6 +36,11 @@ const EquipiersTable = () => {
   const onRowClick = (equipier) => {
     setSelectedEquipier(equipier);
     setIsModalOpen(true);
+  };
+  const headerStyle = {
+    fontSize: '16px',
+    fontWeight: 'normal',
+    color: useColorModeValue('gray.600', 'gray.200'),
   };
 
   useEffect(() => {
@@ -131,6 +137,8 @@ const EquipiersTable = () => {
         {member.firstname} {member.familyname} - {member.isLeader ? 'Responsable' : 'Membre'}
       </li>
     ));
+    
+
 
     return (
       <div style={{ display: 'flex', alignItems: 'center', gap: '20px', backgroundColor: 'linear-gradient(135deg, #6e8efb, #a777e3)', padding: '20px', borderRadius: '10px', color: 'black' }}>
@@ -163,10 +171,10 @@ const EquipiersTable = () => {
         <Table variant='simple'>
           <Thead>
             <Tr>
-              <Th>Photo</Th>
-              <Th>Nom de l'équipe</Th>
-              <Th>Nom du Responsable</Th>
-              <Th>Mission</Th>
+              <Th><Text style={headerStyle}>photo</Text></Th>
+              <Th><Text style={headerStyle}>nom de l'équipe</Text></Th>
+              <Th><Text style={headerStyle}>nom du responsable</Text></Th>
+              <Th><Text style={headerStyle}>mission</Text></Th>
             </Tr>
           </Thead>
           <Tbody>
@@ -176,7 +184,6 @@ const EquipiersTable = () => {
           </Tbody>
         </Table>
       </TableContainer>
-
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} size="xl">
         <ModalOverlay />
         <ModalContent>
