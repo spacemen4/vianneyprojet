@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Box, Text, Flex, Card, useColorModeValue, ChakraProvider, useToast, Tooltip, AlertDialog, AlertDialogBody, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, AlertDialogOverlay, Button, Input, Stack
+  Box, Text, Flex, Card, useColorModeValue, Select, ChakraProvider, useToast, Tooltip, AlertDialog, AlertDialogBody, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, AlertDialogOverlay, Button, Input, Stack
 } from '@chakra-ui/react';
 import { FcPlus } from "react-icons/fc";
 import 'react-calendar-timeline/lib/Timeline.css';
@@ -36,6 +36,7 @@ function TeamTimeline() {
   const [visibleTimeStart, setVisibleTimeStart] = useState(moment().add(-12, 'hour').valueOf());
   const [visibleTimeEnd, setVisibleTimeEnd] = useState(moment().add(12, 'hour').valueOf());
   const [selectedEvent, setSelectedEvent] = useState(null);
+  const [timelineView, setTimelineView] = useState('day');
   const handleMoveBackward = () => {
     const moveBy = visibleTimeEnd - visibleTimeStart;
     setVisibleTimeStart(visibleTimeStart - moveBy);
@@ -74,6 +75,31 @@ function TeamTimeline() {
     successMessage: 'Action réalisée avec succès',
 
   };
+
+  useEffect(() => {
+    // Update the visibleTimeStart and visibleTimeEnd based on the selected view
+    switch (timelineView) {
+      case 'hour':
+        setVisibleTimeStart(moment().startOf('hour').valueOf());
+        setVisibleTimeEnd(moment().endOf('hour').add(1, 'hour').valueOf());
+        break;
+      case 'day':
+        setVisibleTimeStart(moment().startOf('day').valueOf());
+        setVisibleTimeEnd(moment().endOf('day').valueOf());
+        break;
+      case 'week':
+        setVisibleTimeStart(moment().startOf('week').valueOf());
+        setVisibleTimeEnd(moment().endOf('week').valueOf());
+        break;
+      case 'month':
+        setVisibleTimeStart(moment().startOf('month').valueOf());
+        setVisibleTimeEnd(moment().endOf('month').valueOf());
+        break;
+      default:
+        setVisibleTimeStart(moment().startOf('day').valueOf());
+        setVisibleTimeEnd(moment().endOf('day').valueOf());
+    }
+  }, [timelineView]);
 
   useEffect(() => {
     // Function to fetch teams and events from Supabase
@@ -266,7 +292,6 @@ function TeamTimeline() {
     fetchData();
   }, []);
 
-
   return (
     <Card
       direction='column'
@@ -291,6 +316,17 @@ function TeamTimeline() {
                 </Box>
               </Tooltip>
             </Flex>
+            <Select
+              placeholder="Select View"
+              value={timelineView}
+              onChange={(e) => setTimelineView(e.target.value)}
+              mb={4}
+            >
+              <option value="hour">Hour</option>
+              <option value="day">Day</option>
+              <option value="week">Week</option>
+              <option value="month">Month</option>
+            </Select>
             <Box display="flex" justifyContent="center" mb={4}>
               {/* Use Chakra UI Button with custom styles */}
               <Button
