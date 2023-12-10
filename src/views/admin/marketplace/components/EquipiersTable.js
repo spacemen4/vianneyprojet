@@ -7,7 +7,14 @@ import {
   Th,
   Td,
   TableContainer,
-  Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody,
+  useColorModeValue,
+  Avatar,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
 } from '@chakra-ui/react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -53,9 +60,19 @@ const EquipiersTable = () => {
     }
   }, [selectedEquipier, isModalOpen, equipiers]);
 
-
-
-
+  // Style for hover state
+  const hoverStyle = {
+    bg: useColorModeValue('gray.100', 'gray.700'),
+    cursor: 'pointer',
+  };
+  const TableRow = ({ equipier, onClick }) => (
+    <Tr _hover={hoverStyle} onClick={() => onClick(equipier)}>
+      <Td><Avatar size="md" src={equipier.photo_profile_url} /></Td>
+      <Td>{equipier.name_of_the_team}</Td>
+      <Td>{getLeaderName(equipier.team_members)}</Td>
+      <Td>{equipier.mission}</Td> {/* Example field */}
+    </Tr>
+  );
   useEffect(() => {
     const fetchEquipiers = async () => {
       const { data, error } = await supabase
@@ -151,17 +168,12 @@ const EquipiersTable = () => {
               <Th>Photo</Th>
               <Th>Nom de l'équipe</Th>
               <Th>Nom du Leader</Th>
-              <Th>Mission</Th> {/* Assuming you have a 'mission' field */}
+              <Th>Mission</Th>
             </Tr>
           </Thead>
           <Tbody>
             {equipiers.map((equipier, index) => (
-              <Tr key={index} onClick={() => onRowClick(equipier)} cursor="pointer">
-                <Td><img src={equipier.photo_profile_url} alt="Profile" style={{ width: '50px', height: '50px' }} /></Td>
-                <Td>{equipier.name_of_the_team}</Td>
-                <Td>{getLeaderName(equipier.team_members)}</Td>
-                <Td>{equipier.mission}</Td> {/* Example field */}
-              </Tr>
+              <TableRow key={index} equipier={equipier} onClick={onRowClick} />
             ))}
           </Tbody>
         </Table>
