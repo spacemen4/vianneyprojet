@@ -104,7 +104,7 @@ export default function Banner(props) {
           <Flex align='center'>
           <Icon as={FcAdvertising} h='16px' w='16px' me='8px' />
             <Text fontSize='sm' fontWeight='400'>
-              All Alerts
+              Toutes les alertes
             </Text>
           </Flex>
         </MenuItem>
@@ -124,7 +124,7 @@ export default function Banner(props) {
           <Flex align='center'>
           <Icon as={FcApproval} h='16px' w='16px' me='8px' />
             <Text fontSize='sm' fontWeight='400'>
-              Alert Success Only
+              Seulement les alertes résolues
             </Text>
           </Flex>
         </MenuItem>
@@ -145,7 +145,7 @@ export default function Banner(props) {
           <Flex align='center'>
           <Icon as={FcBookmark} h='16px' w='16px' me='8px' />
             <Text fontSize='sm' fontWeight='400'>
-              Urgent Alert
+              Alerte urgente
             </Text>
           </Flex>
         </MenuItem>

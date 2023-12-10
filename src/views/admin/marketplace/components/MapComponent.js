@@ -48,7 +48,7 @@ const MapComponent = () => {
       mapRef.current = L.map('map').setView([0, 0], 13); // Initial map setup
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
-        attribution: '© OpenStreetMap contributors'
+        attribution: ''
       }).addTo(mapRef.current);
     }
 
