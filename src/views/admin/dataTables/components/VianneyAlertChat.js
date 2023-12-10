@@ -62,15 +62,26 @@ function VianneyAlertChat() {
     setDetails(event.target.value);
   };
 
-  const handleMoreInfo = (alertText) => {
+  const handleMoreInfo = (alertText, details) => {
     toast({
-      title: 'Alert Information',
-      description: alertText,
+      title: "Information sur l'alerte",
+      description: (
+        <>
+          <Text fontWeight="bold">Alerte :</Text> {alertText}
+          {details && (
+            <>
+              <br />
+              <Text fontWeight="bold">Détails :</Text> {details}
+            </>
+          )}
+        </>
+      ),
       status: 'info',
       duration: 5000,
       isClosable: true,
     });
   };
+  
 
   useEffect(() => {
     // Function to fetch alerts from Supabase
@@ -159,7 +170,7 @@ function VianneyAlertChat() {
                 </Box>
                 <Button onClick={() => handleSolveAlert(alert.id)}><FcOk /></Button>
                 <Button onClick={() => openConfirmModal(alert.id)}><FcDeleteDatabase /></Button>
-                <Button onClick={() => handleMoreInfo(alert.alert_text)}><FcInfo /></Button>
+                <Button onClick={() => handleMoreInfo(alert.alert_text, alert.details)}><FcInfo /></Button>
               </Alert>
             );
           })}
