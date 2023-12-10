@@ -25,6 +25,10 @@ const UserForm = () => {
   const [profilePhoto, setProfilePhoto] = useState(null);
   const [lat, setLat] = useState(45.75799485263588);
   const [lng, setLng] = useState(4.825754111294844);
+  const [mission, setMission] = useState('');
+  const [typeDeVehicule, setTypeDeVehicule] = useState('');
+  const [immatriculation, setImmatriculation] = useState('');
+  const [specialite, setSpecialite] = useState('');
   const [teamMembers, setTeamMembers] = useState([{ 
     id: uuidv4(), // Generate unique ID for the first team member
     familyname: '', 
@@ -118,6 +122,10 @@ const handleSubmit = async (e) => {
       team_members: teamMembers,
       color: teamColor,
       creation_timestamp: timestamp,
+      mission: mission,
+        type_de_vehicule: typeDeVehicule,
+        immatriculation: immatriculation,
+        specialite: specialite,
     }]);
 
   if (insertError) {
@@ -149,6 +157,45 @@ const handleSubmit = async (e) => {
           <FormLabel htmlFor='profile-photo'>Photo de profil</FormLabel>
           <Input id='profile-photo' type="file" onChange={handleFileChange} />
         </FormControl>
+        <FormControl>
+        <FormLabel htmlFor='mission'>Mission</FormLabel>
+        <Input
+          id='mission'
+          type="text"
+          value={mission}
+          onChange={(e) => setMission(e.target.value)}
+        />
+      </FormControl>
+
+      <FormControl>
+        <FormLabel htmlFor='typeDeVehicule'>Type de Véhicule</FormLabel>
+        <Input
+          id='typeDeVehicule'
+          type="text"
+          value={typeDeVehicule}
+          onChange={(e) => setTypeDeVehicule(e.target.value)}
+        />
+      </FormControl>
+
+      <FormControl>
+        <FormLabel htmlFor='immatriculation'>Immatriculation</FormLabel>
+        <Input
+          id='immatriculation'
+          type="text"
+          value={immatriculation}
+          onChange={(e) => setImmatriculation(e.target.value)}
+        />
+      </FormControl>
+
+      <FormControl>
+        <FormLabel htmlFor='specialite'>Spécialité</FormLabel>
+        <Input
+          id='specialite'
+          type="text"
+          value={specialite}
+          onChange={(e) => setSpecialite(e.target.value)}
+        />
+      </FormControl>
 
     {teamMembers.map((teamMember, index) => (
       <HStack key={index} spacing={2}>
