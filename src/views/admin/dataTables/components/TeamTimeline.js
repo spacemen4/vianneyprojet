@@ -37,6 +37,7 @@ function TeamTimeline() {
   const [visibleTimeEnd, setVisibleTimeEnd] = useState(moment().add(12, 'hour').valueOf());
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [timelineView, setTimelineView] = useState('day');
+  const timelineMaxWidth = '800px'; 
   const handleMoveBackward = () => {
     const moveBy = visibleTimeEnd - visibleTimeStart;
     setVisibleTimeStart(visibleTimeStart - moveBy);
@@ -301,7 +302,7 @@ function TeamTimeline() {
       <Box p={4}>
         <ChakraProvider>
           <Box p={4}>
-            <Flex px='25px' justify='space-between' mb='20px' align='center'>
+          <Flex px='25px' justify='space-between' mb='20px' align='center'>
               <Text
                 color={textColor}
                 fontSize='22px'
@@ -350,17 +351,19 @@ function TeamTimeline() {
                 En avant
               </Button>
             </Box>
-            <Timeline
-              groups={groups}
-              items={items}
-              defaultTimeStart={moment().add(-12, 'minute')}
-              defaultTimeEnd={moment().add(12, 'minute')}
-              visibleTimeStart={visibleTimeStart}
-              visibleTimeEnd={visibleTimeEnd}
-              onItemClick={(itemId) => handleEventSelect(itemId)}
-            />
-          </Box>
-          <AlertDialog
+            <Box maxWidth={timelineMaxWidth} overflowX="auto">
+              <Timeline
+                groups={groups}
+                items={items}
+                defaultTimeStart={moment().add(-12, 'minute')}
+                defaultTimeEnd={moment().add(12, 'minute')}
+                visibleTimeStart={visibleTimeStart}
+                visibleTimeEnd={visibleTimeEnd}
+                onItemClick={(itemId) => handleEventSelect(itemId)}
+              />
+            </Box>
+            </Box>
+            <AlertDialog
             isOpen={isAlertOpen}
             leastDestructiveRef={cancelRef}
             onClose={onClose}
