@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Input, Button, VStack, Alert, AlertIcon, Text, Select, Flex, useColorModeValue, useToast } from '@chakra-ui/react';
+import { Textarea, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalFooter, Box, Input, Button, VStack, Alert, AlertIcon, Text, Select, Flex, useColorModeValue, useToast } from '@chakra-ui/react';
 import { createClient } from '@supabase/supabase-js';
 import { FcOk, FcDeleteDatabase, FcInfo } from "react-icons/fc";
 import Card from "components/card/Card";
@@ -15,13 +15,51 @@ function VianneyAlertChat() {
   const [alerts, setAlerts] = useState([]);
   const [newAlertText, setNewAlertText] = useState('');
   const toast = useToast();
-
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [alertToDelete, setAlertToDelete] = useState(null);
+  const [details, setDetails] = useState('');
   const handleSolveAlert = (alertId) => {
     // Implement solving the alert
   };
+  const openConfirmModal = (alertId) => {
+    setAlertToDelete(alertId);
+    setIsConfirmOpen(true);
+  };
 
-  const handleDeleteAlert = (alertId) => {
-    // Implement deleting the alert
+  const closeConfirmModal = () => {
+    setIsConfirmOpen(false);
+  };
+
+
+  const handleDeleteAlert = async () => {
+    const { error } = await supabase
+      .from('vianney_alert')
+      .delete()
+      .match({ id: alertToDelete });
+
+    if (error) {
+      console.error('Error deleting alert:', error);
+      toast({
+        title: "Erreur",
+        description: "Nous n'avons pass réussi à supprimer l'alerte.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    } else {
+      setAlerts(alerts.filter(alert => alert.id !== alertToDelete));
+      toast({
+        title: "Succès",
+        description: "Alerte supprimée avec succès.",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+    closeConfirmModal();
+  };
+  const handleDetailsChange = (event) => {
+    setDetails(event.target.value);
   };
 
   const handleMoreInfo = (alertText) => {
@@ -65,7 +103,7 @@ function VianneyAlertChat() {
       const { error } = await supabase
         .from('vianney_alert')
         .insert([
-          { alert_text: newAlertText, user_id: fakeUUID, solved_or_not: alertStatus }
+          { alert_text: newAlertText, user_id: fakeUUID, solved_or_not: alertStatus, details: details } // Include details
         ]);
 
       if (!error) {
@@ -92,59 +130,79 @@ function VianneyAlertChat() {
       px='0px'
       overflowX={{ sm: "scroll", lg: "hidden" }}>
       <Box p={4}>
-          <Flex px='25px' justify='space-between' mb='20px' align='center'>
-            <Text
-              color={textColor}
-              fontSize='22px'
-              fontWeight='700'
-              lineHeight='100%'>
-              Table des alertes
-            </Text>
-            <Menu />
-          </Flex>
+        <Flex px='25px' justify='space-between' mb='20px' align='center'>
+          <Text
+            color={textColor}
+            fontSize='22px'
+            fontWeight='700'
+            lineHeight='100%'>
+            Table des alertes
+          </Text>
+          <Menu />
+        </Flex>
 
 
-          <VStack spacing={4}>
-            {alerts.map((alert, index) => {
-              const alertStatus = ['info', 'warning', 'success', 'error'].includes(alert.solved_or_not)
-                ? alert.solved_or_not
-                : 'info';
+        <VStack spacing={4}>
+          {alerts.map((alert, index) => {
+            const alertStatus = ['info', 'warning', 'success', 'error'].includes(alert.solved_or_not)
+              ? alert.solved_or_not
+              : 'info';
 
-        return (
-          <Alert key={index} status={alertStatus}>
-            <AlertIcon />
-            <Box flex="1">
-              <Text>{alert.alert_text}</Text>
-              <Text fontSize="sm" color="gray.500">
-                {new Date(alert.timestamp).toLocaleString()}
-              </Text>
-            </Box>
-            <Button onClick={() => handleSolveAlert(alert.id)}><FcOk /></Button>
-            <Button onClick={() => handleDeleteAlert(alert.id)}><FcDeleteDatabase /></Button>
-            <Button onClick={() => handleMoreInfo(alert.alert_text)}><FcInfo /></Button>
-          </Alert>
-        );
-      })}
-    </VStack>
-    <Box mt={4}>
-            <Select placeholder="Sélectionnez le degrès d'urgence" value={alertStatus} onChange={handleStatusChange}>
-              <option value="error">Urgence</option>
-              <option value="success">Problème résolu</option>
-              <option value="warning">Avertissement</option>
-              <option value="info">Information</option>
-            </Select>
-            <Input
-              placeholder="Tapez votre alerte..."
-              value={newAlertText}
-              onChange={handleInputChange}
-              mt={2}
-            />
-            <Button mt={2} colorScheme="blue" onClick={handleSubmit}>
-              Ajouter une alerte
-            </Button>
-          </Box>
-
+            return (
+              <Alert key={index} status={alertStatus}>
+                <AlertIcon />
+                <Box flex="1">
+                  <Text>{alert.alert_text}</Text>
+                  <Text fontSize="sm" color="gray.500">
+                    {new Date(alert.timestamp).toLocaleString()}
+                  </Text>
+                </Box>
+                <Button onClick={() => handleSolveAlert(alert.id)}><FcOk /></Button>
+                <Button onClick={() => openConfirmModal(alert.id)}><FcDeleteDatabase /></Button>
+                <Button onClick={() => handleMoreInfo(alert.alert_text)}><FcInfo /></Button>
+              </Alert>
+            );
+          })}
+        </VStack>
+        <Box mt={4}>
+          <Select placeholder="Sélectionnez le degrès d'urgence" value={alertStatus} onChange={handleStatusChange}>
+            <option value="error">Urgence</option>
+            <option value="success">Problème résolu</option>
+            <option value="warning">Avertissement</option>
+            <option value="info">Information</option>
+          </Select>
+          <Input
+            placeholder="Tapez votre alerte..."
+            value={newAlertText}
+            onChange={handleInputChange}
+            mt={2}
+          />
+          <Textarea
+            placeholder="Ajoutez des détails ici..."
+            value={details}
+            onChange={handleDetailsChange}
+            mt={2}
+          />
+          <Button mt={2} colorScheme="blue" onClick={handleSubmit}>
+            Ajouter une alerte
+          </Button>
         </Box>
+        <Modal isOpen={isConfirmOpen} onClose={closeConfirmModal}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Supprimer l'alerte</ModalHeader>
+            <ModalBody>
+              Souhaitez-vous vraiment supprimer cette alerte?
+            </ModalBody>
+            <ModalFooter>
+              <Button colorScheme="red" mr={3} onClick={handleDeleteAlert}>
+                Suppression
+              </Button>
+              <Button variant="ghost" onClick={closeConfirmModal}>Annuler</Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+      </Box>
     </Card>
   );
 }
