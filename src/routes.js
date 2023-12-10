@@ -7,7 +7,7 @@ import {
   FcFinePrint,
   FcSerialTasks,
   FcSurvey,
-  // Import a new icon if required
+  FcSettings,
 } from "react-icons/fc";
 
 // Admin Imports
@@ -20,6 +20,7 @@ import Documentation from "views/admin/documentation";
 
 // Auth Imports
 import SignInCentered from "views/auth/signIn";
+import Parameters from "views/admin/Parameters";
 
 const routes = [
   {
@@ -57,6 +58,13 @@ const routes = [
     path: "/sign-in",
     icon: <Icon as={FcLock} width='20px' height='20px' color='inherit' />,
     component: SignInCentered,
+  },
+  {
+    name: "Paramètres",
+    layout: "/admin",
+    path: "/parameters",
+    icon: <Icon as={FcSettings} width='20px' height='20px' color='inherit' />,
+    component: Parameters, 
   },
   {
     name: "Vue d'ensemble administrateur",
