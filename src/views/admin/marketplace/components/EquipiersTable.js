@@ -17,6 +17,10 @@ import {
   ModalBody,
   Box,
   Text,
+  Stack,
+  Heading,
+  Image,
+  Badge,
 } from '@chakra-ui/react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -154,34 +158,35 @@ const EquipiersTable = () => {
         {member.firstname} {member.familyname} - {member.isLeader ? 'Responsable' : 'Membre'}
       </li>
     ));
-
-
-
+  
     return (
-      <div style={{ display: 'flex', alignItems: 'center', gap: '20px', backgroundColor: 'linear-gradient(135deg, #6e8efb, #a777e3)', padding: '20px', borderRadius: '10px', color: 'black' }}>
+      <Stack spacing={4} p={5} align="start">
         {photo_profile_url && (
-          <img src={photo_profile_url} alt="l'équipe" style={{ width: '100px', height: '100px', borderRadius: '50%', objectFit: 'cover' }} />
+          <Image 
+            borderRadius="full" 
+            boxSize="100px" 
+            src={photo_profile_url} 
+            alt="l'équipe" 
+          />
         )}
-        <div>
-          <p><strong>Nom de l'équipe :</strong> {name_of_the_team}</p>
-          <p><strong>Statut :</strong> {status ? 'Actif' : 'Inactif'}</p>
-          <p><strong>Dernière activité :</strong> {new Date(last_active).toLocaleDateString('fr-FR')}</p>
-          <p><strong>Type d'équipe :</strong> {type_d_equipe}</p>
-          <p><strong>Numéro de membre :</strong> {numero_d_equipier}</p>
-          <p><strong>Spécialité :</strong> {specialite}</p>
-          <p><strong>Rôle :</strong> {role_de_l_equipier}</p>
-          <p><strong>Numéro de téléphone :</strong> {numero_de_telephone}</p>
-          <p><strong>Email :</strong> {mail}</p>
-          <p><strong>Type de véhicule :</strong> {type_de_vehicule}</p>
-          <p><strong>Numéro d'immatriculation :</strong> {immatriculation}</p>
-          <p><strong>Localisation :</strong> Latitude: {latitude}, Longitude: {longitude}</p>
-          <p><strong>Membres de l'équipe :</strong></p>
-          <ul>{teamMembersList}</ul>
-        </div>
-      </div>
+        <Heading size="md">{name_of_the_team}</Heading>
+        <Text><strong>Statut :</strong> <Badge colorScheme={status ? 'green' : 'red'}>{status ? 'Actif' : 'Inactif'}</Badge></Text>
+        <Text><strong>Dernière activité :</strong> {new Date(last_active).toLocaleDateString('fr-FR')}</Text>
+        <Text><strong>Type d'équipe :</strong> {type_d_equipe}</Text>
+        <Text><strong>Numéro de membre :</strong> {numero_d_equipier}</Text>
+        <Text><strong>Spécialité :</strong> {specialite}</Text>
+        <Text><strong>Rôle :</strong> {role_de_l_equipier}</Text>
+        <Text><strong>Numéro de téléphone :</strong> {numero_de_telephone}</Text>
+        <Text><strong>Email :</strong> {mail}</Text>
+        <Text><strong>Type de véhicule :</strong> {type_de_vehicule}</Text>
+        <Text><strong>Numéro d'immatriculation :</strong> {immatriculation}</Text>
+        <Text><strong>Localisation :</strong> Latitude: {latitude}, Longitude: {longitude}</Text>
+        <Heading size="sm">Membres de l'équipe :</Heading>
+        <ul>{teamMembersList}</ul>
+      </Stack>
     );
   };
-
+  
   return (
     <>
       <TableContainer>
@@ -208,7 +213,7 @@ const EquipiersTable = () => {
           <ModalCloseButton />
           <ModalBody>
             {renderTeamDetails()}
-            <Box id={`map-${selectedEquipier?.id}`} h='500px' w='100%' />
+            <Box id={`map-${selectedEquipier?.id}`} h='500px' w='100%' mt={4} />
           </ModalBody>
         </ModalContent>
       </Modal>
