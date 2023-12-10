@@ -8,7 +8,6 @@ import {
   useColorModeValue,
   SimpleGrid,
 } from "@chakra-ui/react";
-import Banner from "views/admin/marketplace/components/Banner";
 import MapComponent from "views/admin/marketplace/components/MapComponent";
 import TableTopCreators from "views/admin/marketplace/components/TableTopCreators";
 import NFT from "components/card/NFT";
@@ -61,7 +60,7 @@ export default function Marketplace() {
   // Function to set maxWidth based on screen size
   const setMaxWidthBasedOnScreen = () => {
     const screenSize = window.innerWidth;
-    const newMaxWidth = screenSize / 2.5;
+    const newMaxWidth = screenSize / 2.1;
     setMaxWidth(screenSize <= 768 ? '100%' : `${newMaxWidth}px`);
   };
 
@@ -86,13 +85,13 @@ export default function Marketplace() {
         <Flex
           flexDirection='column'
           gridArea={{ xl: "1 / 1 / 2 / 3", "2xl": "1 / 1 / 2 / 2" }}>
-          <Banner />
           <Box mt="10px" borderRadius="lg" overflow="hidden">
             <MapComponent />
           </Box>
-          <Box mt="10px">
-            <TeamSchedule />
-
+          <Box maxWidth={maxWidth}>
+            <Card px='0px' mb='20px'>
+              <TeamTimeline />
+            </Card>
           </Box>
           <Flex direction='column'>
             <Flex
@@ -152,12 +151,13 @@ export default function Marketplace() {
           </Card>
           <Box maxWidth={maxWidth}>
             <Card px='0px' mb='20px'>
-            <TeamTimeline/>
+              <TeamSchedule />
+
             </Card>
           </Box>
 
         </Flex>
       </Grid>
-    </Box>
+    </Box >
   );
 }
