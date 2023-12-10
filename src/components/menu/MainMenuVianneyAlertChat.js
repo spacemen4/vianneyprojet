@@ -13,13 +13,13 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 // Assets
-import { FcApproval, FcAdvertising, FcBookmark } from "react-icons/fc";
+import { FcApproval, FcAdvertising, FcBookmark, FcAutomatic } from "react-icons/fc";
 import {
   MdOutlineMoreHoriz,
 } from "react-icons/md";
 
 export default function Banner(props) {
-  const { onFilterSelect, ...rest } = props;
+  const { onFilterSelect, onAllowScrollingToggle, ...rest } = props;
 
   const textColor = useColorModeValue("secondaryGray.500", "white");
   const textHover = useColorModeValue(
@@ -102,7 +102,7 @@ export default function Banner(props) {
           }}
           mb='10px'>
           <Flex align='center'>
-          <Icon as={FcAdvertising} h='16px' w='16px' me='8px' />
+            <Icon as={FcAdvertising} h='16px' w='16px' me='8px' />
             <Text fontSize='sm' fontWeight='400'>
               Toutes les alertes
             </Text>
@@ -122,7 +122,7 @@ export default function Banner(props) {
           }}
           mb='10px' onClick={handleSuccessAlertsClick}>
           <Flex align='center'>
-          <Icon as={FcApproval} h='16px' w='16px' me='8px' />
+            <Icon as={FcApproval} h='16px' w='16px' me='8px' />
             <Text fontSize='sm' fontWeight='400'>
               Seulement les alertes résolues
             </Text>
@@ -143,9 +143,26 @@ export default function Banner(props) {
           }}
           mb='10px'>
           <Flex align='center'>
-          <Icon as={FcBookmark} h='16px' w='16px' me='8px' />
+            <Icon as={FcBookmark} h='16px' w='16px' me='8px' />
             <Text fontSize='sm' fontWeight='400'>
               Alerte urgente
+            </Text>
+          </Flex>
+        </MenuItem>
+        <MenuItem
+          onClick={() => onAllowScrollingToggle()}
+          transition='0.2s linear'
+          p='0px'
+          borderRadius='8px'
+          color={textColor}
+          _hover={textHover}
+          _active={{ bg: "transparent" }}
+          _focus={{ bg: "transparent" }}
+          mb='10px'>
+          <Flex align='center'>
+            <Icon as={FcAutomatic} h='16px' w='16px' me='8px' />
+            <Text fontSize='sm' fontWeight='400'>
+              Allow Scrolling
             </Text>
           </Flex>
         </MenuItem>
