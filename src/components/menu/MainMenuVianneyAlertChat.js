@@ -58,7 +58,7 @@ export default function Banner(props) {
   };
 
   const handleUrgentAlertsClick = () => {
-    onFilterSelect('urgent');
+    onFilterSelect('error');
   };
 
   return (

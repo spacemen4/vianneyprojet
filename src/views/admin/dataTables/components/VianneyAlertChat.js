@@ -184,7 +184,7 @@ function VianneyAlertChat() {
   const shouldShowAlert = (alert) => {
     if (filter === 'all') return true;
     if (filter === 'success' && alert.solved_or_not === 'success') return true;
-    if (filter === 'urgent' && alert.solved_or_not === 'urgent') return true;
+    if (filter === 'error' && alert.solved_or_not === 'error') return true;
     return false;
   };
 
