@@ -1,15 +1,19 @@
+import React, { useState } from "react";
 import {
   Button,
   Flex,
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
-import React from "react";
 import EquipiersTable from "./EquipiersTable";
 
 function TopCreatorTable(props) {
-
+  const [showAll, setShowAll] = useState(false);
   const textColor = useColorModeValue("navy.700", "white");
+
+  const handleToggleShowAll = () => {
+    setShowAll(!showAll);
+  };
 
   return (
     <>
@@ -28,9 +32,16 @@ function TopCreatorTable(props) {
           <Text color={textColor} fontSize='xl' fontWeight='600'>
             Les équipiers en interventions
           </Text>
-          <Button variant='action'>Les voir tous</Button>
+          <Button variant='action' onClick={handleToggleShowAll}>
+            {showAll ? 'Voir moins' : 'Les voir tous'}
+          </Button>
         </Flex>
-        <EquipiersTable/>
+        <Flex
+          direction='column'
+          overflowY={showAll ? 'scroll' : 'hidden'}
+          maxH={showAll ? '300px' : 'auto'}>
+          <EquipiersTable showAll={showAll} />
+        </Flex>
       </Flex>
     </>
   );

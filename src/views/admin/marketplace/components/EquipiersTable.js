@@ -32,7 +32,7 @@ const supabaseUrl = 'https://hvjzemvfstwwhhahecwu.supabase.co';
 const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2anplbXZmc3R3d2hoYWhlY3d1Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY5MTQ4Mjc3MCwiZXhwIjoyMDA3MDU4NzcwfQ.6jThCX2eaUjl2qt4WE3ykPbrh6skE8drYcmk-UCNDSw';
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-const EquipiersTable = () => {
+const EquipiersTable = ({ showAll }) => {
   const [equipiers, setEquipiers] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedEquipier, setSelectedEquipier] = useState(null);
@@ -107,7 +107,7 @@ const EquipiersTable = () => {
       <Td>{equipier.mission}</Td>
     </Tr>
   );
-  
+
   useEffect(() => {
     const fetchEquipiers = async () => {
       const { data, error } = await supabase
@@ -143,7 +143,7 @@ const EquipiersTable = () => {
   };
   const renderTeamDetails = () => {
     if (!selectedEquipier) return null;
-  
+
     const {
       name_of_the_team,
       status,
@@ -161,7 +161,7 @@ const EquipiersTable = () => {
       longitude,
       team_members,
     } = selectedEquipier;
-  
+
     const teamMembersList = team_members?.map(member => (
       <li key={member.id}>
         {`${member.firstname} ${member.familyname}`} {member.phone ? ` - ${member.phone}` : ''}
@@ -198,7 +198,7 @@ const EquipiersTable = () => {
 
   return (
     <>
-      <TableContainer>
+      <TableContainer style={{ maxHeight: showAll ? '300px' : 'auto', overflowY: 'auto' }}>
         <Table variant='simple'>
           <Thead style={headerGradientStyle}>
             <Tr>
@@ -209,7 +209,7 @@ const EquipiersTable = () => {
             </Tr>
           </Thead>
           <Tbody>
-            {equipiers.map((equipier, index) => (
+            {equipiers.slice(0, showAll ? undefined : 3).map((equipier, index) => (
               <TableRow key={index} equipier={equipier} onClick={onRowClick} />
             ))}
           </Tbody>
