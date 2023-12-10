@@ -166,7 +166,6 @@ const handleSubmit = async (e) => {
           onChange={(e) => setMission(e.target.value)}
         />
       </FormControl>
-
       <FormControl>
         <FormLabel htmlFor='typeDeVehicule'>Type de Véhicule</FormLabel>
         <Input

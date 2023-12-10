@@ -97,10 +97,17 @@ const EquipiersTable = () => {
     <Tr _hover={hoverStyle} onClick={() => onClick(equipier)} style={tableRowStyle}>
       <Td><Avatar size="md" src={equipier.photo_profile_url} style={avatarStyle} /></Td>
       <Td>{equipier.name_of_the_team}</Td>
-      <Td>{getLeaderName(equipier.team_members)}</Td>
+      {/* Display leader's name and phone number */}
+      <Td>
+        {/* Use getLeaderNameAndPhone function */}
+        <Text>
+          {getLeaderNameAndPhone(equipier.team_members)}
+        </Text>
+      </Td>
       <Td>{equipier.mission}</Td>
     </Tr>
   );
+  
   useEffect(() => {
     const fetchEquipiers = async () => {
       const { data, error } = await supabase
@@ -115,10 +122,17 @@ const EquipiersTable = () => {
 
     fetchEquipiers();
   }, []);
-
   const getLeaderName = (teamMembers) => {
     const leader = teamMembers.find(member => member.isLeader);
     return leader ? `${leader.firstname} ${leader.familyname}` : 'No Leader';
+  };
+
+  const getLeaderNameAndPhone = (teamMembers) => {
+    const leader = teamMembers.find(member => member.isLeader);
+    if (!leader) {
+      return 'No Leader';
+    }
+    return `${leader.firstname} ${leader.familyname} - ${leader.phone}`;
   };
 
 
