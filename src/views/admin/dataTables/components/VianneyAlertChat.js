@@ -3,7 +3,7 @@ import { Textarea, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, Mo
 import { createClient } from '@supabase/supabase-js';
 import { FcOk, FcDeleteDatabase, FcInfo } from "react-icons/fc";
 import Card from "components/card/Card";
-import Menu from "components/menu/MainMenu";
+import Menu from "components/menu/MainMenuVianneyAlertChat";
 
 // Initialize Supabase client
 const supabaseUrl = 'https://hvjzemvfstwwhhahecwu.supabase.co';
