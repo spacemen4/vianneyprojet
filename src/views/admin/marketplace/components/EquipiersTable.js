@@ -122,11 +122,6 @@ const EquipiersTable = () => {
 
     fetchEquipiers();
   }, []);
-  const getLeaderName = (teamMembers) => {
-    const leader = teamMembers.find(member => member.isLeader);
-    return leader ? `${leader.firstname} ${leader.familyname}` : 'No Leader';
-  };
-
   const getLeaderNameAndPhone = (teamMembers) => {
     const leader = teamMembers.find(member => member.isLeader);
     if (!leader) {
@@ -148,7 +143,7 @@ const EquipiersTable = () => {
   };
   const renderTeamDetails = () => {
     if (!selectedEquipier) return null;
-
+  
     const {
       name_of_the_team,
       status,
@@ -166,10 +161,10 @@ const EquipiersTable = () => {
       longitude,
       team_members,
     } = selectedEquipier;
-
+  
     const teamMembersList = team_members?.map(member => (
       <li key={member.id}>
-        {member.firstname} {member.familyname} - {member.isLeader ? 'Responsable' : 'Membre'}
+        {`${member.firstname} ${member.familyname}`} {member.phone ? ` - ${member.phone}` : ''}
       </li>
     ));
 
