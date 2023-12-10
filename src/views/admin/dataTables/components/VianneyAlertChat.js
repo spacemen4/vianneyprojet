@@ -15,11 +15,16 @@ function VianneyAlertChat() {
   const [alerts, setAlerts] = useState([]);
   const [newAlertText, setNewAlertText] = useState('');
   const toast = useToast();
-  const [ setIsConfirmOpen] = useState(false);
-  const [alertToDelete] = useState(null);
   const [details, setDetails] = useState('');
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [editingAlert, setEditingAlert] = useState(null);
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [alertToDelete, setAlertToDelete] = useState(null);
+  const openConfirmModal = (alertId) => {
+    setAlertToDelete(alertId);
+    setIsConfirmOpen(true);
+  };
+
 
   const openEditModal = (alert) => {
     setEditingAlert(alert);
@@ -87,6 +92,7 @@ function VianneyAlertChat() {
       });
     }
     closeConfirmModal();
+    setIsConfirmOpen(false); // Close the modal after operation
   };
   const handleDetailsChange = (event) => {
     setDetails(event.target.value);
@@ -180,7 +186,7 @@ function VianneyAlertChat() {
                   </Text>
                 </Box>
                 <Button onClick={() => handleSolveAlert(alert.id)}><FcOk /></Button>
-                <Button onClick={() => handleDeleteAlert(alert.id)}><FcDeleteDatabase /></Button>
+                <Button onClick={() => openConfirmModal(alert.id)}><FcDeleteDatabase /></Button>
                 <Button onClick={() => openEditModal(alert)}><FcInfo /></Button>
               </Alert>
             );
@@ -238,6 +244,22 @@ function VianneyAlertChat() {
             </ModalFooter>
           </ModalContent>
         </Modal>
+        <Modal isOpen={isConfirmOpen} onClose={() => setIsConfirmOpen(false)}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Supprimer l'alerte</ModalHeader>
+            <ModalBody>
+              Voulez-vous supprimer cette alerte ?
+            </ModalBody>
+            <ModalFooter>
+              <Button colorScheme="red" mr={3} onClick={handleDeleteAlert}>
+                Supprimer
+              </Button>
+              <Button variant="ghost" onClick={() => setIsConfirmOpen(false)}>Annuler</Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+
       </Box>
     </Card>
   );
