@@ -22,13 +22,20 @@ function VianneyAlertChat() {
   const [alertToDelete, setAlertToDelete] = useState(null);
   const [allowScrolling, setAllowScrolling] = useState(false);
   const [filter, setFilter] = useState('all');
+  const [password, setPassword] = useState('');
+  const [isPasswordCorrect, setIsPasswordCorrect] = useState(false);
   const openConfirmModal = (alertId) => {
     setAlertToDelete(alertId);
     setIsConfirmOpen(true);
   };
+  const handlePasswordChange = (event) => {
+    const inputPassword = event.target.value;
+    setPassword(inputPassword);
+    setIsPasswordCorrect(inputPassword === "vianney123");
+  };
   const handleAllowScrollingToggle = () => {
     setAllowScrolling(!allowScrolling);
-  };  
+  };
 
   const openEditModal = (alert) => {
     setEditingAlert(alert);
@@ -214,10 +221,10 @@ function VianneyAlertChat() {
 
 
         <VStack
-  spacing={4}
-  overflowY={allowScrolling ? "scroll" : "hidden"}
-  maxHeight={allowScrolling ? "200px" : "none"}>
-  {alerts.filter(shouldShowAlert).map((alert, index) => {
+          spacing={4}
+          overflowY={allowScrolling ? "scroll" : "hidden"}
+          maxHeight={allowScrolling ? "200px" : "none"}>
+          {alerts.filter(shouldShowAlert).map((alert, index) => {
             const alertStatus = ['info', 'warning', 'success', 'error'].includes(alert.solved_or_not)
               ? alert.solved_or_not
               : 'info';
@@ -296,11 +303,25 @@ function VianneyAlertChat() {
             <ModalHeader>Supprimer l'alerte</ModalHeader>
             <ModalBody>
               Voulez-vous supprimer cette alerte ?
+              <Input
+                placeholder="Entrez votre mot de passe"
+                value={password}
+                onChange={handlePasswordChange}
+                mt={2}
+                type="password"
+              />
             </ModalBody>
+
             <ModalFooter>
-              <Button colorScheme="red" mr={3} onClick={handleDeleteAlert}>
+              <Button
+                colorScheme="red"
+                mr={3}
+                onClick={handleDeleteAlert}
+                hidden={!isPasswordCorrect}
+              >
                 Supprimer
               </Button>
+
               <Button variant="ghost" onClick={() => setIsConfirmOpen(false)}>Annuler</Button>
             </ModalFooter>
           </ModalContent>
