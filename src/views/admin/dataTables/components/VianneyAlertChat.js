@@ -223,7 +223,7 @@ function VianneyAlertChat() {
               : 'info';
 
             return (
-              <Alert key={index} status={alertStatus}>
+              <Alert key={index} status={alertStatus} minH="60px">
                 <AlertIcon />
                 <Box flex="1">
                   <Text>{alert.alert_text}</Text>
