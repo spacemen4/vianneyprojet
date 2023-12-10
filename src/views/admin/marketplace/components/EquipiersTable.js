@@ -158,15 +158,15 @@ const EquipiersTable = () => {
         {member.firstname} {member.familyname} - {member.isLeader ? 'Responsable' : 'Membre'}
       </li>
     ));
-  
+
     return (
       <Stack spacing={4} p={5} align="start">
         {photo_profile_url && (
-          <Image 
-            borderRadius="full" 
-            boxSize="100px" 
-            src={photo_profile_url} 
-            alt="l'équipe" 
+          <Image
+            borderRadius="full"
+            boxSize="100px"
+            src={photo_profile_url}
+            alt="l'équipe"
           />
         )}
         <Heading size="md">{name_of_the_team}</Heading>
@@ -186,7 +186,7 @@ const EquipiersTable = () => {
       </Stack>
     );
   };
-  
+
   return (
     <>
       <TableContainer>
@@ -209,8 +209,21 @@ const EquipiersTable = () => {
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} size="xl">
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Détails sur l'équipe</ModalHeader>
-          <ModalCloseButton />
+          <ModalHeader
+            fontSize="lg"
+            fontWeight="bold"
+            color="purple.600"
+            bg="purple.100"
+            p={3}
+            borderRadius="md"
+          >
+            Détails sur l'équipe
+          </ModalHeader>
+          <ModalCloseButton
+            size="lg"
+            color="purple.600"
+          />
+
           <ModalBody>
             {renderTeamDetails()}
             <Box id={`map-${selectedEquipier?.id}`} h='500px' w='100%' mt={4} />
