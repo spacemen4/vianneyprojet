@@ -15,49 +15,45 @@ function VianneyAlertChat() {
   const [alerts, setAlerts] = useState([]);
   const [newAlertText, setNewAlertText] = useState('');
   const toast = useToast();
-  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
-  const [alertToDelete, setAlertToDelete] = useState(null);
+  const [ setIsConfirmOpen] = useState(false);
+  const [alertToDelete] = useState(null);
   const [details, setDetails] = useState('');
   const [isEditOpen, setIsEditOpen] = useState(false);
-const [editingAlert, setEditingAlert] = useState(null);
+  const [editingAlert, setEditingAlert] = useState(null);
 
-const openEditModal = (alert) => {
-  setEditingAlert(alert);
-  setIsEditOpen(true);
-};
+  const openEditModal = (alert) => {
+    setEditingAlert(alert);
+    setIsEditOpen(true);
+  };
 
-const closeEditModal = () => {
-  setIsEditOpen(false);
-};
+  const closeEditModal = () => {
+    setIsEditOpen(false);
+  };
 
-const handleEditChange = (event) => {
-  setEditingAlert({ ...editingAlert, [event.target.name]: event.target.value });
-};
+  const handleEditChange = (event) => {
+    setEditingAlert({ ...editingAlert, [event.target.name]: event.target.value });
+  };
 
-const handleSubmitEdit = async () => {
-  const { error } = await supabase
-    .from('vianney_alert')
-    .update({
-      alert_text: editingAlert.alert_text,
-      details: editingAlert.details
-      // Add other fields as necessary
-    })
-    .match({ id: editingAlert.id });
+  const handleSubmitEdit = async () => {
+    const { error } = await supabase
+      .from('vianney_alert')
+      .update({
+        alert_text: editingAlert.alert_text,
+        details: editingAlert.details
+        // Add other fields as necessary
+      })
+      .match({ id: editingAlert.id });
 
-  if (!error) {
-    // Update local state to reflect changes
-    setAlerts(alerts.map(alert => alert.id === editingAlert.id ? editingAlert : alert));
-    closeEditModal();
-  } else {
-    console.error('Error updating alert:', error);
-  }
-};
+    if (!error) {
+      // Update local state to reflect changes
+      setAlerts(alerts.map(alert => alert.id === editingAlert.id ? editingAlert : alert));
+      closeEditModal();
+    } else {
+      console.error('Error updating alert:', error);
+    }
+  };
   const handleSolveAlert = (alertId) => {
     // Implement solving the alert
-  };
-  const openConfirmModal = (alertId) => {
-    setAlertToDelete(alertId);
-    setIsConfirmOpen(true);
   };
 
   const closeConfirmModal = () => {
@@ -96,26 +92,7 @@ const handleSubmitEdit = async () => {
     setDetails(event.target.value);
   };
 
-  const handleMoreInfo = (alertText, details) => {
-    toast({
-      title: "Information sur l'alerte",
-      description: (
-        <>
-          <Text fontWeight="bold">Alerte :</Text> {alertText}
-          {details && (
-            <>
-              <br />
-              <Text fontWeight="bold">Détails :</Text> {details}
-            </>
-          )}
-        </>
-      ),
-      status: 'info',
-      duration: 5000,
-      isClosable: true,
-    });
-  };
-  
+
 
   useEffect(() => {
     // Function to fetch alerts from Supabase
@@ -203,7 +180,7 @@ const handleSubmitEdit = async () => {
                   </Text>
                 </Box>
                 <Button onClick={() => handleSolveAlert(alert.id)}><FcOk /></Button>
-                <Button onClick={() => openConfirmModal(alert.id)}><FcDeleteDatabase /></Button>
+                <Button onClick={() => handleDeleteAlert(alert.id)}><FcDeleteDatabase /></Button>
                 <Button onClick={() => openEditModal(alert)}><FcInfo /></Button>
               </Alert>
             );
@@ -233,34 +210,34 @@ const handleSubmitEdit = async () => {
           </Button>
         </Box>
         <Modal isOpen={isEditOpen} onClose={closeEditModal}>
-  <ModalOverlay />
-  <ModalContent>
-    <ModalHeader>Modifier l'alerte</ModalHeader>
-    <ModalBody>
-      <Input
-        name="alert_text"
-        value={editingAlert?.alert_text || ''}
-        onChange={handleEditChange}
-        placeholder="Texte de l'alerte"
-        mt={2}
-      />
-      <Textarea
-        name="details"
-        value={editingAlert?.details || ''}
-        onChange={handleEditChange}
-        placeholder="Détails de l'alerte"
-        mt={2}
-      />
-      {/* Add other fields as necessary */}
-    </ModalBody>
-    <ModalFooter>
-      <Button colorScheme="blue" mr={3} onClick={handleSubmitEdit}>
-        Enregistrer les modifications
-      </Button>
-      <Button variant="ghost" onClick={closeEditModal}>Annuler</Button>
-    </ModalFooter>
-  </ModalContent>
-</Modal>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Modifier l'alerte</ModalHeader>
+            <ModalBody>
+              <Input
+                name="alert_text"
+                value={editingAlert?.alert_text || ''}
+                onChange={handleEditChange}
+                placeholder="Texte de l'alerte"
+                mt={2}
+              />
+              <Textarea
+                name="details"
+                value={editingAlert?.details || ''}
+                onChange={handleEditChange}
+                placeholder="Détails de l'alerte"
+                mt={2}
+              />
+              {/* Add other fields as necessary */}
+            </ModalBody>
+            <ModalFooter>
+              <Button colorScheme="blue" mr={3} onClick={handleSubmitEdit}>
+                Enregistrer les modifications
+              </Button>
+              <Button variant="ghost" onClick={closeEditModal}>Annuler</Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
       </Box>
     </Card>
   );
