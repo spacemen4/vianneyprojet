@@ -18,8 +18,8 @@ import {
   MdOutlineMoreHoriz,
 } from "react-icons/md";
 
-export default function Banner({ onFilterSelect }) {
-  const { ...rest } = props;
+export default function Banner(props) {
+  const { onFilterSelect, ...rest } = props;
 
   const textColor = useColorModeValue("secondaryGray.500", "white");
   const textHover = useColorModeValue(
