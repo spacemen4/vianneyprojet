@@ -15,6 +15,7 @@ import {
   ModalHeader,
   ModalCloseButton,
   ModalBody,
+  Box,
 } from '@chakra-ui/react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -70,7 +71,7 @@ const EquipiersTable = () => {
       <Td><Avatar size="md" src={equipier.photo_profile_url} /></Td>
       <Td>{equipier.name_of_the_team}</Td>
       <Td>{getLeaderName(equipier.team_members)}</Td>
-      <Td>{equipier.mission}</Td> {/* Example field */}
+      <Td>{equipier.mission}</Td>
     </Tr>
   );
   useEffect(() => {
@@ -92,9 +93,6 @@ const EquipiersTable = () => {
     const leader = teamMembers.find(member => member.isLeader);
     return leader ? `${leader.firstname} ${leader.familyname}` : 'No Leader';
   };
-
-
-
 
 
   const createCustomIcon = (color = 'red') => {
@@ -167,7 +165,7 @@ const EquipiersTable = () => {
             <Tr>
               <Th>Photo</Th>
               <Th>Nom de l'équipe</Th>
-              <Th>Nom du Leader</Th>
+              <Th>Nom du Responsable</Th>
               <Th>Mission</Th>
             </Tr>
           </Thead>
@@ -182,11 +180,11 @@ const EquipiersTable = () => {
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} size="xl">
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Details sur l'équipe</ModalHeader>
+          <ModalHeader>Détails sur l'équipe</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             {renderTeamDetails()}
-            <div id={`map-${selectedEquipier?.id}`} style={{ height: '500px', width: '100%' }}></div>
+            <Box id={`map-${selectedEquipier?.id}`} h='500px' w='100%' />
           </ModalBody>
         </ModalContent>
       </Modal>
