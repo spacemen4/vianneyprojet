@@ -18,6 +18,40 @@ function VianneyAlertChat() {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [alertToDelete, setAlertToDelete] = useState(null);
   const [details, setDetails] = useState('');
+  const [isEditOpen, setIsEditOpen] = useState(false);
+const [editingAlert, setEditingAlert] = useState(null);
+
+const openEditModal = (alert) => {
+  setEditingAlert(alert);
+  setIsEditOpen(true);
+};
+
+const closeEditModal = () => {
+  setIsEditOpen(false);
+};
+
+const handleEditChange = (event) => {
+  setEditingAlert({ ...editingAlert, [event.target.name]: event.target.value });
+};
+
+const handleSubmitEdit = async () => {
+  const { error } = await supabase
+    .from('vianney_alert')
+    .update({
+      alert_text: editingAlert.alert_text,
+      details: editingAlert.details
+      // Add other fields as necessary
+    })
+    .match({ id: editingAlert.id });
+
+  if (!error) {
+    // Update local state to reflect changes
+    setAlerts(alerts.map(alert => alert.id === editingAlert.id ? editingAlert : alert));
+    closeEditModal();
+  } else {
+    console.error('Error updating alert:', error);
+  }
+};
   const handleSolveAlert = (alertId) => {
     // Implement solving the alert
   };
@@ -170,7 +204,7 @@ function VianneyAlertChat() {
                 </Box>
                 <Button onClick={() => handleSolveAlert(alert.id)}><FcOk /></Button>
                 <Button onClick={() => openConfirmModal(alert.id)}><FcDeleteDatabase /></Button>
-                <Button onClick={() => handleMoreInfo(alert.alert_text, alert.details)}><FcInfo /></Button>
+                <Button onClick={() => openEditModal(alert)}><FcInfo /></Button>
               </Alert>
             );
           })}
@@ -198,21 +232,35 @@ function VianneyAlertChat() {
             Ajouter une alerte
           </Button>
         </Box>
-        <Modal isOpen={isConfirmOpen} onClose={closeConfirmModal}>
-          <ModalOverlay />
-          <ModalContent>
-            <ModalHeader>Supprimer l'alerte</ModalHeader>
-            <ModalBody>
-              Souhaitez-vous vraiment supprimer cette alerte?
-            </ModalBody>
-            <ModalFooter>
-              <Button colorScheme="red" mr={3} onClick={handleDeleteAlert}>
-                Suppression
-              </Button>
-              <Button variant="ghost" onClick={closeConfirmModal}>Annuler</Button>
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
+        <Modal isOpen={isEditOpen} onClose={closeEditModal}>
+  <ModalOverlay />
+  <ModalContent>
+    <ModalHeader>Modifier l'alerte</ModalHeader>
+    <ModalBody>
+      <Input
+        name="alert_text"
+        value={editingAlert?.alert_text || ''}
+        onChange={handleEditChange}
+        placeholder="Texte de l'alerte"
+        mt={2}
+      />
+      <Textarea
+        name="details"
+        value={editingAlert?.details || ''}
+        onChange={handleEditChange}
+        placeholder="Détails de l'alerte"
+        mt={2}
+      />
+      {/* Add other fields as necessary */}
+    </ModalBody>
+    <ModalFooter>
+      <Button colorScheme="blue" mr={3} onClick={handleSubmitEdit}>
+        Enregistrer les modifications
+      </Button>
+      <Button variant="ghost" onClick={closeEditModal}>Annuler</Button>
+    </ModalFooter>
+  </ModalContent>
+</Modal>
       </Box>
     </Card>
   );
