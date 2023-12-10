@@ -18,7 +18,7 @@ import {
   MdOutlineMoreHoriz,
 } from "react-icons/md";
 
-export default function Banner(props) {
+export default function Banner({ onFilterSelect }) {
   const { ...rest } = props;
 
   const textColor = useColorModeValue("secondaryGray.500", "white");
@@ -49,17 +49,16 @@ export default function Banner(props) {
     onClose: onClose1,
   } = useDisclosure();
 
-  // Optional: Functions to handle menu item clicks
   const handleAllAlertsClick = () => {
-    // Handle 'All alerts' option
+    onFilterSelect('all');
   };
 
   const handleSuccessAlertsClick = () => {
-    // Handle 'Alert success only' option
+    onFilterSelect('success');
   };
 
   const handleUrgentAlertsClick = () => {
-    // Handle 'Urgent alert' option
+    onFilterSelect('urgent');
   };
 
   return (

@@ -20,6 +20,7 @@ function VianneyAlertChat() {
   const [editingAlert, setEditingAlert] = useState(null);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [alertToDelete, setAlertToDelete] = useState(null);
+  const [filter, setFilter] = useState('all');
   const openConfirmModal = (alertId) => {
     setAlertToDelete(alertId);
     setIsConfirmOpen(true);
@@ -58,11 +59,11 @@ function VianneyAlertChat() {
     }
   };
   const handleSolveAlert = async (alertId) => {
-    const {  error } = await supabase
+    const { error } = await supabase
       .from('vianney_alert')
       .update({ solved_or_not: 'success' })
       .match({ id: alertId });
-  
+
     if (error) {
       console.error('Error updating alert:', error);
       toast({
@@ -84,7 +85,7 @@ function VianneyAlertChat() {
       });
     }
   };
-  
+
 
   const closeConfirmModal = () => {
     setIsConfirmOpen(false);
@@ -175,6 +176,19 @@ function VianneyAlertChat() {
   const textColor = useColorModeValue("secondaryGray.900", "white");
 
 
+  const handleFilterSelect = (selectedFilter) => {
+    setFilter(selectedFilter);
+  };
+
+  // Function to determine if an alert should be shown based on the current filter
+  const shouldShowAlert = (alert) => {
+    if (filter === 'all') return true;
+    if (filter === 'success' && alert.solved_or_not === 'success') return true;
+    if (filter === 'urgent' && alert.solved_or_not === 'urgent') return true;
+    return false;
+  };
+
+
   return (
 
     <Card
@@ -191,12 +205,12 @@ function VianneyAlertChat() {
             lineHeight='100%'>
             Table des alertes
           </Text>
-          <Menu />
+          <Menu onFilterSelect={handleFilterSelect} />
         </Flex>
 
 
         <VStack spacing={4}>
-          {alerts.map((alert, index) => {
+          {alerts.filter(shouldShowAlert).map((alert, index) => {
             const alertStatus = ['info', 'warning', 'success', 'error'].includes(alert.solved_or_not)
               ? alert.solved_or_not
               : 'info';
@@ -284,7 +298,6 @@ function VianneyAlertChat() {
             </ModalFooter>
           </ModalContent>
         </Modal>
-
       </Box>
     </Card>
   );
