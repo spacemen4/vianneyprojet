@@ -42,6 +42,23 @@ const EquipiersTable = () => {
     fontWeight: 'normal',
     color: useColorModeValue('gray.600', 'gray.200'),
   };
+  const headerGradientStyle = {
+    background: 'linear-gradient(to right, #6e8efb, #a777e3)',
+    color: 'white',
+    textTransform: 'none',
+    fontSize: '18px',
+    fontWeight: 'bold',
+  };
+
+  const tableRowStyle = {
+    borderBottom: '1px solid',
+    borderBottomColor: useColorModeValue('gray.200', 'gray.600'),
+  };
+
+  const avatarStyle = {
+    border: '2px solid',
+    borderColor: useColorModeValue('gray.300', 'gray.500'),
+  };
 
   useEffect(() => {
     if (selectedEquipier && isModalOpen) {
@@ -73,8 +90,8 @@ const EquipiersTable = () => {
     cursor: 'pointer',
   };
   const TableRow = ({ equipier, onClick }) => (
-    <Tr _hover={hoverStyle} onClick={() => onClick(equipier)}>
-      <Td><Avatar size="md" src={equipier.photo_profile_url} /></Td>
+    <Tr _hover={hoverStyle} onClick={() => onClick(equipier)} style={tableRowStyle}>
+      <Td><Avatar size="md" src={equipier.photo_profile_url} style={avatarStyle} /></Td>
       <Td>{equipier.name_of_the_team}</Td>
       <Td>{getLeaderName(equipier.team_members)}</Td>
       <Td>{equipier.mission}</Td>
@@ -137,7 +154,7 @@ const EquipiersTable = () => {
         {member.firstname} {member.familyname} - {member.isLeader ? 'Responsable' : 'Membre'}
       </li>
     ));
-    
+
 
 
     return (
@@ -169,7 +186,7 @@ const EquipiersTable = () => {
     <>
       <TableContainer>
         <Table variant='simple'>
-          <Thead>
+          <Thead style={headerGradientStyle}>
             <Tr>
               <Th><Text style={headerStyle}>photo</Text></Th>
               <Th><Text style={headerStyle}>nom de l'équipe</Text></Th>
