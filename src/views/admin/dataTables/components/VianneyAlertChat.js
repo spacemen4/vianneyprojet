@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Input, Button, VStack, Alert, AlertIcon, Text, Select, Flex, useColorModeValue } from '@chakra-ui/react';
-import { createClient } from '@supabase/supabase-js'
+import { Box, Input, Button, VStack, Alert, AlertIcon, Text, Select, Flex, useColorModeValue, useToast } from '@chakra-ui/react';
+import { createClient } from '@supabase/supabase-js';
+import { FcOk, FcDeleteDatabase, FcInfo } from "react-icons/fc";
 import Card from "components/card/Card";
 import Menu from "components/menu/MainMenu";
 
@@ -13,6 +14,25 @@ function VianneyAlertChat() {
   const [alertStatus, setAlertStatus] = useState('info'); // New state for alert status
   const [alerts, setAlerts] = useState([]);
   const [newAlertText, setNewAlertText] = useState('');
+  const toast = useToast();
+
+  const handleSolveAlert = (alertId) => {
+    // Implement solving the alert
+  };
+
+  const handleDeleteAlert = (alertId) => {
+    // Implement deleting the alert
+  };
+
+  const handleMoreInfo = (alertText) => {
+    toast({
+      title: 'Alert Information',
+      description: alertText,
+      status: 'info',
+      duration: 5000,
+      isClosable: true,
+    });
+  };
 
   useEffect(() => {
     // Function to fetch alerts from Supabase
@@ -90,21 +110,23 @@ function VianneyAlertChat() {
                 ? alert.solved_or_not
                 : 'info';
 
-              return (
-                <Alert key={index} status={alertStatus}>
-                  <AlertIcon />
-                  <Box>
-                    <Text>{alert.alert_text}</Text>
-                    <Text fontSize="sm" color="gray.500">
-                      {new Date(alert.timestamp).toLocaleString()}
-                    </Text>
-                  </Box>
-                </Alert>
-              );
-            })}
-
-          </VStack>
-          <Box mt={4}>
+        return (
+          <Alert key={index} status={alertStatus}>
+            <AlertIcon />
+            <Box flex="1">
+              <Text>{alert.alert_text}</Text>
+              <Text fontSize="sm" color="gray.500">
+                {new Date(alert.timestamp).toLocaleString()}
+              </Text>
+            </Box>
+            <Button onClick={() => handleSolveAlert(alert.id)}><FcOk /></Button>
+            <Button onClick={() => handleDeleteAlert(alert.id)}><FcDeleteDatabase /></Button>
+            <Button onClick={() => handleMoreInfo(alert.alert_text)}><FcInfo /></Button>
+          </Alert>
+        );
+      })}
+    </VStack>
+    <Box mt={4}>
             <Select placeholder="Sélectionnez le degrès d'urgence" value={alertStatus} onChange={handleStatusChange}>
               <option value="error">Urgence</option>
               <option value="success">Problème résolu</option>
