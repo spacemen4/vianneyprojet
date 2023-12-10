@@ -104,7 +104,7 @@ const EquipiersTable = () => {
   useEffect(() => {
     const fetchEquipiers = async () => {
       const { data, error } = await supabase
-        .from('vianney_users_on_the_ground')
+        .from('vianney_teams')
         .select('*');
       if (error) {
         console.log('Error fetching data:', error);

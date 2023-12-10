@@ -79,8 +79,8 @@ const LocationMarker = () => {
   ) : null;
 };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
     // Check if profilePhoto is not null before accessing its properties
     if (!profilePhoto) {
@@ -101,10 +101,11 @@ const LocationMarker = () => {
 
     const publicURL = `https://hvjzemvfstwwhhahecwu.supabase.co/storage/v1/object/public/users_on_the_ground/${fileName}`;
 
-    // Insert user data into the database
+  // Insert user data into the database
   const { error: insertError } = await supabase
-    .from('vianney_users_on_the_ground')
+    .from('vianney_teams')
     .insert([{
+      id: uuidv4(), // Generate a new UUID for each team
       name_of_the_team: nameOfTheTeam,
       latitude: lat,
       longitude: lng,

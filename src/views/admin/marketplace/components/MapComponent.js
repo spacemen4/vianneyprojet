@@ -30,7 +30,7 @@ const MapComponent = () => {
     // Fetch users from the database
     const fetchUsers = async () => {
       let { data: usersOnGround, error } = await supabase
-        .from('vianney_users_on_the_ground')
+        .from('vianney_teams')
         .select('*');
 
       if (error) {
