@@ -18,7 +18,6 @@ import {
   MdOutlinePerson,
   MdOutlineCardTravel,
   MdOutlineLightbulb,
-  MdOutlineSettings,
 } from "react-icons/md";
 
 export default function Banner(props) {
@@ -52,6 +51,19 @@ export default function Banner(props) {
     onClose: onClose1,
   } = useDisclosure();
 
+  // Optional: Functions to handle menu item clicks
+  const handleAllAlertsClick = () => {
+    // Handle 'All alerts' option
+  };
+
+  const handleSuccessAlertsClick = () => {
+    // Handle 'Alert success only' option
+  };
+
+  const handleUrgentAlertsClick = () => {
+    // Handle 'Urgent alert' option
+  };
+
   return (
     <Menu isOpen={isOpen1} onClose={onClose1}>
       <MenuButton
@@ -79,7 +91,7 @@ export default function Banner(props) {
         boxShadow={bgShadow}
         borderRadius='20px'
         p='15px'>
-        <MenuItem
+        <MenuItem onClick={handleAllAlertsClick}
           transition='0.2s linear'
           color={textColor}
           _hover={textHover}
@@ -95,7 +107,7 @@ export default function Banner(props) {
           <Flex align='center'>
             <Icon as={MdOutlinePerson} h='16px' w='16px' me='8px' />
             <Text fontSize='sm' fontWeight='400'>
-              Panel 1
+              All Alerts
             </Text>
           </Flex>
         </MenuItem>
@@ -111,15 +123,16 @@ export default function Banner(props) {
           _focus={{
             bg: "transparent",
           }}
-          mb='10px'>
+          mb='10px' onClick={handleSuccessAlertsClick}>
           <Flex align='center'>
             <Icon as={MdOutlineCardTravel} h='16px' w='16px' me='8px' />
             <Text fontSize='sm' fontWeight='400'>
-              Panel 2
+              Alert Success Only
             </Text>
           </Flex>
         </MenuItem>
         <MenuItem
+          onClick={handleUrgentAlertsClick}
           transition='0.2s linear'
           p='0px'
           borderRadius='8px'
@@ -135,26 +148,7 @@ export default function Banner(props) {
           <Flex align='center'>
             <Icon as={MdOutlineLightbulb} h='16px' w='16px' me='8px' />
             <Text fontSize='sm' fontWeight='400'>
-              Panel 3
-            </Text>
-          </Flex>
-        </MenuItem>
-        <MenuItem
-          transition='0.2s linear'
-          color={textColor}
-          _hover={textHover}
-          p='0px'
-          borderRadius='8px'
-          _active={{
-            bg: "transparent",
-          }}
-          _focus={{
-            bg: "transparent",
-          }}>
-          <Flex align='center'>
-            <Icon as={MdOutlineSettings} h='16px' w='16px' me='8px' />
-            <Text fontSize='sm' fontWeight='400'>
-              Panel 4
+              Urgent Alert
             </Text>
           </Flex>
         </MenuItem>
