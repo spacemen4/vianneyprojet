@@ -1,21 +1,18 @@
 import React from "react";
-
-// Chakra imports
 import { Flex, Text } from "@chakra-ui/react";
 
 export default function Banner() {
-  // Chakra Color Mode
   return (
     <Flex
       direction="column"
-      bgGradient="linear(to-r, blue.200, blue.500, blue.800)" // Gradient from light blue to dark blue
-      py={{ base: "5px", md: "10px" }}
-      px={{ base: "30px", md: "64px" }}
-      borderRadius="30px">
+      bgGradient="linear(to-r, blue.200, blue.500, blue.800)"
+      py={{ base: "2", md: "3" }}
+      px={{ base: "8", md: "16" }}
+      borderRadius="xl">
       <Text
-        fontSize={{ base: "24px", md: "34px" }}
+        fontSize={{ base: "md", md: "lg", lg: "xl", xl: "2xl" }}
         color="white"
-        mb="5px"
+        mb="1"
         maxW={{
           base: "100%",
           md: "64%",
@@ -24,8 +21,8 @@ export default function Banner() {
           "2xl": "50%",
           "3xl": "42%",
         }}
-        fontWeight="700"
-        lineHeight={{ base: "32px", md: "42px" }}>
+        fontWeight="bold"
+        lineHeight="shorter">
         Carte de l'évênement
       </Text>
       <Text
@@ -39,9 +36,9 @@ export default function Banner() {
           "2xl": "46%",
           "3xl": "34%",
         }}
-        fontWeight="500"
-        mb="10px"
-        lineHeight="28px">
+        fontWeight="medium"
+        mb="2"
+        lineHeight="normal">
         Zoomez pour voir les détails
       </Text>
     </Flex>
