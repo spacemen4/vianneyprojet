@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Textarea, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalFooter, Box, Input, Button, VStack, Alert, AlertIcon, Text, Select, Flex, useColorModeValue, useToast } from '@chakra-ui/react';
+import { Textarea, Tooltip, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalFooter, Box, Input, Button, VStack, Alert, AlertIcon, Text, Select, Flex, useColorModeValue, useToast } from '@chakra-ui/react';
 import { createClient } from '@supabase/supabase-js';
 import { FcOk, FcDeleteDatabase, FcInfo } from "react-icons/fc";
 import Card from "components/card/Card";
@@ -238,9 +238,15 @@ function VianneyAlertChat() {
                     {new Date(alert.timestamp).toLocaleString()}
                   </Text>
                 </Box>
-                <Button mr="2px" onClick={() => handleSolveAlert(alert.id)}><FcOk /></Button>
-                <Button mr="2px" onClick={() => openConfirmModal(alert.id)}><FcDeleteDatabase /></Button>
-                <Button onClick={() => openEditModal(alert)}><FcInfo /></Button>
+                <Tooltip label="Marqué comme résolue" hasArrow>
+                  <Button mr="2px" onClick={() => handleSolveAlert(alert.id)}><FcOk /></Button>
+                </Tooltip>
+                <Tooltip label="Supprimer" hasArrow>
+                  <Button mr="2px" onClick={() => openConfirmModal(alert.id)}><FcDeleteDatabase /></Button>
+                </Tooltip>
+                <Tooltip label="Information" hasArrow>
+                  <Button onClick={() => openEditModal(alert)}><FcInfo /></Button>
+                </Tooltip>
               </Alert>
             );
           })}
