@@ -282,7 +282,7 @@ function TeamTimeline() {
                 fontSize='22px'
                 fontWeight='700'
                 lineHeight='100%'>
-                Emploi du temps hello
+                Chronologie de l'évênement
               </Text>
               <Menu />
               <Tooltip label="Cliquer pour ajouter une action" hasArrow>
