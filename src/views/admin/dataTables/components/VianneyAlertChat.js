@@ -26,7 +26,9 @@ function VianneyAlertChat() {
     setAlertToDelete(alertId);
     setIsConfirmOpen(true);
   };
-
+  const handleAllowScrollingToggle = () => {
+    setAllowScrolling(!allowScrolling);
+  };  
 
   const openEditModal = (alert) => {
     setEditingAlert(alert);
@@ -206,12 +208,16 @@ function VianneyAlertChat() {
             lineHeight='100%'>
             Table des alertes
           </Text>
-          <Menu onFilterSelect={handleFilterSelect} onAllowScrollingToggle={() => setAllowScrolling(!allowScrolling)} />
+          <Menu onFilterSelect={handleFilterSelect} onAllowScrollingToggle={handleAllowScrollingToggle} />
+
         </Flex>
 
 
-        <VStack spacing={4} overflowY={allowScrolling && alerts.length > 3 ? "scroll" : "hidden"} maxHeight={allowScrolling ? "400px" : "auto"}>
-  {alerts.filter(shouldShowAlert).slice(0, allowScrolling ? alerts.length : 3).map((alert, index) => {
+        <VStack
+  spacing={4}
+  overflowY={allowScrolling ? "scroll" : "hidden"}
+  maxHeight={allowScrolling ? "200px" : "none"}>
+  {alerts.filter(shouldShowAlert).map((alert, index) => {
             const alertStatus = ['info', 'warning', 'success', 'error'].includes(alert.solved_or_not)
               ? alert.solved_or_not
               : 'info';
