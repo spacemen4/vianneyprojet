@@ -19,7 +19,7 @@ import CameraForm from "./components/CameraForm";
 import { createClient } from '@supabase/supabase-js';
 import UserForm from './components/UserForm';
 import VianneyAlertChat from '../dataTables/components/VianneyAlertChat';
-import TeamSchedule from '../dataTables/components/TeamSchedule';
+import TeamScheduleMadeMySelf from '../dataTables/components/TeamScheduleMadeMySelf';
 import TeamTimeline from '../dataTables/components/TeamTimeline';
 
 const supabaseUrl = 'https://hvjzemvfstwwhhahecwu.supabase.co';
@@ -151,7 +151,7 @@ export default function Marketplace() {
           </Card>
           <Box maxWidth={maxWidth}>
             <Card px='0px' mb='20px'>
-              <TeamSchedule />
+              <TeamScheduleMadeMySelf />
 
             </Card>
           </Box>
