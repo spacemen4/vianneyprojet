@@ -8,15 +8,15 @@ const ParametersDocuments = () => {
   const buttonTextColor = useColorModeValue("secondaryGray.900", "white");
 
   return (
-    <Box border='1px' borderColor='gray.200' p={5} mb={5}>
-      <Text fontSize='xl' mb={4}>Evènements</Text>
+    <Box border='1px' borderColor='gray.200' p={5} m={5}>
+      <Text fontSize='xl' m={4}>Evènements</Text>
       
       <Button
         leftIcon={<FcAdvertising size='32px' color={brandColor} />}
         bg={buttonBg}
         color={buttonTextColor}
         h='100px'
-        mb={4}
+        m={4} // Margin bottom for spacing
       >
         Evènement et caractéristiques
       </Button>
@@ -26,7 +26,7 @@ const ParametersDocuments = () => {
         bg={buttonBg}
         color={buttonTextColor}
         h='100px'
-        mb={4}
+        m={4} // Margin bottom for spacing
       >
         Géolocalisation
       </Button>
@@ -36,7 +36,7 @@ const ParametersDocuments = () => {
         bg={buttonBg}
         color={buttonTextColor}
         h='100px'
-        mb={4}
+        m={4} // Margin bottom for spacing
       >
         Personnels
       </Button>
@@ -46,7 +46,7 @@ const ParametersDocuments = () => {
         bg={buttonBg}
         color={buttonTextColor}
         h='100px'
-        mb={4}
+        m={4} // Margin bottom for spacing
       >
         Salle de crise
       </Button>
@@ -56,7 +56,7 @@ const ParametersDocuments = () => {
         bg={buttonBg}
         color={buttonTextColor}
         h='100px'
-        mb={4}
+        m={4} // Margin bottom for spacing
       >
         Emploi du temps
       </Button>
