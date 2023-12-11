@@ -9,7 +9,7 @@ const ParametersDocuments = () => {
 
   return (
     <Box border='1px' borderColor='gray.200' p={5} mb={5}>
-      <Text fontSize='xl' mb={4}>Documents Settings</Text>
+      <Text fontSize='xl' mb={4}>Evènements</Text>
       
       <Button
         leftIcon={<FcAdvertising size='32px' color={brandColor} />}
@@ -17,7 +17,7 @@ const ParametersDocuments = () => {
         color={buttonTextColor}
         h='100px'
       >
-        Add Document
+        Evènement et caractéristiques
       </Button>
       
       {/* Add more content here */}
