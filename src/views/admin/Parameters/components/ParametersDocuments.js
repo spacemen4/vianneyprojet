@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Text, Button, useColorModeValue } from '@chakra-ui/react';
-import { FcAdvertising } from "react-icons/fc";
+import { FcAdvertising, FcGlobe, FcBusinessman, FcDepartment, FcCalendar } from "react-icons/fc";
 
 const ParametersDocuments = () => {
   const brandColor = useColorModeValue("brand.500", "white");
@@ -16,10 +16,51 @@ const ParametersDocuments = () => {
         bg={buttonBg}
         color={buttonTextColor}
         h='100px'
+        mb={4}
       >
         Evènement et caractéristiques
       </Button>
       
+      <Button
+        leftIcon={<FcGlobe size='32px' color={brandColor} />}
+        bg={buttonBg}
+        color={buttonTextColor}
+        h='100px'
+        mb={4}
+      >
+        Géolocalisation
+      </Button>
+
+      <Button
+        leftIcon={<FcBusinessman size='32px' color={brandColor} />}
+        bg={buttonBg}
+        color={buttonTextColor}
+        h='100px'
+        mb={4}
+      >
+        Personnels
+      </Button>
+
+      <Button
+        leftIcon={<FcDepartment size='32px' color={brandColor} />}
+        bg={buttonBg}
+        color={buttonTextColor}
+        h='100px'
+        mb={4}
+      >
+        Salle de crise
+      </Button>
+
+      <Button
+        leftIcon={<FcCalendar size='32px' color={brandColor} />}
+        bg={buttonBg}
+        color={buttonTextColor}
+        h='100px'
+        mb={4}
+      >
+        Emploi du temps
+      </Button>
+
       {/* Add more content here */}
     </Box>
   );
