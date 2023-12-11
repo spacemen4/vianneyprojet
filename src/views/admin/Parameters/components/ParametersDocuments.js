@@ -1,8 +1,9 @@
+// src/views/admin/Parameters/components/ParametersDocuments.js
 import React from 'react';
 import { Box, Text, Button, useColorModeValue } from '@chakra-ui/react';
 import { FcAdvertising, FcGlobe, FcBusinessman, FcDepartment, FcCalendar } from "react-icons/fc";
 
-const ParametersDocuments = () => {
+const ParametersDocuments = ({ onEventAndCharacteristicsClick }) => {
   const brandColor = useColorModeValue("brand.500", "white");
   const buttonBg = useColorModeValue("white", "gray.800");
   const buttonTextColor = useColorModeValue("secondaryGray.900", "white");
@@ -16,7 +17,8 @@ const ParametersDocuments = () => {
         bg={buttonBg}
         color={buttonTextColor}
         h='100px'
-        m={4} // Margin bottom for spacing
+        m={4}
+        onClick={onEventAndCharacteristicsClick}
       >
         Evènement et caractéristiques
       </Button>

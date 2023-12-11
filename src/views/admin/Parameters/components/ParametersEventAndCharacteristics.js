@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Text, Button, useColorModeValue } from '@chakra-ui/react';
-import { FcBusinessCard, FcCalendar, FcHome, FcList, FcMail } from "react-icons/fc";
+import { FcBusiness, FcCalendar, FcHome, FcList, FcVoicePresentation } from "react-icons/fc";
 
 const ParametersEventAndCharacteristics = () => {
   const brandColor = useColorModeValue("brand.500", "white");
@@ -12,7 +12,7 @@ const ParametersEventAndCharacteristics = () => {
       <Text fontSize='xl' m={4}>Caractéristiques de l'Événement</Text>
       
       <Button
-        leftIcon={<FcBusinessCard size='32px' color={brandColor} />}
+        leftIcon={<FcBusiness size='32px' color={brandColor} />}
         bg={buttonBg}
         color={buttonTextColor}
         h='100px'
@@ -52,7 +52,7 @@ const ParametersEventAndCharacteristics = () => {
       </Button>
 
       <Button
-        leftIcon={<FcMail size='32px' color={brandColor} />}
+        leftIcon={<FcVoicePresentation size='32px' color={brandColor} />}
         bg={buttonBg}
         color={buttonTextColor}
         h='100px'
