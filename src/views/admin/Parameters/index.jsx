@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Box, Heading, Button } from '@chakra-ui/react';
 import ParametersDocuments from './components/ParametersDocuments';
 import ParametersEventAndCharacteristics from './components/ParametersEventAndCharacteristics';
-
+import ParametersEvents from './components/ParametersEvents';
 const Parameters = () => {
   const [showEventAndCharacteristics, setShowEventAndCharacteristics] = useState(false);
 
@@ -19,6 +19,7 @@ const Parameters = () => {
         <ParametersEventAndCharacteristics /> :
         <ParametersDocuments onEventAndCharacteristicsClick={handleButtonClick} />
       }
+      <ParametersEvents />
     </Box>
   );
 };
