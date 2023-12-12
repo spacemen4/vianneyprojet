@@ -8,15 +8,14 @@ const ParametersEvents = () => {
   const buttonTextColor = useColorModeValue("secondaryGray.900", "white");
 
   return (
-    <Box border='1px' borderColor='gray.200' p={5} mb={5}>
-      <Text fontSize='xl' mb={4}>Documents</Text>
-      
+    <Box border='1px' borderColor='gray.200' p={5} m={5}>
+      <Text fontSize='xl' m={4}>Documents</Text>  
       <Button
         leftIcon={<FcDocument size='32px' color={brandColor} />}
         bg={buttonBg}
         color={buttonTextColor}
         h='100px'
-        mb={4} // Margin bottom for spacing
+        m={4} // Margin bottom for spacing
       >
         Documents missions
       </Button>

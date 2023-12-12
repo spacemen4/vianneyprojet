@@ -11,7 +11,6 @@ const ParametersDocuments = ({ onEventAndCharacteristicsClick }) => {
   return (
     <Box border='1px' borderColor='gray.200' p={5} m={5}>
       <Text fontSize='xl' m={4}>Evènements</Text>
-      
       <Button
         leftIcon={<FcAdvertising size='32px' color={brandColor} />}
         bg={buttonBg}
