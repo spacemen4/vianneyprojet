@@ -9,7 +9,7 @@ import {
   FcSurvey,
   FcSettings,
 } from "react-icons/fc";
-
+import VideoChatRoom from "views/admin/videoChatRoom";
 // Admin Imports
 import MainDashboard from "views/admin/default";
 import NFTMarketplace from "views/admin/marketplace";
@@ -79,6 +79,13 @@ const routes = [
     path: "/documentation",
     icon: <Icon as={FcLock} width='20px' height='20px' color='inherit' />, // Replace with appropriate icon
     component: Documentation, // Replace with your Documentation component
+  },
+  {
+    name: "Salle de chat vidéo",
+    layout: "/admin",
+    path: "/video-chat",
+    icon: <Icon as={FcBusinessman} width='20px' height='20px' color='inherit' />, // Replace with a suitable icon
+    component: VideoChatRoom, // Your Video Chat Room component
   },
 ];
 
