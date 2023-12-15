@@ -1,5 +1,8 @@
 import * as React from 'react';
 import { ZegoUIKitPrebuilt } from '@zegocloud/zego-uikit-prebuilt';
+import {
+  Box,
+} from "@chakra-ui/react";
 
 function randomID(len) {
   let result = '';
@@ -52,10 +55,12 @@ export default function App() {
   };
 
   return (
+    <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
     <div
       className="myCallContainer"
       ref={myMeeting}
       style={{ width: '100vw', height: '100vh' }}
     ></div>
+    </Box>
   );
 }
