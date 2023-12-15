@@ -26,8 +26,8 @@ export default function App() {
   let myMeeting = async (element) => {
 
  // generate Kit Token
- const appID = 1322742511;
- const serverSecret = "cdadc2def1dce0fd85278494a4dc965d";
+ const appID = 696234099;
+ const serverSecret = "ccc867713caf911d2d58684e248c9382";
  const kitToken =  ZegoUIKitPrebuilt.generateKitTokenForTest(appID, serverSecret, roomID,  randomID(5),  randomID(5));
 
  // Create instance object from Kit Token.
