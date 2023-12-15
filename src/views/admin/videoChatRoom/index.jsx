@@ -13,10 +13,12 @@ const root = createRoot(rootElement);
 
 export default function VideoChatRoom() {
   root.render(
-    <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
-      <StrictMode>
+
+    <StrictMode>
+      <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
         <App />
-      </StrictMode>
-    </Box>
+      </Box>
+    </StrictMode >
+
   );
 }
