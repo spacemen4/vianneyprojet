@@ -22,7 +22,7 @@ export function getUrlParams(
 }
 
 export default function App() {
-  const roomID = 'alQgF';
+  const roomID = getUrlParams().get('roomID') || randomID(5);
   let myMeeting = async (element) => {
 
  // generate Kit Token
