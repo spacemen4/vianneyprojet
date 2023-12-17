@@ -1,10 +1,10 @@
 import React from "react";
 import { Icon } from "@chakra-ui/react";
 import {
+  FcPieChart, // Suggested replacement for FcSurvey
+  FcLink,     // Suggested replacement for FcMindMap
   FcBusinessman,
-  FcMindMap,
-  FcSerialTasks,
-  FcSurvey,
+  FcCalendar,
   FcSettings,
 } from "react-icons/fc";
 import VideoChatRoom from "views/admin/videoChatRoom";
@@ -18,14 +18,14 @@ const routes = [
     name: "Présentation de la société",
     layout: "/admin",
     path: "/default",
-    icon: <Icon as={FcSurvey} width='20px' height='20px' color='inherit' />,
+    icon: <Icon as={FcPieChart} width='20px' height='20px' color='inherit' />,
     component: MainDashboard,
   },
   {
     name: "Partner",
     layout: "/admin",
     path: "/map",
-    icon: <Icon as={FcMindMap} width='20px' height='20px' color='inherit' />,
+    icon: <Icon as={FcLink} width='20px' height='20px' color='inherit' />,
     component: NFTMarketplace,
     secondary: true,
   },
@@ -33,7 +33,7 @@ const routes = [
     name: "Calendrier",
     layout: "/admin",
     path: "/data-tables",
-    icon: <Icon as={FcSerialTasks} width='20px' height='20px' color='inherit' />,
+    icon: <Icon as={FcCalendar} width='20px' height='20px' color='inherit' />,
     component: DataTables,
   },
   {
@@ -41,14 +41,14 @@ const routes = [
     layout: "/admin",
     path: "/parameters",
     icon: <Icon as={FcSettings} width='20px' height='20px' color='inherit' />,
-    component: Parameters, 
+    component: Parameters,
   },
   {
     name: "Salle de chat vidéo",
     layout: "/admin",
     path: "/video-chat",
-    icon: <Icon as={FcBusinessman} width='20px' height='20px' color='inherit' />, 
-    component: VideoChatRoom, 
+    icon: <Icon as={FcBusinessman} width='20px' height='20px' color='inherit' />,
+    component: VideoChatRoom,
   },
 ];
 
