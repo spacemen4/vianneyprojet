@@ -12,8 +12,8 @@ import {
 
 const ServiceSection = ({ title, children }) => {
   const bgGradient = useColorModeValue(
-    "linear(to-r, blue.200, cyan.200)", // Light mode gradient
-    "linear(to-r, blue.600, cyan.600)"  // Dark mode gradient
+    "linear(to-r, blue.200, cyan.200)", 
+    "linear(to-r, blue.600, cyan.600)"  
   );
 
   return (
@@ -31,7 +31,7 @@ const CompanyPresentation = () => {
   );
 
   return (
-    <Box pt={{ base: "140px", md: "80px", xl: "80px" }} bgGradient={containerBgGradient}>
+    <Box pt={{ base: "130px", md: "80px", xl: "80px" }} >
       <Container maxW="container.xl" py={10} borderRadius="lg" bg="whiteAlpha.800" boxShadow="lg">
         <Heading as="h1" size="2xl" textAlign="center" my={5} color="gray.700">
           Advance Capital
