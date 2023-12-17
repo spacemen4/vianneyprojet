@@ -8,25 +8,25 @@ import {
   useColorModeValue,
   SimpleGrid,
 } from "@chakra-ui/react";
-import MapComponent from "views/admin/marketplace/components/MapComponent";
-import TableTopCreators from "views/admin/marketplace/components/TableTopCreators";
+import MapComponent from "views/admin/partner/components/MapComponent";
+import TableTopCreators from "views/admin/partner/components/TableTopCreators";
 import NFT from "components/card/NFT";
 import Card from "components/card/Card.js";
 
-import tableDataTopCreators from "views/admin/marketplace/variables/tableDataTopCreators.json";
-import { tableColumnsTopCreators } from "views/admin/marketplace/variables/tableColumnsTopCreators";
+import tableDataTopCreators from "views/admin/partner/variables/tableDataTopCreators.json";
+import { tableColumnsTopCreators } from "views/admin/partner/variables/tableColumnsTopCreators";
 import CameraForm from "./components/CameraForm";
 import UserForm from './components/UserForm';
-import VianneyAlertChat from '../dataTables/components/VianneyAlertChat';
-import TeamScheduleMadeMySelf from '../dataTables/components/TeamScheduleMadeMySelf';
-import TeamTimeline from '../dataTables/components/TeamTimeline';
+import VianneyAlertChat from '../Calendar/components/VianneyAlertChat';
+import TeamScheduleMadeMySelf from '../Calendar/components/TeamScheduleMadeMySelf';
+import TeamTimeline from '../Calendar/components/TeamTimeline';
 import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = 'https://pvpsmyizvorwwccuwbuq.supabase.co';
 const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB2cHNteWl6dm9yd3djY3V3YnVxIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTcwMjgzMDg2MCwiZXhwIjoyMDE4NDA2ODYwfQ.9YDEN41__xBFJU91XY9e3r119A03yQ2oq5azmrx1aqY';
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-export default function Marketplace() {
+export default function Partner() {
   // Chakra Color Mode
   const textColor = useColorModeValue("secondaryGray.900", "white");
   const [cameras, setCameras] = useState([]);

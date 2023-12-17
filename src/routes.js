@@ -8,9 +8,9 @@ import {
   FcSettings,
 } from "react-icons/fc";
 import VideoChatRoom from "views/admin/videoChatRoom";
-import MainDashboard from "views/admin/default";
-import NFTMarketplace from "views/admin/marketplace";
-import DataTables from "views/admin/dataTables";
+import Company from "views/admin/default";
+import Partner from "views/admin/partner";
+import Calendar from "views/admin/Calendar";
 import Parameters from "views/admin/Parameters";
 
 const routes = [
@@ -19,22 +19,22 @@ const routes = [
     layout: "/admin",
     path: "/default",
     icon: <Icon as={FcPieChart} width='20px' height='20px' color='inherit' />,
-    component: MainDashboard,
+    component: Company,
   },
   {
     name: "Partner",
     layout: "/admin",
     path: "/map",
     icon: <Icon as={FcLink} width='20px' height='20px' color='inherit' />,
-    component: NFTMarketplace,
+    component: Partner,
     secondary: true,
   },
   {
     name: "Calendrier",
     layout: "/admin",
-    path: "/data-tables",
+    path: "/calendar",
     icon: <Icon as={FcCalendar} width='20px' height='20px' color='inherit' />,
-    component: DataTables,
+    component: Calendar,
   },
   {
     name: "Paramètres administrateur",
