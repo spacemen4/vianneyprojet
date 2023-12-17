@@ -25,10 +25,6 @@ const ServiceSection = ({ title, children }) => {
 };
 
 const CompanyPresentation = () => {
-  const containerBgGradient = useColorModeValue(
-    "linear(to-l, blue.300, blue.500)", // Light mode gradient
-    "linear(to-l, blue.700, blue.900)"  // Dark mode gradient
-  );
 
   return (
     <Box pt={{ base: "130px", md: "80px", xl: "80px" }} >
