@@ -15,7 +15,7 @@ import {
 const ServiceSection = ({ title, children, onLearnMore }) => {
   const bgGradient = useColorModeValue(
     "linear(to-r, blue.200, cyan.200)", 
-    "linear(to-r, blue.600, cyan.600)"  
+    "linear(to-r, blue.600, cyan.600)"
   );
 
   return (
@@ -26,17 +26,6 @@ const ServiceSection = ({ title, children, onLearnMore }) => {
     </Box>
   );
 };
-
-const DetailedContent = ({ title, content }) => (
-  <Box p={5} shadow="md" borderWidth="1px">
-    <Heading fontSize="xl">{title}</Heading>
-    <Text mt={4}>{content}</Text>
-  </Box>
-);
-
-const transformationContent = `Nous accompagnons nos clients dans leurs contextes de transformation avec pour objectif d’optimiser de façon pérenne les résultats opérationnels et financiers. Notre équipe intervient en soutien analytique à la décision et en structuration de projets dans des contextes de croissance ou de tension. [...]`;
-
-const restructuringContent = `Nous accompagnons nos clients dans la gestion de leurs situations complexes de sous-performance ou de difficultés avérées dans le cadre de procédures amiables ou collectives. [...]`;
 
 const CompanyPresentation = () => {
   const [showDetail, setShowDetail] = useState(null);
@@ -66,10 +55,8 @@ const CompanyPresentation = () => {
         <Divider my={5} />
 
         <VStack spacing={4} align="stretch">
-        {showDetail === "transformation" && <FocusTransformation onBack={handleBackToMain} />}
-        {showDetail === "restructuring" && <FocusRestructuring onBack={handleBackToMain} />}
-
-
+          {showDetail === "transformation" && <FocusTransformation onBack={handleBackToMain} />}
+          {showDetail === "restructuring" && <FocusRestructuring onBack={handleBackToMain} />}
 
           {!showDetail && (
             <>
