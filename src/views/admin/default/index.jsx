@@ -1,85 +1,54 @@
-// Chakra imports
+import React from "react";
 import {
   Box,
-  Button,
-  SimpleGrid,
-  Icon,
+  Container,
   Heading,
-  useColorModeValue,
+  Text,
+  Button,
+  Divider,
+  VStack
 } from "@chakra-ui/react";
-// Custom components
-import MiniCalendar from "components/calendar/MiniCalendar";
-import MiniStatistics from "components/card/MiniStatistics";
-import React, { useState, useEffect } from 'react';
-import AddEventForm from "./components/AddEventForm";
-import { FcPlus, FcLeft } from "react-icons/fc";
-import DocumentationsComponent from "./DocumentionsComponent/DocumentationsComponent";
-import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = 'https://pvpsmyizvorwwccuwbuq.supabase.co';
-const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB2cHNteWl6dm9yd3djY3V3YnVxIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTcwMjgzMDg2MCwiZXhwIjoyMDE4NDA2ODYwfQ.9YDEN41__xBFJU91XY9e3r119A03yQ2oq5azmrx1aqY';
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
+const ServiceSection = ({ title, children }) => (
+  <Box p={5} shadow="md" borderWidth="1px">
+    <Heading fontSize="xl">{title}</Heading>
+    <Text mt={4}>{children}</Text>
+  </Box>
+);
 
-export default function UserReports() {
-  const [showAddEventForm, setShowAddEventForm] = useState(false);
-  const textColor = useColorModeValue("secondaryGray.900", "white");
-  const [events, setEvents] = useState([]);
+const CompanyPresentation = () => (
+  <Box pt={{ base: "140px", md: "80px", xl: "80px" }}>
+  <Container maxW="container.xl">
+    <Heading as="h1" size="2xl" textAlign="center" my={5}>
+      Advance Capital
+    </Heading>
+    <Text fontSize="lg" mb={5}>
+      Conseil financier & opérationnel depuis 2007. Accompagnant les entreprises dans leur développement.
+    </Text>
 
-  useEffect(() => {
-    async function fetchEvents() {
-      let { data: vianney_event, error } = await supabase
-        .from('vianney_event')
-        .select('*');
+    <Divider my={5} />
 
-      if (error) console.log('error', error);
-      else setEvents(vianney_event);
-    }
+    <VStack spacing={4} align="stretch">
+      <ServiceSection title="Due Diligences financières">
+        Conseil à l’acquisition ou à la cession. Une approche détaillée pour assurer une transaction sans heurt.
+      </ServiceSection>
 
-    fetchEvents();
-  }, []);
+      <ServiceSection title="Transformation">
+        Reporting, amélioration de la performance opérationnelle et financière, accompagnement en phase de deal.
+        <Button size="sm" mt={2}>En savoir +</Button>
+      </ServiceSection>
 
-  const toggleAddEventForm = () => setShowAddEventForm(!showAddEventForm);
-  return (
-    <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
-      <Heading me='auto'
-        color={textColor}
-        fontSize='2xl'
-        fontWeight='700'
-        lineHeight='100%'
-        mb="20px">
-        Evènements
-      </Heading>
-      <SimpleGrid
-        columns={{ base: 1, md: 2, lg: 3, "2xl": 6 }}
-        gap='20px'
-        mb='20px'>
-        {events.map((event, index) => (
-          <MiniStatistics key={index} event_name={event.event_name} date={event.date} />
-        ))}
-        <Button
-          mt="30px"
-          onClick={toggleAddEventForm}
-          leftIcon={<Icon as={showAddEventForm ? FcLeft : FcPlus} />}
-          colorScheme='blue'
-          variant='solid'
-          size='md'
-          boxShadow='sm'
-          _hover={{ boxShadow: 'md' }}
-          _active={{ boxShadow: 'lg' }}>
-          {showAddEventForm ? "Masquer" : "Ajouter un évènement"}
-        </Button>
-      </SimpleGrid>
-      {showAddEventForm && <AddEventForm />}
-      <DocumentationsComponent />
-      <Heading me='auto'
-        color={textColor}
-        fontSize='2xl'
-        fontWeight='700'
-        lineHeight='100%'
-        mb="20px">
-        Le calendrier des évènements
-      </Heading>
-      <MiniCalendar />
-    </Box>
-  );
-}
+      <ServiceSection title="Restructuring">
+        Accompagnement financier et opérationnel de l’entreprise en situation de sous-performance ou de difficultés avérées.
+        <Button size="sm" mt={2}>En savoir +</Button>
+      </ServiceSection>
+
+      <ServiceSection title="Évaluation">
+        Evaluations financières de fonds propres ou d’actifs incorporels (PPA), conseil en instruments juridiques de Management Packages.
+      </ServiceSection>
+    </VStack>
+  </Container>
+  </Box>
+);
+
+export default CompanyPresentation;
