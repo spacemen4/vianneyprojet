@@ -1,17 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Box, Button, Flex, Icon, SimpleGrid, Stat, StatNumber, StatLabel, useColorModeValue, Heading } from "@chakra-ui/react";
 import { FcDocument } from "react-icons/fc";
-import { createClient } from "@supabase/supabase-js";
 import Card from "components/card/Card.js"; // Import Card
 import IconBox from "components/icons/IconBox"; // Import IconBox
 import PdfUploader from "views/admin/documentation/components/PdfUploader";
 import { FcPlus, FcLeft } from "react-icons/fc";
+import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = "https://nhrsgicthwqsctwggxqz.supabase.co";
-const supabaseKey =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ocnNnaWN0aHdxc2N0d2dneHF6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODkxNzMwODMsImV4cCI6MjAwNDc0OTA4M30.f1MhR4nYjFrCMjMnwjMUwlueADL8wZdPvu4MtrxPglk";
-
-const supabase = createClient(supabaseUrl, supabaseKey);
+const supabaseUrl = 'https://pvpsmyizvorwwccuwbuq.supabase.co';
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB2cHNteWl6dm9yd3djY3V3YnVxIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTcwMjgzMDg2MCwiZXhwIjoyMDE4NDA2ODYwfQ.9YDEN41__xBFJU91XY9e3r119A03yQ2oq5azmrx1aqY';
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 const PdfDownloadButton = ({ handlePdfClick }) => {
     const [documents, setDocuments] = useState([]);

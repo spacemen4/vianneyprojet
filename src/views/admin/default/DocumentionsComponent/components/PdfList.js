@@ -8,14 +8,12 @@ import {
   Link,
   Center,
 } from "@chakra-ui/react";
-import { createClient } from "@supabase/supabase-js";
 import { ArrowBackIcon } from "@chakra-ui/icons";
+import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = "https://nhrsgicthwqsctwggxqz.supabase.co";
-const supabaseKey =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ocnNnaWN0aHdxc2N0d2dneHF6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODkxNzMwODMsImV4cCI6MjAwNDc0OTA4M30.f1MhR4nYjFrCMjMnwjMUwlueADL8wZdPvu4MtrxPglk";
-
-const supabase = createClient(supabaseUrl, supabaseKey);
+const supabaseUrl = 'https://pvpsmyizvorwwccuwbuq.supabase.co';
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB2cHNteWl6dm9yd3djY3V3YnVxIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTcwMjgzMDg2MCwiZXhwIjoyMDE4NDA2ODYwfQ.9YDEN41__xBFJU91XY9e3r119A03yQ2oq5azmrx1aqY';
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 const PdfList = ({ selectedPdf, setSelectedPdf }) => {
   const [pdfDocuments, setPdfDocuments] = React.useState([]);
