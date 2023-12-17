@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import FocusRestructuring from "./components/FocusRestructuring";
+import FocusTransformation from "./components/FocusTransformation";
 import {
   Box,
   Container,
@@ -47,6 +49,10 @@ const CompanyPresentation = () => {
     setShowDetail("restructuring");
   };
 
+  const handleBackToMain = () => {
+    setShowDetail(null);
+  };
+
   return (
     <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
       <Container maxW="container.xl" py={10} borderRadius="lg" bg="whiteAlpha.800" boxShadow="lg">
@@ -60,19 +66,10 @@ const CompanyPresentation = () => {
         <Divider my={5} />
 
         <VStack spacing={4} align="stretch">
-          {showDetail === "transformation" && (
-            <DetailedContent 
-              title="Focus Transformation"
-              content={transformationContent} 
-            />
-          )}
+        {showDetail === "transformation" && <FocusTransformation onBack={handleBackToMain} />}
+        {showDetail === "restructuring" && <FocusRestructuring onBack={handleBackToMain} />}
 
-          {showDetail === "restructuring" && (
-            <DetailedContent 
-              title="Focus Restructuring"
-              content={restructuringContent} 
-            />
-          )}
+
 
           {!showDetail && (
             <>
