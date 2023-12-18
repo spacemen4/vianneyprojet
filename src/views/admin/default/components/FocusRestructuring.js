@@ -22,42 +22,42 @@ const gradientTextStyle = {
 const accordionData = [
   {
     title: "Une entreprise en tension de cash",
-    description: "Accompagnement pour gérer les difficultés liées à la tension de trésorerie.",
+    description: "Vous souhaitez être accompagnés pour traiter vos difficultés.",
     icon: FcApproval
   },
   {
     title: "Une entreprise en procédure amiable",
-    description: "Support pour les entreprises suivant une procédure amiable.",
+    description: "Vous souhaitez une assistance externe pour favoriser les négociations avec vos partenaires bancaires, vos fournisseurs et les créanciers publics.",
     icon: FcBinoculars
   },
   {
     title: "Une entreprise en procédure collective",
-    description: "Aide pour les entreprises impliquées dans des procédures collectives.",
+    description: "Vous souhaitez être accompagnés pour le bon déroulement de la période d’observation et l’anticipation du plan de redressement (sauvegarde ou redressement judiciaire).",
     icon: FcBusiness
   },
   {
     title: "Un candidat à l’acquisition d’une société en difficulté",
-    description: "Conseil pour l'acquisition de sociétés en difficulté.",
+    description: "Vous sollicitez un expert pour réaliser la due diligence d’acquisition, ou vous avez besoin d’un accompagnement pour définir votre stratégie de reprise et votre business plan.",
     icon: FcCollaboration
   },
   {
     title: "Un mandataire ad hoc, conciliateur, administrateur judiciaire, mandataire judiciaire, avocat",
-    description: "Services pour les professionnels juridiques et administratifs.",
+    description: "Vous souhaitez l’appui d’un spécialiste financier pour apporter un éclairage indépendant sur la situation financière de la société, ses perspectives et les options de restructuration envisageables.",
     icon: FcConferenceCall
   },
   {
     title: "Un actionnaire d’une société en difficulté",
-    description: "Solutions pour les actionnaires de sociétés confrontées à des défis.",
+    description: "Vous souhaitez construire une stratégie de retournement ou une stratégie de sortie.",
     icon: FcDecision
   },
   {
     title: "Un créancier",
-    description: "Assistance pour les créanciers face à des débiteurs en difficulté.",
+    description: "Vous souhaitez un diagnostic stratégique, opérationnel et financier réalisé par un tiers indépendant.",
     icon: FcDonate
   },
   {
     title: "Une entreprise mature ou en croissance ayant des difficultés à se financer",
-    description: "Support pour les entreprises matures en quête de financement.",
+    description: "Vous avez besoin de financer votre activité et/ou vos investissements mais vous vous heurtez au refus des financiers traditionnels et souhaitez donc recourir à des financements alternatifs : fiducie, gage sur stocks, reverse factoring, etc.",
     icon: FcFactory
   }
 ];
@@ -65,7 +65,7 @@ const accordionData = [
 const FocusRestructuring = ({ onBack }) => (
   <Container maxW="container.xl" p={6}>
     <Button leftIcon={<ArrowBackIcon />} colorScheme="blue" variant="solid" onClick={onBack} mb={6}>
-      Back
+      Retour
     </Button>
 
     <Box bg="gray.100" p={5} borderRadius="md" shadow="md">
@@ -94,7 +94,6 @@ const FocusRestructuring = ({ onBack }) => (
       </Accordion>
 
       <Heading as="h3" size="lg" sx={gradientTextStyle} mt={6} mb={4}>À chaque problème nous avons la solution</Heading>
-      <Text>Prévention des tensions de trésorerie</Text>
     </Box>
   </Container>
 );
