@@ -8,9 +8,12 @@ import {
   Heading,
   Container,
   Button,
-  Box
+  Box,
+  Flex,
+  VStack,
+  Icon
 } from "@chakra-ui/react";
-import { ArrowBackIcon } from "@chakra-ui/icons";
+import { ArrowBackIcon, StarIcon } from "@chakra-ui/icons"; // Example icon
 
 const gradientTextStyle = {
   bgGradient: "linear(to-r, blue.400, blue.600)",
@@ -34,11 +37,14 @@ const FocusRestructuring = ({ onBack }) => (
 
       <Accordion allowMultiple>
         {['Item 1', 'Item 2', 'Item 3'].map((item, index) => (
-          <AccordionItem key={index} mb={4} borderRadius="md">
-            <AccordionButton _expanded={{ bg: "blue.200", color: "blue.700" }}>
-              <Box flex="1" textAlign="left">
-                <Heading as="h4" size="md" sx={gradientTextStyle}>{item}</Heading>
-              </Box>
+          <AccordionItem key={index} mb={4}>
+            <AccordionButton bg="blue.100" borderRadius="md">
+              <Flex alignItems="center">
+                <Icon as={StarIcon} color="blue.500" w={6} h="100%" mr={4} />
+                <VStack alignItems="start" spacing={0}>
+                  <Heading as="h4" size="md" sx={gradientTextStyle}>{item}</Heading>
+                </VStack>
+              </Flex>
             </AccordionButton>
             <AccordionPanel pb={4} bg="gray.200" borderRadius="md">
               <Text>Ceci est le contenu de {item}.</Text>
