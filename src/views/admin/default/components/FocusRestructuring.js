@@ -10,15 +10,42 @@ import {
   Button,
   Box,
   Flex,
-  VStack,
   Icon
 } from "@chakra-ui/react";
-import { ArrowBackIcon, StarIcon } from "@chakra-ui/icons"; // Example icon
+import {
+  ArrowBackIcon,
+  StarIcon,
+  CheckCircleIcon,
+  TimeIcon,
+  WarningIcon,
+  QuestionIcon,
+  InfoIcon,
+  PlusSquareIcon
+} from "@chakra-ui/icons";
 
 const gradientTextStyle = {
   bgGradient: "linear(to-r, blue.400, blue.600)",
   bgClip: "text"
 };
+
+const accordionData = [
+  {
+    title: "Une entreprise en tension de cash",
+    description: "Description for tension de cash.",
+    icon: CheckCircleIcon
+  },
+  {
+    title: "Une entreprise en procédure amiable",
+    description: "Description for procédure amiable.",
+    icon: TimeIcon
+  },
+  // ... Add other items here
+  {
+    title: "Une entreprise mature ou en croissance ayant des difficultés à se financer",
+    description: "Description for entreprise mature.",
+    icon: PlusSquareIcon
+  }
+];
 
 const FocusRestructuring = ({ onBack }) => (
   <Container maxW="container.xl" p={6}>
@@ -36,18 +63,16 @@ const FocusRestructuring = ({ onBack }) => (
       <Text mb={6}>Vous êtes …</Text>
 
       <Accordion allowMultiple>
-        {['Item 1', 'Item 2', 'Item 3'].map((item, index) => (
+        {accordionData.map((item, index) => (
           <AccordionItem key={index} mb={4}>
             <AccordionButton bg="blue.100" borderRadius="md">
               <Flex alignItems="center">
-                <Icon as={StarIcon} color="blue.500" w={6} h="100%" mr={4} />
-                <VStack alignItems="start" spacing={0}>
-                  <Heading as="h4" size="md" sx={gradientTextStyle}>{item}</Heading>
-                </VStack>
+                <Icon as={item.icon} color="blue.500" w={6} h="100%" mr={4} />
+                <Heading as="h4" size="md" sx={gradientTextStyle}>{item.title}</Heading>
               </Flex>
             </AccordionButton>
             <AccordionPanel pb={4} bg="gray.200" borderRadius="md">
-              <Text>Ceci est le contenu de {item}.</Text>
+              <Text>{item.description}</Text>
             </AccordionPanel>
           </AccordionItem>
         ))}
