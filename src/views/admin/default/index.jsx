@@ -2,6 +2,12 @@ import React, { useState } from "react";
 import FocusRestructuring from "./components/FocusRestructuring";
 import FocusTransformation from "./components/FocusTransformation";
 import {
+  FcBinoculars,
+  FcProcess,
+  FcCollaboration,
+  FcRating
+} from "react-icons/fc";
+import {
   Box,
   Container,
   Heading,
@@ -9,10 +15,12 @@ import {
   Button,
   Divider,
   VStack,
-  useColorModeValue
+  useColorModeValue,
+  HStack,
+  Icon
 } from "@chakra-ui/react";
 
-const ServiceSection = ({ title, children, onLearnMore }) => {
+const ServiceSection = ({ title, children, onLearnMore, icon }) => {
   const bgGradient = useColorModeValue(
     "linear(to-r, blue.200, cyan.200)", 
     "linear(to-r, blue.600, cyan.600)"
@@ -20,7 +28,10 @@ const ServiceSection = ({ title, children, onLearnMore }) => {
 
   return (
     <Box p={5} shadow="md" borderWidth="1px" bgGradient={bgGradient}>
-      <Heading fontSize="xl">{title}</Heading>
+      <HStack spacing={3}>
+        <Icon as={icon} w={6} h={6} />
+        <Heading fontSize="xl">{title}</Heading>
+      </HStack>
       <Text mt={4}>{children}</Text>
       {onLearnMore && <Button size="sm" mt={2} onClick={onLearnMore}>En savoir +</Button>}
     </Box>
@@ -54,35 +65,42 @@ const CompanyPresentation = () => {
 
         <Divider my={5} />
 
-        <VStack spacing={4} align="stretch">
-          {showDetail === "transformation" && <FocusTransformation onBack={handleBackToMain} />}
+    <VStack spacing={4} align="stretch">
+    {showDetail === "transformation" && <FocusTransformation onBack={handleBackToMain} />}
           {showDetail === "restructuring" && <FocusRestructuring onBack={handleBackToMain} />}
 
           {!showDetail && (
             <>
-              <ServiceSection title="Due Diligences financières">
-                Conseil à l’acquisition ou à la cession. Une approche détaillée pour assurer une transaction sans heurt.
-              </ServiceSection>
 
-              <ServiceSection 
-                title="Transformation"
-                onLearnMore={handleLearnMoreTransformation}>
-                Reporting, amélioration de la performance opérationnelle et financière, accompagnement en phase de deal.
-              </ServiceSection>
+      <ServiceSection 
+        title="Due Diligences financières"
+        icon={FcBinoculars}>
+        Conseil à l’acquisition ou à la cession. Une approche détaillée pour assurer une transaction sans heurt.
+      </ServiceSection>
 
-              <ServiceSection 
-                title="Restructuring"
-                onLearnMore={handleLearnMoreRestructuring}>
-                Accompagnement financier et opérationnel de l’entreprise en situation de sous-performance ou de difficultés avérées.
-              </ServiceSection>
+      <ServiceSection 
+        title="Transformation"
+        onLearnMore={handleLearnMoreTransformation}
+        icon={FcProcess}>
+        Reporting, amélioration de la performance opérationnelle et financière, accompagnement en phase de deal.
+      </ServiceSection>
 
-              <ServiceSection title="Évaluation">
-                Evaluations financières de fonds propres ou d’actifs incorporels (PPA), conseil en instruments juridiques de Management Packages.
-              </ServiceSection>
-            </>
+      <ServiceSection 
+        title="Restructuring"
+        onLearnMore={handleLearnMoreRestructuring}
+        icon={FcCollaboration}>
+        Accompagnement financier et opérationnel de l’entreprise en situation de sous-performance ou de difficultés avérées.
+      </ServiceSection>
+
+      <ServiceSection 
+        title="Évaluation"
+        icon={FcRating}>
+        Evaluations financières de fonds propres ou d’actifs incorporels (PPA), conseil en instruments juridiques de Management Packages.
+      </ServiceSection>
+</>
           )}
-        </VStack>
-      </Container>
+    </VStack>
+</Container>
     </Box>
   );
 };
