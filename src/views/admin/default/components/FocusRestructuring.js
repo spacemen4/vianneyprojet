@@ -10,19 +10,10 @@ import {
   Button,
   Box,
   Flex,
-  Icon
+  Icon,
 } from "@chakra-ui/react";
-import {
-  ArrowBackIcon,
-  StarIcon,
-  CheckCircleIcon,
-  TimeIcon,
-  WarningIcon,
-  QuestionIcon,
-  InfoIcon,
-  PlusSquareIcon
-} from "@chakra-ui/icons";
-
+import { FcApproval, FcBinoculars, FcBusiness, FcCollaboration, FcConferenceCall, FcDecision, FcDonate, FcFactory } from "react-icons/fc";
+import {   ArrowBackIcon } from "@chakra-ui/icons";
 const gradientTextStyle = {
   bgGradient: "linear(to-r, blue.400, blue.600)",
   bgClip: "text"
@@ -31,19 +22,43 @@ const gradientTextStyle = {
 const accordionData = [
   {
     title: "Une entreprise en tension de cash",
-    description: "Description for tension de cash.",
-    icon: CheckCircleIcon
+    description: "Accompagnement pour gérer les difficultés liées à la tension de trésorerie.",
+    icon: FcApproval
   },
   {
     title: "Une entreprise en procédure amiable",
-    description: "Description for procédure amiable.",
-    icon: TimeIcon
+    description: "Support pour les entreprises suivant une procédure amiable.",
+    icon: FcBinoculars
   },
-  // ... Add other items here
+  {
+    title: "Une entreprise en procédure collective",
+    description: "Aide pour les entreprises impliquées dans des procédures collectives.",
+    icon: FcBusiness
+  },
+  {
+    title: "Un candidat à l’acquisition d’une société en difficulté",
+    description: "Conseil pour l'acquisition de sociétés en difficulté.",
+    icon: FcCollaboration
+  },
+  {
+    title: "Un mandataire ad hoc, conciliateur, administrateur judiciaire, mandataire judiciaire, avocat",
+    description: "Services pour les professionnels juridiques et administratifs.",
+    icon: FcConferenceCall
+  },
+  {
+    title: "Un actionnaire d’une société en difficulté",
+    description: "Solutions pour les actionnaires de sociétés confrontées à des défis.",
+    icon: FcDecision
+  },
+  {
+    title: "Un créancier",
+    description: "Assistance pour les créanciers face à des débiteurs en difficulté.",
+    icon: FcDonate
+  },
   {
     title: "Une entreprise mature ou en croissance ayant des difficultés à se financer",
-    description: "Description for entreprise mature.",
-    icon: PlusSquareIcon
+    description: "Support pour les entreprises matures en quête de financement.",
+    icon: FcFactory
   }
 ];
 
