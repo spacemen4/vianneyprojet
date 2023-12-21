@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import {
   Box,
   useColorModeValue,
-  Avatar,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -36,10 +35,7 @@ const EquipiersTable = ({ showAll }) => {
   };
 
 
-  const avatarStyle = {
-    border: '2px solid',
-    borderColor: useColorModeValue('gray.300', 'gray.500'),
-  };
+
 
   useEffect(() => {
     if (selectedEquipier && isModalOpen) {
@@ -76,9 +72,20 @@ const EquipiersTable = ({ showAll }) => {
     <Box
       _hover={hoverStyle}
       onClick={() => onClick(equipier)}
-      style={{ cursor: 'pointer', marginBottom: '10px' }} // Adjust spacing
+      style={{
+        cursor: 'pointer',
+        marginBottom: '10px',
+        borderRadius: '10px', // Add border radius
+        width: '200px', // Set a specific width
+        height: '200px', // Set a specific height
+        overflow: 'hidden', // Hide any overflow
+      }}
     >
-      <Avatar size="md" src={equipier.photo_profile_url} style={avatarStyle} />
+      <Image
+        size="full" // Use full size to fill the specified width and height
+        src={equipier.photo_profile_url}
+
+      />
     </Box>
   );
 
@@ -165,7 +172,6 @@ const EquipiersTable = ({ showAll }) => {
 
   return (
     <>
-
       {equipiers.slice(0, showAll ? undefined : 3).map((equipier, index) => (
         <EquipierPhoto key={index} equipier={equipier} onClick={onRowClick} />
       ))}
