@@ -9,8 +9,7 @@ import {
   Button,
   Box,
   VStack,
-  HStack,
-  Checkbox,
+
 } from '@chakra-ui/react';
 import { createClient } from '@supabase/supabase-js';
 
@@ -33,7 +32,7 @@ const UserForm = () => {
   const [nom, setNom] = useState('');
   const [prenom, setPrenom] = useState('');
 
-  const [teamMembers, setTeamMembers] = useState([{
+  const [teamMembers] = useState([{
     id: uuidv4(), // Generate unique ID for the first team member
     familyname: '',
     firstname: '',
@@ -54,31 +53,10 @@ const UserForm = () => {
     }
   };
 
-  const handleTeamMemberChange = (index, event) => {
-    let values = [...teamMembers];
-
-    if (event.target.name === 'isLeader') {
-      // Set all isLeader properties to false
-      values = values.map(member => ({ ...member, isLeader: false }));
-      // Set isLeader to true for the selected member
-      values[index][event.target.name] = event.target.checked;
-    } else {
-      values[index][event.target.name] = event.target.value;
-    }
-
-    setTeamMembers(values);
-  };
 
 
-  const handleAddTeamMember = () => {
-    setTeamMembers([...teamMembers, {
-      id: uuidv4(), // Generate unique ID for new team member
-      familyname: '',
-      firstname: '',
-      mail: '',
-      phone: ''
-    }]);
-  };
+
+
 
   // Map events
   const LocationMarker = () => {
@@ -243,48 +221,10 @@ const UserForm = () => {
         </FormControl>
 
 
-        {teamMembers.map((teamMember, index) => (
-          <HStack key={index} spacing={2}>
-            <Input
-              type="text"
-              name="familyname" // Add this line
-              placeholder="Nom de famille"
-              value={teamMember.familyname}
-              onChange={(e) => handleTeamMemberChange(index, e)}
-            />
-            <Input
-              type="text"
-              name="firstname" // Add this line
-              placeholder="Prénom"
-              value={teamMember.firstname}
-              onChange={(e) => handleTeamMemberChange(index, e)}
-            />
-            <Input
-              type="text"
-              name="mail" // Add this line
-              placeholder="Email"
-              value={teamMember.mail}
-              onChange={(e) => handleTeamMemberChange(index, e)}
-            />
-            <Input
-              type="text"
-              name="phone" // Add this line
-              placeholder="Téléphone"
-              value={teamMember.phone}
-              onChange={(e) => handleTeamMemberChange(index, e)}
-            />
-            <Checkbox
-              name="isLeader"
-              isChecked={teamMember.isLeader}
-              onChange={(e) => handleTeamMemberChange(index, e)}
-            >
-              Leader ?
-            </Checkbox>
-          </HStack>
-        ))}
+        
 
 
-        <Button colorScheme="blue" onClick={handleAddTeamMember}>Ajouter un membre de l'équipe</Button>
+        
       </VStack>
 
       <Button mt={4} colorScheme="green" type="submit">Ajouter l'utilisateur</Button>
