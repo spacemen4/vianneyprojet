@@ -13,6 +13,8 @@ import {
   Heading,
   Badge,
   Image,
+  Flex,
+  SimpleGrid,
 } from '@chakra-ui/react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -175,11 +177,10 @@ const EquipiersTable = ({ showAll }) => {
   };
 
   return (
-    <>
-      {equipiers.slice(0, showAll ? undefined : 3).map((equipier, index) => (
+    <SimpleGrid columns={[1, 2, 3]} spacing={4}>
+      {equipiers.map((equipier, index) => (
         <EquipierCard key={index} equipier={equipier} />
       ))}
-
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} size="xl">
         <ModalOverlay />
         <ModalContent>
@@ -204,7 +205,7 @@ const EquipiersTable = ({ showAll }) => {
           </ModalBody>
         </ModalContent>
       </Modal>
-    </>
+    </SimpleGrid>
   );
 };
 
