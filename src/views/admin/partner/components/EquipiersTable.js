@@ -14,7 +14,6 @@ import {
   Badge,
   Image,
   Flex,
-  SimpleGrid,
 } from '@chakra-ui/react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -176,10 +175,20 @@ const EquipiersTable = ({ showAll }) => {
     );
   };
 
+  // Determine the number of columns based on screen size
+  let columns = 3;
+  if (window.innerWidth <= 768) {
+    columns = 1;
+  } else if (window.innerWidth <= 1024) {
+    columns = 2;
+  }
+
   return (
-    <SimpleGrid columns={[1, 2, 3]} spacing={4}>
+    <Flex flexWrap="wrap">
       {equipiers.map((equipier, index) => (
-        <EquipierCard key={index} equipier={equipier} />
+        <Box key={index} width={`calc(${100 / columns}% - 16px)`} margin="8px">
+          <EquipierCard equipier={equipier} />
+        </Box>
       ))}
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} size="xl">
         <ModalOverlay />
@@ -205,7 +214,7 @@ const EquipiersTable = ({ showAll }) => {
           </ModalBody>
         </ModalContent>
       </Modal>
-    </SimpleGrid>
+    </Flex>
   );
 };
 
