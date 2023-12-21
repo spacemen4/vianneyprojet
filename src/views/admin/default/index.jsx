@@ -59,7 +59,7 @@ const CompanyPresentation = () => {
         <Heading as="h1" size="2xl" textAlign="center" my={5} color="gray.700">
           Advance Capital
         </Heading>
-        <Text fontSize="lg" mb={5} color="gray.600">
+        <Text fontSize="lg" mb={5} color="gray.600" textAlign="center">
           Conseil financier & opérationnel depuis 2007. Accompagnant les entreprises dans leur développement.
         </Text>
 

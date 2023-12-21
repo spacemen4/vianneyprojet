@@ -1,7 +1,7 @@
 // src/views/admin/Parameters/components/ParametersDocuments.js
 import React from 'react';
 import { Box, Text, Button, useColorModeValue } from '@chakra-ui/react';
-import { FcAdvertising, FcGlobe, FcBusinessman, FcDepartment, FcCalendar } from "react-icons/fc";
+import { FcAdvertising, FcBusinessman, FcDepartment, FcCalendar } from "react-icons/fc";
 
 const ParametersDocuments = ({ onEventAndCharacteristicsClick }) => {
   const brandColor = useColorModeValue("brand.500", "white");
@@ -19,19 +19,8 @@ const ParametersDocuments = ({ onEventAndCharacteristicsClick }) => {
         m={4}
         onClick={onEventAndCharacteristicsClick}
       >
-        Evènement et caractéristiques
+        Ajouter un colaborateur
       </Button>
-      
-      <Button
-        leftIcon={<FcGlobe size='32px' color={brandColor} />}
-        bg={buttonBg}
-        color={buttonTextColor}
-        h='100px'
-        m={4} // Margin bottom for spacing
-      >
-        Géolocalisation
-      </Button>
-
       <Button
         leftIcon={<FcBusinessman size='32px' color={brandColor} />}
         bg={buttonBg}
@@ -39,6 +28,7 @@ const ParametersDocuments = ({ onEventAndCharacteristicsClick }) => {
         h='100px'
         m={4} // Margin bottom for spacing
       >
+  
         Personnels
       </Button>
 

@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Box, Button } from '@chakra-ui/react';
 import { IoIosArrowBack } from "react-icons/io";
 import ParametersDocuments from './components/ParametersDocuments';
-import ParametersEventAndCharacteristics from './components/ParametersEventAndCharacteristics';
+import UserFormComponent from './components/UserFormComponent';
 import ParametersEvents from './components/ParametersEvents';
 
 const Parameters = () => {
@@ -29,9 +29,9 @@ const Parameters = () => {
         {showEventAndCharacteristics &&
           <>
             <Button leftIcon={<IoIosArrowBack />} onClick={handleBackClick}>
-              Back
+              Retour
             </Button>
-            <ParametersEventAndCharacteristics />
+            <UserFormComponent />
           </>
         }
         {!showEventAndCharacteristics && showDocuments &&
