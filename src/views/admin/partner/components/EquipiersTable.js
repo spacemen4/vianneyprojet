@@ -67,35 +67,41 @@ const EquipiersTable = ({ showAll }) => {
   };
 
   // Function to render an equipier card
-  const EquipierCard = ({ equipier }) => (
-    <Box
-      _hover={hoverStyle}
-      onClick={() => onRowClick(equipier)}
-      style={{
-        cursor: 'pointer',
-        marginBottom: '10px',
-        borderRadius: '10px',
-        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-        transition: 'transform 0.2s ease-in-out',
-        '&:hover': {
-          transform: 'scale(1.02)',
-        },
-      }}
-    >
-      <Image
-        src={equipier.photo_profile_url}
-        alt="l'équipe"
-        borderRadius="10px 10px 0 0" // Rounded top corners
-        height="200px" // Set the height
-        objectFit="cover" // Cover the entire box
-      />
-      <Box p="3">
-        <Heading size="md">{equipier.name_of_the_team}</Heading>
-        <Text><strong>Statut :</strong> <Badge colorScheme={equipier.status ? 'green' : 'red'}>{equipier.status ? 'Actif' : 'Inactif'}</Badge></Text>
-        <Text><strong>Dernière activité :</strong> {new Date(equipier.last_active).toLocaleDateString('fr-FR')}</Text>
-      </Box>
+  // Inside the EquipierCard component
+const EquipierCard = ({ equipier }) => (
+  <Box
+    _hover={hoverStyle}
+    onClick={() => onRowClick(equipier)}
+    style={{
+      cursor: 'pointer',
+      marginBottom: '10px',
+      borderRadius: '10px',
+      boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+      transition: 'transform 0.2s ease-in-out',
+      '&:hover': {
+        transform: 'scale(1.02)',
+      },
+    }}
+  >
+    <Image
+      src={equipier.photo_profile_url}
+      alt="l'équipe"
+      borderRadius="10px 10px 0 0" // Rounded top corners
+      height="200px" // Set the height
+      objectFit="cover" // Cover the entire box
+    />
+    <Box p="3">
+      <Heading size="md">{equipier.name_of_the_team}</Heading>
+      <Text><strong>Statut :</strong> <Badge colorScheme={equipier.status ? 'green' : 'red'}>{equipier.status ? 'Actif' : 'Inactif'}</Badge></Text>
+      <Text><strong>Dernière activité :</strong> {new Date(equipier.last_active).toLocaleDateString('fr-FR')}</Text>
+      <Text><strong>Nom :</strong> {equipier.nom || 'N/A'}</Text>
+      <Text><strong>Prénom :</strong> {equipier.prenom || 'N/A'}</Text>
+      <Text><strong>Statut dans la boîte :</strong> {equipier.statut_dans_la_boite || 'N/A'}</Text>
+      <Text><strong>Résumé CV :</strong> {equipier.resume_cv || 'N/A'}</Text>
     </Box>
-  );
+  </Box>
+);
+
 
   useEffect(() => {
     const fetchEquipiers = async () => {
@@ -208,7 +214,7 @@ const EquipiersTable = ({ showAll }) => {
           <EquipierCard equipier={equipier} />
         </Box>
       ))}
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} size="xl">
+            <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} size="xl">
         <ModalOverlay />
         <ModalContent>
           <ModalHeader
@@ -225,7 +231,7 @@ const EquipiersTable = ({ showAll }) => {
             size="lg"
             color="purple.600"
           />
-
+  
           <ModalBody>
             {renderTeamDetails()}
             <Box id={`map-${selectedEquipier?.id}`} h='500px' w='100%' mt={4} />
@@ -234,6 +240,6 @@ const EquipiersTable = ({ showAll }) => {
       </Modal>
     </Flex>
   );
-};
+  };
 
 export default EquipiersTable;
