@@ -34,13 +34,15 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 const EquipiersTable = ({ showAll }) => {
   const [equipiers, setEquipiers] = useState([]);
+  const [selectedEquipier, setSelectedEquipier] = useState(null); // New state variable
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedEquipier, setSelectedEquipier] = useState(null);
+
 
   const onRowClick = (equipier) => {
     setSelectedEquipier(equipier);
     setIsModalOpen(true);
   };
+
   const headerStyle = {
     fontSize: '16px',
     fontWeight: 'normal',
@@ -93,18 +95,12 @@ const EquipiersTable = ({ showAll }) => {
     bg: useColorModeValue('gray.100', 'gray.700'),
     cursor: 'pointer',
   };
-  const TableRow = ({ equipier, onClick }) => (
+  const EquipierPhotoRow = ({ equipier, onClick }) => (
     <Tr _hover={hoverStyle} onClick={() => onClick(equipier)} style={tableRowStyle}>
       <Td><Avatar size="md" src={equipier.photo_profile_url} style={avatarStyle} /></Td>
-      <Td>{equipier.name_of_the_team}</Td>
-      {/* Display leader's name and phone number */}
-      <Td>
-        {/* Use getLeaderNameAndPhone function */}
-        <Text>
-          {getLeaderNameAndPhone(equipier.team_members)}
-        </Text>
-      </Td>
-      <Td>{equipier.mission}</Td>
+      <Td></Td> {/* Empty TD for spacing */}
+      <Td></Td> {/* Empty TD for spacing */}
+      <Td></Td> {/* Empty TD for spacing */}
     </Tr>
   );
 
@@ -203,14 +199,14 @@ const EquipiersTable = ({ showAll }) => {
           <Thead style={headerGradientStyle}>
             <Tr>
               <Th><Text style={headerStyle}>photo</Text></Th>
-              <Th><Text style={headerStyle}>nom de l'équipe</Text></Th>
-              <Th><Text style={headerStyle}>nom du responsable</Text></Th>
-              <Th><Text style={headerStyle}>mission</Text></Th>
+              <Th></Th> {/* Empty TH for spacing */}
+              <Th></Th> {/* Empty TH for spacing */}
+              <Th></Th> {/* Empty TH for spacing */}
             </Tr>
           </Thead>
           <Tbody>
             {equipiers.slice(0, showAll ? undefined : 3).map((equipier, index) => (
-              <TableRow key={index} equipier={equipier} onClick={onRowClick} />
+              <EquipierPhotoRow key={index} equipier={equipier} onClick={onRowClick} />
             ))}
           </Tbody>
         </Table>
