@@ -11,8 +11,8 @@ import {
   Text,
   Stack,
   Heading,
-  Image,
   Badge,
+  Image,
 } from '@chakra-ui/react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -33,6 +33,7 @@ const EquipiersTable = ({ showAll }) => {
     setSelectedEquipier(equipier);
     setIsModalOpen(true);
   };
+
   useEffect(() => {
     if (selectedEquipier && isModalOpen) {
       const mapId = `map-${selectedEquipier.id}`;
@@ -63,25 +64,34 @@ const EquipiersTable = ({ showAll }) => {
     cursor: 'pointer',
   };
 
-  // Function to render an equipier photo
-  const EquipierPhoto = ({ equipier, onClick }) => (
+  // Function to render an equipier card
+  const EquipierCard = ({ equipier }) => (
     <Box
       _hover={hoverStyle}
-      onClick={() => onClick(equipier)}
+      onClick={() => onRowClick(equipier)}
       style={{
         cursor: 'pointer',
         marginBottom: '10px',
-        borderRadius: '10px', // Add border radius
-        width: '200px', // Set a specific width
-        height: '200px', // Set a specific height
-        overflow: 'hidden', // Hide any overflow
+        borderRadius: '10px',
+        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+        transition: 'transform 0.2s ease-in-out',
+        '&:hover': {
+          transform: 'scale(1.02)',
+        },
       }}
     >
       <Image
-        size="full" // Use full size to fill the specified width and height
         src={equipier.photo_profile_url}
-
+        alt="l'équipe"
+        borderRadius="10px 10px 0 0" // Rounded top corners
+        height="200px" // Set the height
+        objectFit="cover" // Cover the entire box
       />
+      <Box p="3">
+        <Heading size="md">{equipier.name_of_the_team}</Heading>
+        <Text><strong>Statut :</strong> <Badge colorScheme={equipier.status ? 'green' : 'red'}>{equipier.status ? 'Actif' : 'Inactif'}</Badge></Text>
+        <Text><strong>Dernière activité :</strong> {new Date(equipier.last_active).toLocaleDateString('fr-FR')}</Text>
+      </Box>
     </Box>
   );
 
@@ -100,7 +110,6 @@ const EquipiersTable = ({ showAll }) => {
     fetchEquipiers();
   }, []);
 
-
   const createCustomIcon = (color = 'red') => {
     const iconHtml = renderToString(<MdPlace style={{ fontSize: '24px', color }} />);
     return L.divIcon({
@@ -108,9 +117,10 @@ const EquipiersTable = ({ showAll }) => {
       className: 'custom-leaflet-icon',
       iconSize: L.point(30, 30),
       iconAnchor: [15, 30],
-      popupAnchor: [0, -30]
+      popupAnchor: [0, -30],
     });
   };
+
   const renderTeamDetails = () => {
     if (!selectedEquipier) return null;
 
@@ -132,7 +142,7 @@ const EquipiersTable = ({ showAll }) => {
       team_members,
     } = selectedEquipier;
 
-    const teamMembersList = team_members?.map(member => (
+    const teamMembersList = team_members?.map((member) => (
       <li key={member.id}>
         {`${member.firstname} ${member.familyname}`} {member.phone ? ` - ${member.phone}` : ''}
       </li>
@@ -140,14 +150,12 @@ const EquipiersTable = ({ showAll }) => {
 
     return (
       <Stack spacing={4} p={5} align="start">
-        {photo_profile_url && (
-          <Image
-            borderRadius="full"
-            boxSize="100px"
-            src={photo_profile_url}
-            alt="l'équipe"
-          />
-        )}
+        <Image
+          borderRadius="10px"
+          boxSize="100px"
+          src={photo_profile_url}
+          alt="l'équipe"
+        />
         <Heading size="md">{name_of_the_team}</Heading>
         <Text><strong>Statut :</strong> <Badge colorScheme={status ? 'green' : 'red'}>{status ? 'Actif' : 'Inactif'}</Badge></Text>
         <Text><strong>Dernière activité :</strong> {new Date(last_active).toLocaleDateString('fr-FR')}</Text>
@@ -169,7 +177,7 @@ const EquipiersTable = ({ showAll }) => {
   return (
     <>
       {equipiers.slice(0, showAll ? undefined : 3).map((equipier, index) => (
-        <EquipierPhoto key={index} equipier={equipier} onClick={onRowClick} />
+        <EquipierCard key={index} equipier={equipier} />
       ))}
 
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} size="xl">
