@@ -111,7 +111,7 @@ const UserForm = () => {
       return;
     }
 
-    const publicURL = `https://hvjzemvfstwwhhahecwu.supabase.co/storage/v1/object/public/users_on_the_ground/${fileName}`;
+    const publicURL = `${supabaseUrl}/storage/v1/object/public/users_on_the_ground/${fileName}`;
 
     // Insert user data into the database
     const { error: insertError } = await supabase
