@@ -14,6 +14,7 @@ import {
   Badge,
   Image,
   Flex,
+  Button,
 } from '@chakra-ui/react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -124,7 +125,7 @@ const EquipiersTable = ({ showAll }) => {
 
   const renderTeamDetails = () => {
     if (!selectedEquipier) return null;
-
+  
     const {
       name_of_the_team,
       status,
@@ -141,14 +142,19 @@ const EquipiersTable = ({ showAll }) => {
       latitude,
       longitude,
       team_members,
+      statut_dans_la_boite, // Added field
+      resume_cv, // Added field
+      nom, // Added field
+      prenom, // Added field
+      v_card, // Added field
     } = selectedEquipier;
-
+  
     const teamMembersList = team_members?.map((member) => (
       <li key={member.id}>
         {`${member.firstname} ${member.familyname}`} {member.phone ? ` - ${member.phone}` : ''}
       </li>
     ));
-
+  
     return (
       <Stack spacing={4} p={5} align="start">
         <Image
@@ -169,11 +175,23 @@ const EquipiersTable = ({ showAll }) => {
         <Text><strong>Type de véhicule :</strong> {type_de_vehicule}</Text>
         <Text><strong>Numéro d'immatriculation :</strong> {immatriculation}</Text>
         <Text><strong>Localisation :</strong> Latitude: {latitude}, Longitude: {longitude}</Text>
+        <Text><strong>Statut dans la boîte :</strong> {statut_dans_la_boite || 'N/A'}</Text>
+        <Text><strong>Résumé CV :</strong> {resume_cv || 'N/A'}</Text>
+        <Text><strong>Nom :</strong> {nom || 'N/A'}</Text>
+        <Text><strong>Prénom :</strong> {prenom || 'N/A'}</Text>
+        {v_card && (
+          <a href={v_card} download="v-card.vcf">
+            <Button colorScheme="blue" size="sm">
+              Télécharger la carte de visite (v-card)
+            </Button>
+          </a>
+        )}
         <Heading size="sm">Membres de l'équipe :</Heading>
         <ul>{teamMembersList}</ul>
       </Stack>
     );
   };
+  
 
   // Determine the number of columns based on screen size
   let columns = 3;
