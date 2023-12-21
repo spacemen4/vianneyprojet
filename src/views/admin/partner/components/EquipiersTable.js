@@ -1,12 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
-  TableContainer,
+  Box,
   useColorModeValue,
   Avatar,
   Modal,
@@ -15,7 +9,6 @@ import {
   ModalHeader,
   ModalCloseButton,
   ModalBody,
-  Box,
   Text,
   Stack,
   Heading,
@@ -34,33 +27,15 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 const EquipiersTable = ({ showAll }) => {
   const [equipiers, setEquipiers] = useState([]);
-  const [selectedEquipier, setSelectedEquipier] = useState(null); // New state variable
+  const [selectedEquipier, setSelectedEquipier] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
 
   const onRowClick = (equipier) => {
     setSelectedEquipier(equipier);
     setIsModalOpen(true);
   };
 
-  const headerStyle = {
-    fontSize: '16px',
-    fontWeight: 'normal',
-    color: useColorModeValue('gray.600', 'gray.200'),
-  };
-  const headerGradientStyle = {
-    background: 'linear-gradient(to right, #6e8efb, #a777e3)',
-    color: 'white',
-    textTransform: 'none',
-    fontSize: '18px',
-    fontWeight: 'bold',
-  };
-
-  const tableRowStyle = {
-    borderBottom: '1px solid',
-    borderBottomColor: useColorModeValue('gray.200', 'gray.600'),
-  };
-
+  
   const avatarStyle = {
     border: '2px solid',
     borderColor: useColorModeValue('gray.300', 'gray.500'),
@@ -95,13 +70,16 @@ const EquipiersTable = ({ showAll }) => {
     bg: useColorModeValue('gray.100', 'gray.700'),
     cursor: 'pointer',
   };
-  const EquipierPhotoRow = ({ equipier, onClick }) => (
-    <Tr _hover={hoverStyle} onClick={() => onClick(equipier)} style={tableRowStyle}>
-      <Td><Avatar size="md" src={equipier.photo_profile_url} style={avatarStyle} /></Td>
-      <Td></Td> {/* Empty TD for spacing */}
-      <Td></Td> {/* Empty TD for spacing */}
-      <Td></Td> {/* Empty TD for spacing */}
-    </Tr>
+
+  // Function to render an equipier photo
+  const EquipierPhoto = ({ equipier, onClick }) => (
+    <Box
+      _hover={hoverStyle}
+      onClick={() => onClick(equipier)}
+      style={{ cursor: 'pointer', marginBottom: '10px' }} // Adjust spacing
+    >
+      <Avatar size="md" src={equipier.photo_profile_url} style={avatarStyle} />
+    </Box>
   );
 
   useEffect(() => {
@@ -118,13 +96,6 @@ const EquipiersTable = ({ showAll }) => {
 
     fetchEquipiers();
   }, []);
-  const getLeaderNameAndPhone = (teamMembers) => {
-    const leader = teamMembers.find(member => member.isLeader);
-    if (!leader) {
-      return 'No Leader';
-    }
-    return `${leader.firstname} ${leader.familyname} - ${leader.phone}`;
-  };
 
 
   const createCustomIcon = (color = 'red') => {
@@ -174,7 +145,7 @@ const EquipiersTable = ({ showAll }) => {
             alt="l'équipe"
           />
         )}
-        <Heading size="md">{name_of_the_team}</Heading>
+       <Heading size="md">{name_of_the_team}</Heading>
         <Text><strong>Statut :</strong> <Badge colorScheme={status ? 'green' : 'red'}>{status ? 'Actif' : 'Inactif'}</Badge></Text>
         <Text><strong>Dernière activité :</strong> {new Date(last_active).toLocaleDateString('fr-FR')}</Text>
         <Text><strong>Type d'équipe :</strong> {type_d_equipe}</Text>
@@ -194,23 +165,11 @@ const EquipiersTable = ({ showAll }) => {
 
   return (
     <>
-      <TableContainer style={{ maxHeight: showAll ? '300px' : 'auto', overflowY: 'auto' }}>
-        <Table variant='simple'>
-          <Thead style={headerGradientStyle}>
-            <Tr>
-              <Th><Text style={headerStyle}>photo</Text></Th>
-              <Th></Th> {/* Empty TH for spacing */}
-              <Th></Th> {/* Empty TH for spacing */}
-              <Th></Th> {/* Empty TH for spacing */}
-            </Tr>
-          </Thead>
-          <Tbody>
-            {equipiers.slice(0, showAll ? undefined : 3).map((equipier, index) => (
-              <EquipierPhotoRow key={index} equipier={equipier} onClick={onRowClick} />
-            ))}
-          </Tbody>
-        </Table>
-      </TableContainer>
+      
+        {equipiers.slice(0, showAll ? undefined : 3).map((equipier, index) => (
+          <EquipierPhoto key={index} equipier={equipier} onClick={onRowClick} />
+        ))}
+
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} size="xl">
         <ModalOverlay />
         <ModalContent>
