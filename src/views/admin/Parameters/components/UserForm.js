@@ -46,7 +46,12 @@ const UserForm = () => {
     return `#${randomColor}`;
   };
   const handleFileChange = (e) => {
-    setProfilePhoto(e.target.files[0]);
+    const file = e.target.files[0];
+    if (e.target.id === 'profile-photo') {
+      setProfilePhoto(file);
+    } else if (e.target.id === 'v-card') {
+      setVCard(file);
+    }
   };
 
   const handleTeamMemberChange = (index, event) => {
@@ -107,11 +112,30 @@ const UserForm = () => {
       .upload(fileName, profilePhoto);
 
     if (uploadResponse.error) {
-      console.error('Error uploading file:', uploadResponse.error);
+      console.error('Error uploading profile photo:', uploadResponse.error);
       return;
     }
 
     const publicURL = `${supabaseUrl}/storage/v1/object/public/users_on_the_ground/${fileName}`;
+
+    let vCardPublicURL = null; // Initialize vCardPublicURL with a default value
+
+    // Upload V-Card file
+    if (vCard) {
+      const vCardExt = vCard.name.split('.').pop();
+      const vCardFileName = `${Date.now()}-vcard.${vCardExt}`;
+      let vCardUploadResponse = await supabase.storage
+        .from('users_on_the_ground')
+        .upload(vCardFileName, vCard);
+
+      if (vCardUploadResponse.error) {
+        console.error('Error uploading V-Card:', vCardUploadResponse.error);
+        return;
+      }
+
+      vCardPublicURL = `${supabaseUrl}/storage/v1/object/public/users_on_the_ground/${vCardFileName}`;
+    }
+
 
     // Insert user data into the database
     const { error: insertError } = await supabase
@@ -131,13 +155,14 @@ const UserForm = () => {
           type_de_vehicule: typeDeVehicule,
           immatriculation: immatriculation,
           specialite: specialite,
-          v_card: vCard, // Add v_card field
-          statut_dans_la_boite: statutDansLaBoite, // Add statut_dans_la_boite field
-          resume_cv: resumeCV, // Add resume_cv field
-          nom: nom, // Add nom field
-          prenom: prenom, // Add prenom field
+          v_card: vCardPublicURL, // Use the V-Card public URL
+          statut_dans_la_boite: statutDansLaBoite,
+          resume_cv: resumeCV,
+          nom: nom,
+          prenom: prenom,
         },
       ]);
+
     if (insertError) {
       console.error('Error inserting data:', insertError);
       return;
@@ -145,6 +170,7 @@ const UserForm = () => {
 
     alert('User data added successfully');
   };
+
 
 
   return (
@@ -159,18 +185,18 @@ const UserForm = () => {
       </Box>
 
       <VStack spacing={4} align="stretch">
-        
+
 
         <FormControl>
           <FormLabel htmlFor='profile-photo'>Photo de profil</FormLabel>
           <Input id='profile-photo' type="file" onChange={handleFileChange} />
         </FormControl>
-        
-        
 
-        
 
-        
+
+
+
+
         <FormControl>
           <FormLabel htmlFor="v-card">V-Card</FormLabel>
           <Input
