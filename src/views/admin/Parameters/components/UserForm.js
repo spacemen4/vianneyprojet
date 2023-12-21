@@ -19,14 +19,14 @@ const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYm
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 const UserForm = () => {
-  const [nameOfTheTeam, setNameOfTheTeam] = useState('');
+  const [nameOfTheTeam] = useState('');
   const [profilePhoto, setProfilePhoto] = useState(null);
   const [lat, setLat] = useState(45.75799485263588);
   const [lng, setLng] = useState(4.825754111294844);
-  const [mission, setMission] = useState('');
-  const [typeDeVehicule, setTypeDeVehicule] = useState('');
-  const [immatriculation, setImmatriculation] = useState('');
-  const [specialite, setSpecialite] = useState('');
+  const [mission] = useState('');
+  const [typeDeVehicule] = useState('');
+  const [immatriculation] = useState('');
+  const [specialite] = useState('');
   const [vCard, setVCard] = useState(null);
   const [statutDansLaBoite, setStatutDansLaBoite] = useState('');
   const [resumeCV, setResumeCV] = useState('');
@@ -159,53 +159,18 @@ const UserForm = () => {
       </Box>
 
       <VStack spacing={4} align="stretch">
-        <FormControl>
-          <FormLabel htmlFor='team-name'>Nom de l'équipe</FormLabel>
-          <Input id='team-name' type="text" placeholder="Nom de l'équipe" value={nameOfTheTeam} onChange={(e) => setNameOfTheTeam(e.target.value)} />
-        </FormControl>
+        
 
         <FormControl>
           <FormLabel htmlFor='profile-photo'>Photo de profil</FormLabel>
           <Input id='profile-photo' type="file" onChange={handleFileChange} />
         </FormControl>
-        <FormControl>
-          <FormLabel htmlFor='mission'>Mission</FormLabel>
-          <Input
-            id='mission'
-            type="text"
-            value={mission}
-            onChange={(e) => setMission(e.target.value)}
-          />
-        </FormControl>
-        <FormControl>
-          <FormLabel htmlFor='typeDeVehicule'>Type de Véhicule</FormLabel>
-          <Input
-            id='typeDeVehicule'
-            type="text"
-            value={typeDeVehicule}
-            onChange={(e) => setTypeDeVehicule(e.target.value)}
-          />
-        </FormControl>
+        
+        
 
-        <FormControl>
-          <FormLabel htmlFor='immatriculation'>Immatriculation</FormLabel>
-          <Input
-            id='immatriculation'
-            type="text"
-            value={immatriculation}
-            onChange={(e) => setImmatriculation(e.target.value)}
-          />
-        </FormControl>
+        
 
-        <FormControl>
-          <FormLabel htmlFor='specialite'>Spécialité</FormLabel>
-          <Input
-            id='specialite'
-            type="text"
-            value={specialite}
-            onChange={(e) => setSpecialite(e.target.value)}
-          />
-        </FormControl>
+        
         <FormControl>
           <FormLabel htmlFor="v-card">V-Card</FormLabel>
           <Input
