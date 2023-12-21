@@ -35,7 +35,7 @@ const EquipiersTable = ({ showAll }) => {
     setIsModalOpen(true);
   };
 
-  
+
   const avatarStyle = {
     border: '2px solid',
     borderColor: useColorModeValue('gray.300', 'gray.500'),
@@ -145,7 +145,7 @@ const EquipiersTable = ({ showAll }) => {
             alt="l'équipe"
           />
         )}
-       <Heading size="md">{name_of_the_team}</Heading>
+        <Heading size="md">{name_of_the_team}</Heading>
         <Text><strong>Statut :</strong> <Badge colorScheme={status ? 'green' : 'red'}>{status ? 'Actif' : 'Inactif'}</Badge></Text>
         <Text><strong>Dernière activité :</strong> {new Date(last_active).toLocaleDateString('fr-FR')}</Text>
         <Text><strong>Type d'équipe :</strong> {type_d_equipe}</Text>
@@ -165,10 +165,10 @@ const EquipiersTable = ({ showAll }) => {
 
   return (
     <>
-      
-        {equipiers.slice(0, showAll ? undefined : 3).map((equipier, index) => (
-          <EquipierPhoto key={index} equipier={equipier} onClick={onRowClick} />
-        ))}
+
+      {equipiers.slice(0, showAll ? undefined : 3).map((equipier, index) => (
+        <EquipierPhoto key={index} equipier={equipier} onClick={onRowClick} />
+      ))}
 
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} size="xl">
         <ModalOverlay />
