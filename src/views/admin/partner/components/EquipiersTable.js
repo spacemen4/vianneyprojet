@@ -33,10 +33,6 @@ const EquipiersTable = ({ showAll }) => {
     setSelectedEquipier(equipier);
     setIsModalOpen(true);
   };
-
-
-
-
   useEffect(() => {
     if (selectedEquipier && isModalOpen) {
       const mapId = `map-${selectedEquipier.id}`;
