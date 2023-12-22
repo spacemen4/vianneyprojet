@@ -94,51 +94,23 @@ const EquipierCard = ({ equipier }) => (
     <Box p="3">
       <Heading size="md">{equipier.name_of_the_team}</Heading>
       <Text fontSize="sm" color="gray.500" mt={1}>
-        <strong>Statut:</strong> <Badge colorScheme={equipier.status ? 'green' : 'red'}>{equipier.status ? 'Actif' : 'Inactif'}</Badge>
+         <Badge colorScheme={equipier.status ? 'green' : 'red'}>{equipier.status ? 'Actif' : 'Inactif'}</Badge>
       </Text>
-      <Text fontSize="sm" color="gray.500" mt={1}>
-        <strong>Dernière activité:</strong> {new Date(equipier.last_active).toLocaleDateString('fr-FR')}
+      
+
+      <Text fontSize="sm" mt={3}>
+        <strong> {equipier.nom || 'N/A'} {equipier.prenom || 'N/A'}</strong> 
+      </Text>
+      <Text fontSize="sm">
+         {equipier.statut_dans_la_boite || 'N/A'}
+      </Text>
+      <Text fontSize="sm">
+         {equipier.resume_cv || 'N/A'}
       </Text>
       <Divider mt={3} />
-      <Text fontSize="sm" mt={3}>
-        <strong>Nom:</strong> {equipier.nom || 'N/A'}
-      </Text>
-      <Text fontSize="sm">
-        <strong>Prénom:</strong> {equipier.prenom || 'N/A'}
-      </Text>
-      <Text fontSize="sm">
-        <strong>Statut dans la boîte:</strong> {equipier.statut_dans_la_boite || 'N/A'}
-      </Text>
-      <Text fontSize="sm">
-        <strong>Résumé CV:</strong> {equipier.resume_cv || 'N/A'}
-      </Text>
-      <Divider mt={3} />
-      <Text fontSize="sm" mt={3}>
-        <strong>Type d'équipe:</strong> {equipier.type_d_equipe || 'N/A'}
-      </Text>
-      <Text fontSize="sm">
-        <strong>Numéro de membre:</strong> {equipier.numero_d_equipier || 'N/A'}
-      </Text>
-      <Text fontSize="sm">
-        <strong>Spécialité:</strong> {equipier.specialite || 'N/A'}
-      </Text>
-      <Text fontSize="sm">
-        <strong>Rôle:</strong> {equipier.role_de_l_equipier || 'N/A'}
-      </Text>
-      <Divider mt={3} />
-      <Text fontSize="sm" mt={3}>
-        <strong>Numéro de téléphone:</strong> {equipier.numero_de_telephone || 'N/A'}
-      </Text>
-      <Text fontSize="sm">
-        <strong>Email:</strong> {equipier.mail || 'N/A'}
-      </Text>
-      <Divider mt={3} />
-      <Text fontSize="sm" mt={3}>
-        <strong>Type de véhicule:</strong> {equipier.type_de_vehicule || 'N/A'}
-      </Text>
-      <Text fontSize="sm">
-        <strong>Numéro d'immatriculation:</strong> {equipier.immatriculation || 'N/A'}
-      </Text>
+      
+      
+      
     </Box>
   </Box>
 );
@@ -175,21 +147,12 @@ const EquipierCard = ({ equipier }) => (
     if (!selectedEquipier) return null;
   
     const {
-      name_of_the_team,
+
       status,
-      last_active,
-      type_d_equipe,
-      numero_d_equipier,
-      specialite,
-      role_de_l_equipier,
-      numero_de_telephone,
-      mail,
-      type_de_vehicule,
-      immatriculation,
+      
       photo_profile_url,
-      latitude,
-      longitude,
-      team_members,
+
+
       statut_dans_la_boite, // Added field
       resume_cv, // Added field
       nom, // Added field
@@ -197,11 +160,6 @@ const EquipierCard = ({ equipier }) => (
       v_card, // Added field
     } = selectedEquipier;
   
-    const teamMembersList = team_members?.map((member) => (
-      <li key={member.id}>
-        {`${member.firstname} ${member.familyname}`} {member.phone ? ` - ${member.phone}` : ''}
-      </li>
-    ));
   
     return (
       <Stack spacing={4} p={5} align="start">
@@ -211,22 +169,15 @@ const EquipierCard = ({ equipier }) => (
           src={photo_profile_url}
           alt="l'équipe"
         />
-        <Heading size="md">{name_of_the_team}</Heading>
-        <Text><strong>Statut :</strong> <Badge colorScheme={status ? 'green' : 'red'}>{status ? 'Actif' : 'Inactif'}</Badge></Text>
-        <Text><strong>Dernière activité :</strong> {new Date(last_active).toLocaleDateString('fr-FR')}</Text>
-        <Text><strong>Type d'équipe :</strong> {type_d_equipe}</Text>
-        <Text><strong>Numéro de membre :</strong> {numero_d_equipier}</Text>
-        <Text><strong>Spécialité :</strong> {specialite}</Text>
-        <Text><strong>Rôle :</strong> {role_de_l_equipier}</Text>
-        <Text><strong>Numéro de téléphone :</strong> {numero_de_telephone}</Text>
-        <Text><strong>Email :</strong> {mail}</Text>
-        <Text><strong>Type de véhicule :</strong> {type_de_vehicule}</Text>
-        <Text><strong>Numéro d'immatriculation :</strong> {immatriculation}</Text>
-        <Text><strong>Localisation :</strong> Latitude: {latitude}, Longitude: {longitude}</Text>
-        <Text><strong>Statut dans la boîte :</strong> {statut_dans_la_boite || 'N/A'}</Text>
-        <Text><strong>Résumé CV :</strong> {resume_cv || 'N/A'}</Text>
-        <Text><strong>Nom :</strong> {nom || 'N/A'}</Text>
-        <Text><strong>Prénom :</strong> {prenom || 'N/A'}</Text>
+        <Text> {nom || 'N/A'} {prenom || 'N/A'}</Text>
+
+        <Text><Badge colorScheme={status ? 'green' : 'red'}>{status ? 'Actif' : 'Inactif'}</Badge></Text>
+
+
+        <Text>{statut_dans_la_boite || 'N/A'}</Text>
+        <Text> {resume_cv || 'N/A'}</Text>
+        
+
         {v_card && (
           <a href={v_card} download="v-card.vcf">
             <Button colorScheme="blue" size="sm">
@@ -234,8 +185,6 @@ const EquipierCard = ({ equipier }) => (
             </Button>
           </a>
         )}
-        <Heading size="sm">Membres de l'équipe :</Heading>
-        <ul>{teamMembersList}</ul>
       </Stack>
     );
   };
