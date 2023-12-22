@@ -141,7 +141,7 @@ const EquipiersTable = ({ showAll }) => {
           <ModalCloseButton size="lg" color="purple.600" />
           <ModalBody>
             {selectedEquipier && (
-              <Stack spacing={4} p={5} align="start">
+              <Stack spacing={4} p={8} align="start">
 
                 <Image
                   src={selectedEquipier.photo_profile_url}
