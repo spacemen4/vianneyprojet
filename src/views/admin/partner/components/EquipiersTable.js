@@ -15,7 +15,7 @@ import {
   Image,
   Flex,
   Button,
-  Divider,
+
 } from '@chakra-ui/react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -67,50 +67,40 @@ const EquipiersTable = ({ showAll }) => {
     cursor: 'pointer',
   };
 
- // Inside the EquipierCard component
-const EquipierCard = ({ equipier }) => (
-  <Box
-    _hover={hoverStyle}
-    onClick={() => onRowClick(equipier)}
-    style={{
-      cursor: 'pointer',
-      marginBottom: '20px',
-      borderRadius: '10px',
-      boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-      transition: 'transform 0.2s ease-in-out',
-      '&:hover': {
-        transform: 'scale(1.02)',
-      },
-      border: '1px solid #e2e8f0',
-    }}
-  >
-    <Image
-      src={equipier.photo_profile_url}
-      alt="l'équipe"
-      borderRadius="10px 10px 0 0" // Rounded top corners
-      height="250px" // Set the height
-      objectFit="cover" // Cover the entire box
-    />
-    <Box p="3">
-      <Heading size="md">{equipier.name_of_the_team}</Heading>
-      
-      <Text fontSize="sm" mt={3}>
-        <strong> {equipier.nom || 'N/A'} {equipier.prenom || 'N/A'}</strong> 
-      </Text>
-      <Text fontSize="sm">
-         
-      </Text>
-      <Text fontSize="sm" color="gray.500" mt={1}>
-      <Badge colorScheme={'blue' }>{equipier.statut_dans_la_boite || 'N/A'}</Badge>
-      </Text>
-      <Text fontSize="sm">
-         {equipier.resume_cv || 'N/A'}
-      </Text>
-      <Divider mt={3} />
-   
+  // Inside the EquipierCard component
+  const EquipierCard = ({ equipier }) => (
+    <Box
+      _hover={hoverStyle}
+      onClick={() => onRowClick(equipier)}
+      style={{
+        cursor: 'pointer',
+        marginBottom: '20px',
+        borderRadius: '10px',
+        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+        transition: 'transform 0.2s ease-in-out',
+        '&:hover': {
+          transform: 'scale(1.02)',
+        },
+        border: '1px solid #e2e8f0',
+      }}
+    >
+      <Image
+        src={equipier.photo_profile_url}
+        alt="l'équipe"
+        borderRadius="10px 10px 0 0"
+
+        objectFit="cover" // Cover the entire box
+      />
+      <Box alignItems="center" justifyContent="center" p="1" textAlign="center">
+  <Heading size="md">{equipier.nom || 'N/A'} {equipier.prenom || 'N/A'}</Heading>
+  <Text fontSize="sm" color="gray.500" mt={1}>
+    <Badge colorScheme={'blue'}>{equipier.statut_dans_la_boite || 'N/A'}</Badge>
+  </Text>
+</Box>
+
+
     </Box>
-  </Box>
-);
+  );
 
   useEffect(() => {
     const fetchEquipiers = async () => {
@@ -140,11 +130,11 @@ const EquipierCard = ({ equipier }) => (
 
   const renderTeamDetails = () => {
     if (!selectedEquipier) return null;
-  
+
     const {
 
       status,
-      
+
       photo_profile_url,
 
 
@@ -154,8 +144,8 @@ const EquipierCard = ({ equipier }) => (
       prenom, // Added field
       v_card, // Added field
     } = selectedEquipier;
-  
-  
+
+
     return (
       <Stack spacing={4} p={5} align="start">
         <Image
@@ -169,7 +159,7 @@ const EquipierCard = ({ equipier }) => (
         <Text><Badge colorScheme={status ? 'green' : 'red'}>{status ? 'Actif' : 'Inactif'}</Badge></Text>
         <Text>{statut_dans_la_boite || 'N/A'}</Text>
         <Text> {resume_cv || 'N/A'}</Text>
-        
+
 
         {v_card && (
           <a href={v_card} download="v-card.vcf">
@@ -181,7 +171,7 @@ const EquipierCard = ({ equipier }) => (
       </Stack>
     );
   };
-  
+
 
   // Determine the number of columns based on screen size
   let columns = 3;
@@ -198,7 +188,7 @@ const EquipierCard = ({ equipier }) => (
           <EquipierCard equipier={equipier} />
         </Box>
       ))}
-            <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} size="xl">
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} size="xl">
         <ModalOverlay />
         <ModalContent>
           <ModalHeader
@@ -215,7 +205,7 @@ const EquipierCard = ({ equipier }) => (
             size="lg"
             color="purple.600"
           />
-  
+
           <ModalBody>
             {renderTeamDetails()}
             <Box id={`map-${selectedEquipier?.id}`} h='500px' w='100%' mt={4} />
@@ -224,6 +214,6 @@ const EquipierCard = ({ equipier }) => (
       </Modal>
     </Flex>
   );
-  };
+};
 
 export default EquipiersTable;
