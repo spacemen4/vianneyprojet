@@ -15,6 +15,7 @@ import {
   Image,
   Flex,
   Button,
+  Divider,
 } from '@chakra-ui/react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -66,41 +67,82 @@ const EquipiersTable = ({ showAll }) => {
     cursor: 'pointer',
   };
 
-  // Function to render an equipier card
-  // Inside the EquipierCard component
+ // Inside the EquipierCard component
 const EquipierCard = ({ equipier }) => (
   <Box
     _hover={hoverStyle}
     onClick={() => onRowClick(equipier)}
     style={{
       cursor: 'pointer',
-      marginBottom: '10px',
+      marginBottom: '20px',
       borderRadius: '10px',
       boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
       transition: 'transform 0.2s ease-in-out',
       '&:hover': {
         transform: 'scale(1.02)',
       },
+      border: '1px solid #e2e8f0',
     }}
   >
     <Image
       src={equipier.photo_profile_url}
       alt="l'équipe"
       borderRadius="10px 10px 0 0" // Rounded top corners
-      height="200px" // Set the height
+      height="250px" // Set the height
       objectFit="cover" // Cover the entire box
     />
     <Box p="3">
       <Heading size="md">{equipier.name_of_the_team}</Heading>
-      <Text><strong>Statut :</strong> <Badge colorScheme={equipier.status ? 'green' : 'red'}>{equipier.status ? 'Actif' : 'Inactif'}</Badge></Text>
-      <Text><strong>Dernière activité :</strong> {new Date(equipier.last_active).toLocaleDateString('fr-FR')}</Text>
-      <Text><strong>Nom :</strong> {equipier.nom || 'N/A'}</Text>
-      <Text><strong>Prénom :</strong> {equipier.prenom || 'N/A'}</Text>
-      <Text><strong>Statut dans la boîte :</strong> {equipier.statut_dans_la_boite || 'N/A'}</Text>
-      <Text><strong>Résumé CV :</strong> {equipier.resume_cv || 'N/A'}</Text>
+      <Text fontSize="sm" color="gray.500" mt={1}>
+        <strong>Statut:</strong> <Badge colorScheme={equipier.status ? 'green' : 'red'}>{equipier.status ? 'Actif' : 'Inactif'}</Badge>
+      </Text>
+      <Text fontSize="sm" color="gray.500" mt={1}>
+        <strong>Dernière activité:</strong> {new Date(equipier.last_active).toLocaleDateString('fr-FR')}
+      </Text>
+      <Divider mt={3} />
+      <Text fontSize="sm" mt={3}>
+        <strong>Nom:</strong> {equipier.nom || 'N/A'}
+      </Text>
+      <Text fontSize="sm">
+        <strong>Prénom:</strong> {equipier.prenom || 'N/A'}
+      </Text>
+      <Text fontSize="sm">
+        <strong>Statut dans la boîte:</strong> {equipier.statut_dans_la_boite || 'N/A'}
+      </Text>
+      <Text fontSize="sm">
+        <strong>Résumé CV:</strong> {equipier.resume_cv || 'N/A'}
+      </Text>
+      <Divider mt={3} />
+      <Text fontSize="sm" mt={3}>
+        <strong>Type d'équipe:</strong> {equipier.type_d_equipe || 'N/A'}
+      </Text>
+      <Text fontSize="sm">
+        <strong>Numéro de membre:</strong> {equipier.numero_d_equipier || 'N/A'}
+      </Text>
+      <Text fontSize="sm">
+        <strong>Spécialité:</strong> {equipier.specialite || 'N/A'}
+      </Text>
+      <Text fontSize="sm">
+        <strong>Rôle:</strong> {equipier.role_de_l_equipier || 'N/A'}
+      </Text>
+      <Divider mt={3} />
+      <Text fontSize="sm" mt={3}>
+        <strong>Numéro de téléphone:</strong> {equipier.numero_de_telephone || 'N/A'}
+      </Text>
+      <Text fontSize="sm">
+        <strong>Email:</strong> {equipier.mail || 'N/A'}
+      </Text>
+      <Divider mt={3} />
+      <Text fontSize="sm" mt={3}>
+        <strong>Type de véhicule:</strong> {equipier.type_de_vehicule || 'N/A'}
+      </Text>
+      <Text fontSize="sm">
+        <strong>Numéro d'immatriculation:</strong> {equipier.immatriculation || 'N/A'}
+      </Text>
     </Box>
   </Box>
 );
+
 
 
   useEffect(() => {
