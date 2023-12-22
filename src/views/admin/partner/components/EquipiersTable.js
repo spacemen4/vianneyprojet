@@ -191,16 +191,7 @@ const EquipiersTable = ({ showAll }) => {
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} size="xl">
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader
-            fontSize="lg"
-            fontWeight="bold"
-            color="purple.600"
-            bg="purple.100"
-            p={3}
-            borderRadius="md"
-          >
-            Détails sur l'équipe
-          </ModalHeader>
+          
           <ModalCloseButton
             size="lg"
             color="purple.600"
