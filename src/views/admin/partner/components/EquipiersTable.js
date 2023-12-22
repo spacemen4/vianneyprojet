@@ -93,29 +93,24 @@ const EquipierCard = ({ equipier }) => (
     />
     <Box p="3">
       <Heading size="md">{equipier.name_of_the_team}</Heading>
-      <Text fontSize="sm" color="gray.500" mt={1}>
-         <Badge colorScheme={equipier.status ? 'green' : 'red'}>{equipier.status ? 'Actif' : 'Inactif'}</Badge>
-      </Text>
       
-
       <Text fontSize="sm" mt={3}>
         <strong> {equipier.nom || 'N/A'} {equipier.prenom || 'N/A'}</strong> 
       </Text>
       <Text fontSize="sm">
-         {equipier.statut_dans_la_boite || 'N/A'}
+         
+      </Text>
+      <Text fontSize="sm" color="gray.500" mt={1}>
+      <Badge colorScheme={'blue' }>{equipier.statut_dans_la_boite || 'N/A'}</Badge>
       </Text>
       <Text fontSize="sm">
          {equipier.resume_cv || 'N/A'}
       </Text>
       <Divider mt={3} />
-      
-      
-      
+   
     </Box>
   </Box>
 );
-
-
 
   useEffect(() => {
     const fetchEquipiers = async () => {
@@ -172,8 +167,6 @@ const EquipierCard = ({ equipier }) => (
         <Text> {nom || 'N/A'} {prenom || 'N/A'}</Text>
 
         <Text><Badge colorScheme={status ? 'green' : 'red'}>{status ? 'Actif' : 'Inactif'}</Badge></Text>
-
-
         <Text>{statut_dans_la_boite || 'N/A'}</Text>
         <Text> {resume_cv || 'N/A'}</Text>
         
