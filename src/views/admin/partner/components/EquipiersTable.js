@@ -1,21 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Box,
-  useColorModeValue,
+  Stack,
+  Text,
+  Badge,
+  Button,
+  Image,
   Modal,
   ModalOverlay,
   ModalContent,
-  ModalHeader,
   ModalCloseButton,
   ModalBody,
-  Text,
-  Stack,
+  Box,
+  Center,
   Heading,
-  Badge,
-  Image,
+  useColorModeValue,
   Flex,
-  Button,
-
+  Avatar,
+  Skeleton,
 } from '@chakra-ui/react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -36,6 +37,8 @@ const EquipiersTable = ({ showAll }) => {
     setSelectedEquipier(equipier);
     setIsModalOpen(true);
   };
+  const columns = window.innerWidth <= 768 ? 1 : window.innerWidth <= 1024 ? 2 : 3;
+
 
   useEffect(() => {
     if (selectedEquipier && isModalOpen) {
@@ -88,17 +91,14 @@ const EquipiersTable = ({ showAll }) => {
         src={equipier.photo_profile_url}
         alt="l'équipe"
         borderRadius="10px 10px 0 0"
-
         objectFit="cover" // Cover the entire box
       />
       <Box alignItems="center" justifyContent="center" p="1" textAlign="center">
-  <Heading size="md">{equipier.nom || 'N/A'} {equipier.prenom || 'N/A'}</Heading>
-  <Text fontSize="sm" color="gray.500" mt={1}>
-    <Badge colorScheme={'blue'}>{equipier.statut_dans_la_boite || 'N/A'}</Badge>
-  </Text>
-</Box>
-
-
+        <Heading size="md">{equipier.nom || 'N/A'} {equipier.prenom || 'N/A'}</Heading>
+        <Text fontSize="sm" color="gray.500" mt={1}>
+          <Badge colorScheme={'blue'}>{equipier.statut_dans_la_boite || 'N/A'}</Badge>
+        </Text>
+      </Box>
     </Box>
   );
 
@@ -128,59 +128,6 @@ const EquipiersTable = ({ showAll }) => {
     });
   };
 
-  const renderTeamDetails = () => {
-    if (!selectedEquipier) return null;
-
-    const {
-
-      status,
-
-      photo_profile_url,
-
-
-      statut_dans_la_boite, // Added field
-      resume_cv, // Added field
-      nom, // Added field
-      prenom, // Added field
-      v_card, // Added field
-    } = selectedEquipier;
-
-
-    return (
-      <Stack spacing={4} p={5} align="start">
-        <Image
-          borderRadius="10px"
-          boxSize="100px"
-          src={photo_profile_url}
-          alt="l'équipe"
-        />
-        <Text> {nom || 'N/A'} {prenom || 'N/A'}</Text>
-
-        <Text><Badge colorScheme={status ? 'green' : 'red'}>{status ? 'Actif' : 'Inactif'}</Badge></Text>
-        <Text>{statut_dans_la_boite || 'N/A'}</Text>
-        <Text> {resume_cv || 'N/A'}</Text>
-
-
-        {v_card && (
-          <a href={v_card} download="v-card.vcf">
-            <Button colorScheme="blue" size="sm">
-              Télécharger la carte de visite (v-card)
-            </Button>
-          </a>
-        )}
-      </Stack>
-    );
-  };
-
-
-  // Determine the number of columns based on screen size
-  let columns = 3;
-  if (window.innerWidth <= 768) {
-    columns = 1;
-  } else if (window.innerWidth <= 1024) {
-    columns = 2;
-  }
-
   return (
     <Flex flexWrap="wrap">
       {equipiers.map((equipier, index) => (
@@ -191,14 +138,37 @@ const EquipiersTable = ({ showAll }) => {
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} size="xl">
         <ModalOverlay />
         <ModalContent>
-          
-          <ModalCloseButton
-            size="lg"
-            color="purple.600"
-          />
-
+          <ModalCloseButton size="lg" color="purple.600" />
           <ModalBody>
-            {renderTeamDetails()}
+            {selectedEquipier && (
+              <Stack spacing={4} p={5} align="start">
+                
+                  <Flex justifyContent="center" alignItems="center" mb="2">
+                    <Image borderRadius="10px"  src={selectedEquipier.photo_profile_url} alt="l'équipe" />
+                  </Flex>
+                
+                <Heading size="md">
+                  
+                    {`${selectedEquipier.nom || 'N/A'} ${selectedEquipier.prenom || 'N/A'}`}
+                  
+                </Heading>
+                <Text>
+                  <strong>{selectedEquipier.statut_dans_la_boite || 'N/A'}</strong>
+                </Text>
+                <Text>
+                  <strong>{selectedEquipier.resume_cv || 'N/A'}</strong>
+                </Text>
+                {selectedEquipier.v_card && (
+                  <Center>
+                    <a href={selectedEquipier.v_card} download="v-card.vcf">
+                      <Button colorScheme="blue" size="sm">
+                        Télécharger la carte de visite (v-card)
+                      </Button>
+                    </a>
+                  </Center>
+                )}
+              </Stack>
+            )}
             <Box id={`map-${selectedEquipier?.id}`} h='500px' w='100%' mt={4} />
           </ModalBody>
         </ModalContent>
