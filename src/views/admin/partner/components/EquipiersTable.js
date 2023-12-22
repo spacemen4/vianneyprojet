@@ -142,22 +142,28 @@ const EquipiersTable = ({ showAll }) => {
           <ModalBody>
             {selectedEquipier && (
               <Stack spacing={4} p={5} align="start">
-                
+
                 <Image
-        src={selectedEquipier.photo_profile_url}
-        alt="l'équipe"
-        borderRadius="10px 10px 0 0"
-        objectFit="cover" // Cover the entire box
-      />
-      <Box alignItems="center" justifyContent="center" p="1" textAlign="center">
-        <Heading size="md">{`${selectedEquipier.nom || 'N/A'} ${selectedEquipier.prenom || 'N/A'}`}</Heading>
-        <Text fontSize="sm" color="gray.500" mt={1}>
-          <Badge colorScheme={'blue'}>{selectedEquipier.statut_dans_la_boite || 'N/A'}</Badge>
-        </Text>
-      </Box>
-                <Text>
-                  <strong>{selectedEquipier.resume_cv || 'N/A'}</strong>
-                </Text>
+                  src={selectedEquipier.photo_profile_url}
+                  alt="l'équipe"
+                  borderRadius="10px 10px 0 0"
+                  objectFit="cover" // Cover the entire box
+                />
+                <Box alignItems="center" justifyContent="center" p="1" textAlign="center">
+                  <Heading size="md">{`${selectedEquipier.nom || 'N/A'} ${selectedEquipier.prenom || 'N/A'}`}</Heading>
+                  <Text fontSize="sm" color="gray.500" mt={1}>
+                    <Badge colorScheme={'blue'}>{selectedEquipier.statut_dans_la_boite || 'N/A'}</Badge>
+                  </Text>
+                </Box>
+                <Box
+                  color='gray.500'
+                  fontWeight='semibold'
+                  letterSpacing='wide'
+                  fontSize='xs'
+                  textTransform='uppercase'
+                  ml='2'
+                >{selectedEquipier.resume_cv || 'N/A'}
+                </Box>
                 {selectedEquipier.v_card && (
                   <Center>
                     <a href={selectedEquipier.v_card} download="v-card.vcf">
