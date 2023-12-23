@@ -51,50 +51,60 @@ const EquipiersTable = ({ showAll }) => {
     fetchEquipiers();
   }, []);
 
-  useEffect(() => {
-    if (selectedEquipier && isModalOpen) {
-      const mapId = `map-${selectedEquipier.id}`;
-  
-      requestAnimationFrame(async () => {
-        if (mapRef.current && !mapRef.current._leaflet) {
-          const mapContainer = document.getElementById(mapId);
-          if (mapContainer && !mapContainer._leaflet) {
-            const map = L.map(mapId).setView([selectedEquipier.latitude, selectedEquipier.longitude], 13);
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-  
-            equipiers.forEach(team => {
-              // Use a different color for the selected team
-              const icon = team.id === selectedEquipier.id ? createCustomIcon('blue') : createCustomIcon();
-              L.marker([team.latitude, team.longitude], { icon }).addTo(map);
-            });
-  
-            // Use the team_action_view_rendering view to fetch actions associated with the selected team
-            const fetchData = async () => {
-              const { data, error } = await supabase
-                .from('team_action_view_rendering')
-                .select('*')
-                .eq('team_id', selectedEquipier.id);
-  
-              if (error) {
-                console.error('Error fetching actions:', error);
-              } else {
-                // Update the selectedEquipier with the actions data
-                setSelectedEquipier({
-                  ...selectedEquipier,
-                  actions: data,
-                });
-              }
-            };
-  
-            fetchData();
-          }
+  // Add a state to track initialized maps
+const [initializedMaps, setInitializedMaps] = useState({});
+
+useEffect(() => {
+  if (selectedEquipier && isModalOpen) {
+    const mapId = `map-${selectedEquipier.id}`;
+
+    requestAnimationFrame(async () => {
+      if (mapRef.current && !mapRef.current._leaflet && !initializedMaps[mapId]) {
+        // Mark the map as initialized
+        setInitializedMaps((prev) => ({
+          ...prev,
+          [mapId]: true,
+        }));
+
+        const mapContainer = document.getElementById(mapId);
+        if (mapContainer) {
+          const map = L.map(mapId).setView([selectedEquipier.latitude, selectedEquipier.longitude], 13);
+          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+          equipiers.forEach((team) => {
+            // Use a different color for the selected team
+            const icon = team.id === selectedEquipier.id ? createCustomIcon('blue') : createCustomIcon();
+            L.marker([team.latitude, team.longitude], { icon }).addTo(map);
+          });
+
+          // Use the team_action_view_rendering view to fetch actions associated with the selected team
+          const fetchData = async () => {
+            const { data, error } = await supabase
+              .from('team_action_view_rendering')
+              .select('*')
+              .eq('team_id', selectedEquipier.id);
+
+            if (error) {
+              console.error('Error fetching actions:', error);
+            } else {
+              // Update the selectedEquipier with the actions data
+              setSelectedEquipier({
+                ...selectedEquipier,
+                actions: data,
+              });
+            }
+          };
+
+          fetchData();
         }
-      });
-      return () => {
-        // Cleanup code
-      };
-    }
-  }, [selectedEquipier, isModalOpen, equipiers]);  
+      }
+    });
+    return () => {
+      // Cleanup code
+    };
+  }
+}, [selectedEquipier, isModalOpen, equipiers, initializedMaps]);
+ 
 
   // Style for hover state
   const hoverStyle = {
