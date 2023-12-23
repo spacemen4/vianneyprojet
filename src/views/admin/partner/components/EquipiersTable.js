@@ -38,12 +38,24 @@ const EquipiersTable = ({ showAll }) => {
   };
   const columns = window.innerWidth <= 768 ? 1 : window.innerWidth <= 1024 ? 2 : 3;
 
+  useEffect(() => {
+    const fetchEquipiers = async () => {
+      const { data, error } = await supabase.from('vianney_teams').select('*');
+      if (error) {
+        console.error('Error fetching data:', error);
+      } else {
+        setEquipiers(data);
+      }
+    };
+
+    fetchEquipiers();
+  }, []);
 
   useEffect(() => {
     if (selectedEquipier && isModalOpen) {
       const mapId = `map-${selectedEquipier.id}`;
 
-      requestAnimationFrame(() => {
+      requestAnimationFrame(async () => { // Mark the callback as async
         const mapContainer = document.getElementById(mapId);
         if (mapContainer && !mapContainer._leaflet) {
           const map = L.map(mapId).setView([selectedEquipier.latitude, selectedEquipier.longitude], 13);
@@ -54,6 +66,22 @@ const EquipiersTable = ({ showAll }) => {
             const icon = team.id === selectedEquipier.id ? createCustomIcon('blue') : createCustomIcon();
             L.marker([team.latitude, team.longitude], { icon }).addTo(map);
           });
+
+          // Use the team_action_view_rendering view to fetch actions associated with the selected team
+          const { data, error } = await supabase
+            .from('team_action_view_rendering')
+            .select('*')
+            .eq('team_id', selectedEquipier.id);
+
+          if (error) {
+            console.error('Error fetching actions:', error);
+          } else {
+            // Update the selectedEquipier with the actions data
+            setSelectedEquipier({
+              ...selectedEquipier,
+              actions: data,
+            });
+          }
         }
       });
 
@@ -196,7 +224,7 @@ const EquipiersTable = ({ showAll }) => {
                     ))}
                   </Accordion>
                 ) : (
-                  <Text>Aucune disponibilité actuellement.</Text>
+                  <Text>No actions associated with this equipier.</Text>
                 )}
               </Stack>
             )}
@@ -204,9 +232,6 @@ const EquipiersTable = ({ showAll }) => {
           </ModalBody>
         </ModalContent>
       </Modal>
-
-
-
     </Flex>
   );
 };
