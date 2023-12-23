@@ -55,59 +55,59 @@ const EquipiersTable = ({ showAll }) => {
   }, []);
 
   // Add a state to track initialized maps
-const [initializedMaps, setInitializedMaps] = useState({});
+  const [initializedMaps, setInitializedMaps] = useState({});
 
-useEffect(() => {
-  if (selectedEquipier && isModalOpen) {
-    const mapId = `map-${selectedEquipier.id}`;
+  useEffect(() => {
+    if (selectedEquipier && isModalOpen) {
+      const mapId = `map-${selectedEquipier.id}`;
 
-    requestAnimationFrame(async () => {
-      if (mapRef.current && !mapRef.current._leaflet && !initializedMaps[mapId]) {
-        // Mark the map as initialized
-        setInitializedMaps((prev) => ({
-          ...prev,
-          [mapId]: true,
-        }));
+      requestAnimationFrame(async () => {
+        if (mapRef.current && !mapRef.current._leaflet && !initializedMaps[mapId]) {
+          // Mark the map as initialized
+          setInitializedMaps((prev) => ({
+            ...prev,
+            [mapId]: true,
+          }));
 
-        const mapContainer = document.getElementById(mapId);
-        if (mapContainer) {
-          const map = L.map(mapId).setView([selectedEquipier.latitude, selectedEquipier.longitude], 13);
-          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+          const mapContainer = document.getElementById(mapId);
+          if (mapContainer) {
+            const map = L.map(mapId).setView([selectedEquipier.latitude, selectedEquipier.longitude], 13);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
-          equipiers.forEach((team) => {
-            // Use a different color for the selected team
-            const icon = team.id === selectedEquipier.id ? createCustomIcon('blue') : createCustomIcon();
-            L.marker([team.latitude, team.longitude], { icon }).addTo(map);
-          });
+            equipiers.forEach((team) => {
+              // Use a different color for the selected team
+              const icon = team.id === selectedEquipier.id ? createCustomIcon('blue') : createCustomIcon();
+              L.marker([team.latitude, team.longitude], { icon }).addTo(map);
+            });
 
-          // Use the team_action_view_rendering view to fetch actions associated with the selected team
-          const fetchData = async () => {
-            const { data, error } = await supabase
-              .from('team_action_view_rendering')
-              .select('*')
-              .eq('team_id', selectedEquipier.id);
+            // Use the team_action_view_rendering view to fetch actions associated with the selected team
+            const fetchData = async () => {
+              const { data, error } = await supabase
+                .from('team_action_view_rendering')
+                .select('*')
+                .eq('team_id', selectedEquipier.id);
 
-            if (error) {
-              console.error('Error fetching actions:', error);
-            } else {
-              // Update the selectedEquipier with the actions data
-              setSelectedEquipier({
-                ...selectedEquipier,
-                actions: data,
-              });
-            }
-          };
+              if (error) {
+                console.error('Error fetching actions:', error);
+              } else {
+                // Update the selectedEquipier with the actions data
+                setSelectedEquipier({
+                  ...selectedEquipier,
+                  actions: data,
+                });
+              }
+            };
 
-          fetchData();
+            fetchData();
+          }
         }
-      }
-    });
-    return () => {
-      // Cleanup code
-    };
-  }
-}, [selectedEquipier, isModalOpen, equipiers, initializedMaps]);
- 
+      });
+      return () => {
+        // Cleanup code
+      };
+    }
+  }, [selectedEquipier, isModalOpen, equipiers, initializedMaps]);
+
 
   // Style for hover state
   const hoverStyle = {
@@ -225,7 +225,7 @@ useEffect(() => {
                         {({ isExpanded }) => (
                           <>
                             <Alert
-                              status="success" // Change status to "success" for the success alert style
+                              status="success"
                               variant="subtle"
                               flexDirection="column"
                               alignItems="start"
@@ -243,13 +243,24 @@ useEffect(() => {
                               <Text>Du {action.starting_date}</Text>
                               <Text> Au {action.ending_date}</Text>
                             </Alert>
+                            {/* Add the "Voir les autres disponibilités" button */}
+                            <Button
+                              colorScheme="green"
+                              size="sm"
+                              mt={2} // Adjust the margin-top as needed
+                              onClick={() => {
+                                // Handle the click event here, e.g., navigate to other disponibilités
+                              }}
+                            >
+                              Voir les autres disponibilités
+                            </Button>
                           </>
                         )}
                       </AccordionItem>
                     ))}
                   </Accordion>
                 ) : (
-                  <Text>No actions associated with this equipier.</Text>
+                  <Text>Aucune disponibilité</Text>
                 )}
               </Stack>
             )}
