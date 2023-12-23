@@ -221,37 +221,39 @@ const EquipiersTable = ({ showAll }) => {
                 )}
                 {selectedEquipier.actions ? (
                   <>
-                  <Alert
-                    status="success"
-                    variant="subtle"
-                    flexDirection="column"
-                    alignItems="start"
-                    justifyContent="start"
-                    bg="green.50"
-                    borderColor="green.200"
-                    borderWidth="1px"
-                    borderLeftWidth="5px"
-                    borderRadius="md"
-                    p={4}
-                    mt={4}
-                  >
-                    <AlertIcon />
-                    <AlertTitle>Disponible pour {selectedEquipier.actions[0].action_name}</AlertTitle>
-                    <Text>Du {selectedEquipier.actions[0].starting_date}</Text>
-                    <Text> Au {selectedEquipier.actions[0].ending_date}</Text>
-                    
-                  </Alert>
-                  <Button
-                  colorScheme="green"
-                  size="sm"
-                  mt={2} // Adjust the margin-top as needed
-                  onClick={() => {
-                    // Handle the click event here, e.g., navigate to other disponibilités
-                  }}
-                >
-                  Voir les autres disponibilités
-                </Button>
-                </>
+                    {selectedEquipier.actions.map((action, index) => (
+                      <Alert
+                        key={index}
+                        status="success"
+                        variant="subtle"
+                        flexDirection="column"
+                        alignItems="start"
+                        justifyContent="start"
+                        bg="green.50"
+                        borderColor="green.200"
+                        borderWidth="1px"
+                        borderLeftWidth="5px"
+                        borderRadius="md"
+                        p={4}
+                        mt={4}
+                      >
+                        <AlertIcon />
+                        <AlertTitle>Disponible pour {action.action_name}</AlertTitle>
+                        <Text>Du {action.starting_date}</Text>
+                        <Text> Au {action.ending_date}</Text>
+                      </Alert>
+                    ))}
+                    <Button
+                      colorScheme="green"
+                      size="sm"
+                      mt={2}
+                      onClick={() => {
+                        // Handle the click event here, e.g., navigate to other disponibilités
+                      }}
+                    >
+                      Voir les autres disponibilités
+                    </Button>
+                  </>
                 ) : (
                   <Text>Aucune disponibilité</Text>
                 )}
