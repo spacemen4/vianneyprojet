@@ -15,6 +15,9 @@ import {
   Heading,
   useColorModeValue,
   Flex,
+  Alert,
+  AlertIcon, // Add AlertIcon from Chakra UI
+  AlertTitle,
 } from '@chakra-ui/react';
 
 import L from 'leaflet';
@@ -188,7 +191,7 @@ useEffect(() => {
                   src={selectedEquipier.photo_profile_url}
                   alt="l'équipe"
                   borderRadius="10px 10px 0 0"
-                  objectFit="cover" // Cover the entire box
+                  objectFit="cover"
                 />
                 <Box alignItems="center" justifyContent="center" p="1" textAlign="center">
                   <Heading size="md">{`${selectedEquipier.nom || 'N/A'} ${selectedEquipier.prenom || 'N/A'}`}</Heading>
@@ -203,7 +206,8 @@ useEffect(() => {
                   fontSize='xs'
                   textTransform='uppercase'
                   ml='2'
-                >{selectedEquipier.resume_cv || 'N/A'}
+                >
+                  {selectedEquipier.resume_cv || 'N/A'}
                 </Box>
                 {selectedEquipier.v_card && (
                   <Center>
@@ -220,19 +224,25 @@ useEffect(() => {
                       <AccordionItem key={index}>
                         {({ isExpanded }) => (
                           <>
-                            <h2>
-                              <AccordionButton>
-                                <Box flex="1" textAlign="left">
-                                  {`Action ${index + 1}`}
-                                </Box>
-                                <AccordionIcon />
-                              </AccordionButton>
-                            </h2>
-                            <AccordionPanel>
-                              <Text>{action.action_name}</Text>
-                              <Text>Starting Date: {action.starting_date}</Text>
-                              <Text>Ending Date: {action.ending_date}</Text>
-                            </AccordionPanel>
+                            <Alert
+                              status="success" // Change status to "success" for the success alert style
+                              variant="subtle"
+                              flexDirection="column"
+                              alignItems="start"
+                              justifyContent="start"
+                              bg="green.50"
+                              borderColor="green.200"
+                              borderWidth="1px"
+                              borderLeftWidth="5px"
+                              borderRadius="md"
+                              p={4}
+                              mt={4}
+                            >
+                              <AlertIcon />
+                              <AlertTitle>Disponible pour {action.action_name}</AlertTitle>
+                              <Text>Du {action.starting_date}</Text>
+                              <Text> Au {action.ending_date}</Text>
+                            </Alert>
                           </>
                         )}
                       </AccordionItem>
