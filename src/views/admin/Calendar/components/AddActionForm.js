@@ -91,7 +91,7 @@ const AddActionForm = () => {
           <FormLabel>Équipe</FormLabel>
           <Select placeholder="Sélectionner une équipe" onChange={(e) => setAction({ ...action, teamId: e.target.value })}>
             {teams.map(team => (
-              <option key={team.id} value={team.id}>{team.name_of_the_team}</option>
+              <option key={team.id} value={team.id}>{team.nom}</option>
             ))}
           </Select>
         </FormControl>

@@ -137,7 +137,7 @@ function TeamTimeline() {
 
   const groups = teams.map(team => ({
     id: team.id,
-    title: team.name_of_the_team,
+    title: team.nom,
     color: team.color
   }));
 
@@ -261,7 +261,7 @@ function TeamTimeline() {
     }
     return data.map(team => ({
       id: team.id,
-      titel: team.name_of_the_team,
+      titel: team.nom,
       color: team.color // Assuming each team has a unique color
     }));
   };

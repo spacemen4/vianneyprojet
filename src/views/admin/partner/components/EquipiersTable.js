@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Stack,
+  Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon, Stack,
   Text,
   Badge,
   Button,
@@ -15,9 +15,8 @@ import {
   Heading,
   useColorModeValue,
   Flex,
-  Avatar,
-  Skeleton,
 } from '@chakra-ui/react';
+
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { MdPlace } from "react-icons/md";
@@ -141,8 +140,7 @@ const EquipiersTable = ({ showAll }) => {
           <ModalCloseButton size="lg" color="purple.600" />
           <ModalBody>
             {selectedEquipier && (
-              <Stack spacing={4} p={8} align="start">
-
+              <Stack spacing={4} p={9} align="start">
                 <Image
                   src={selectedEquipier.photo_profile_url}
                   alt="l'équipe"
@@ -173,12 +171,42 @@ const EquipiersTable = ({ showAll }) => {
                     </a>
                   </Center>
                 )}
+                {selectedEquipier.actions ? (
+                  <Accordion defaultIndex={[0]} allowMultiple>
+                    {selectedEquipier.actions.slice(0, 3).map((action, index) => (
+                      <AccordionItem key={index}>
+                        {({ isExpanded }) => (
+                          <>
+                            <h2>
+                              <AccordionButton>
+                                <Box flex="1" textAlign="left">
+                                  {`Action ${index + 1}`}
+                                </Box>
+                                <AccordionIcon />
+                              </AccordionButton>
+                            </h2>
+                            <AccordionPanel>
+                              <Text>{action.action_name}</Text>
+                              <Text>Starting Date: {action.starting_date}</Text>
+                              <Text>Ending Date: {action.ending_date}</Text>
+                            </AccordionPanel>
+                          </>
+                        )}
+                      </AccordionItem>
+                    ))}
+                  </Accordion>
+                ) : (
+                  <Text>Aucune disponibilité actuellement.</Text>
+                )}
               </Stack>
             )}
             <Box id={`map-${selectedEquipier?.id}`} h='500px' w='100%' mt={4} />
           </ModalBody>
         </ModalContent>
       </Modal>
+
+
+
     </Flex>
   );
 };

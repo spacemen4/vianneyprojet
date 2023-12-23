@@ -139,7 +139,7 @@ const fetchTeams = async () => {
   }
   return data.map(team => ({
     id: team.id,
-    titel: team.name_of_the_team,
+    titel: team.nom,
     color: team.color // Assuming each team has a unique color
   }));
 };
