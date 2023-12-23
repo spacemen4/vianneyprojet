@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import {
   Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon, Stack,
   Text,
@@ -31,7 +31,7 @@ const EquipiersTable = ({ showAll }) => {
   const [equipiers, setEquipiers] = useState([]);
   const [selectedEquipier, setSelectedEquipier] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const mapRef = useRef(null);
   const onRowClick = (equipier) => {
     setSelectedEquipier(equipier);
     setIsModalOpen(true);
@@ -54,42 +54,47 @@ const EquipiersTable = ({ showAll }) => {
   useEffect(() => {
     if (selectedEquipier && isModalOpen) {
       const mapId = `map-${selectedEquipier.id}`;
-
-      requestAnimationFrame(async () => { // Mark the callback as async
-        const mapContainer = document.getElementById(mapId);
-        if (mapContainer && !mapContainer._leaflet) {
-          const map = L.map(mapId).setView([selectedEquipier.latitude, selectedEquipier.longitude], 13);
-          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-
-          equipiers.forEach(team => {
-            // Use a different color for the selected team
-            const icon = team.id === selectedEquipier.id ? createCustomIcon('blue') : createCustomIcon();
-            L.marker([team.latitude, team.longitude], { icon }).addTo(map);
-          });
-
-          // Use the team_action_view_rendering view to fetch actions associated with the selected team
-          const { data, error } = await supabase
-            .from('team_action_view_rendering')
-            .select('*')
-            .eq('team_id', selectedEquipier.id);
-
-          if (error) {
-            console.error('Error fetching actions:', error);
-          } else {
-            // Update the selectedEquipier with the actions data
-            setSelectedEquipier({
-              ...selectedEquipier,
-              actions: data,
+  
+      requestAnimationFrame(async () => {
+        if (mapRef.current && !mapRef.current._leaflet) {
+          const mapContainer = document.getElementById(mapId);
+          if (mapContainer && !mapContainer._leaflet) {
+            const map = L.map(mapId).setView([selectedEquipier.latitude, selectedEquipier.longitude], 13);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+  
+            equipiers.forEach(team => {
+              // Use a different color for the selected team
+              const icon = team.id === selectedEquipier.id ? createCustomIcon('blue') : createCustomIcon();
+              L.marker([team.latitude, team.longitude], { icon }).addTo(map);
             });
+  
+            // Use the team_action_view_rendering view to fetch actions associated with the selected team
+            const fetchData = async () => {
+              const { data, error } = await supabase
+                .from('team_action_view_rendering')
+                .select('*')
+                .eq('team_id', selectedEquipier.id);
+  
+              if (error) {
+                console.error('Error fetching actions:', error);
+              } else {
+                // Update the selectedEquipier with the actions data
+                setSelectedEquipier({
+                  ...selectedEquipier,
+                  actions: data,
+                });
+              }
+            };
+  
+            fetchData();
           }
         }
       });
-
       return () => {
         // Cleanup code
       };
     }
-  }, [selectedEquipier, isModalOpen, equipiers]);
+  }, [selectedEquipier, isModalOpen, equipiers]);  
 
   // Style for hover state
   const hoverStyle = {
@@ -228,7 +233,7 @@ const EquipiersTable = ({ showAll }) => {
                 )}
               </Stack>
             )}
-            <Box id={`map-${selectedEquipier?.id}`} h='500px' w='100%' mt={4} />
+            <Box id={`map-${selectedEquipier?.id}`} h='500px' w='100%' mt={4} ref={mapRef} />
           </ModalBody>
         </ModalContent>
       </Modal>
