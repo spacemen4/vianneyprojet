@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import {
-  Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon, Stack,
+  Stack,
   Text,
   Badge,
   Button,
@@ -16,7 +16,7 @@ import {
   useColorModeValue,
   Flex,
   Alert,
-  AlertIcon, // Add AlertIcon from Chakra UI
+  AlertIcon,
   AlertTitle,
 } from '@chakra-ui/react';
 
@@ -35,10 +35,12 @@ const EquipiersTable = ({ showAll }) => {
   const [selectedEquipier, setSelectedEquipier] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const mapRef = useRef(null);
+
   const onRowClick = (equipier) => {
     setSelectedEquipier(equipier);
     setIsModalOpen(true);
   };
+
   const columns = window.innerWidth <= 768 ? 1 : window.innerWidth <= 1024 ? 2 : 3;
 
   useEffect(() => {
@@ -107,7 +109,6 @@ const EquipiersTable = ({ showAll }) => {
       };
     }
   }, [selectedEquipier, isModalOpen, equipiers, initializedMaps]);
-
 
   // Style for hover state
   const hoverStyle = {
@@ -219,46 +220,38 @@ const EquipiersTable = ({ showAll }) => {
                   </Center>
                 )}
                 {selectedEquipier.actions ? (
-                  <Accordion defaultIndex={[0]} allowMultiple>
-                    {selectedEquipier.actions.slice(0, 3).map((action, index) => (
-                      <AccordionItem key={index}>
-                        {({ isExpanded }) => (
-                          <>
-                            <Alert
-                              status="success"
-                              variant="subtle"
-                              flexDirection="column"
-                              alignItems="start"
-                              justifyContent="start"
-                              bg="green.50"
-                              borderColor="green.200"
-                              borderWidth="1px"
-                              borderLeftWidth="5px"
-                              borderRadius="md"
-                              p={4}
-                              mt={4}
-                            >
-                              <AlertIcon />
-                              <AlertTitle>Disponible pour {action.action_name}</AlertTitle>
-                              <Text>Du {action.starting_date}</Text>
-                              <Text> Au {action.ending_date}</Text>
-                            </Alert>
-                            {/* Add the "Voir les autres disponibilités" button */}
-                            <Button
-                              colorScheme="green"
-                              size="sm"
-                              mt={2} // Adjust the margin-top as needed
-                              onClick={() => {
-                                // Handle the click event here, e.g., navigate to other disponibilités
-                              }}
-                            >
-                              Voir les autres disponibilités
-                            </Button>
-                          </>
-                        )}
-                      </AccordionItem>
-                    ))}
-                  </Accordion>
+                  <>
+                  <Alert
+                    status="success"
+                    variant="subtle"
+                    flexDirection="column"
+                    alignItems="start"
+                    justifyContent="start"
+                    bg="green.50"
+                    borderColor="green.200"
+                    borderWidth="1px"
+                    borderLeftWidth="5px"
+                    borderRadius="md"
+                    p={4}
+                    mt={4}
+                  >
+                    <AlertIcon />
+                    <AlertTitle>Disponible pour {selectedEquipier.actions[0].action_name}</AlertTitle>
+                    <Text>Du {selectedEquipier.actions[0].starting_date}</Text>
+                    <Text> Au {selectedEquipier.actions[0].ending_date}</Text>
+                    
+                  </Alert>
+                  <Button
+                  colorScheme="green"
+                  size="sm"
+                  mt={2} // Adjust the margin-top as needed
+                  onClick={() => {
+                    // Handle the click event here, e.g., navigate to other disponibilités
+                  }}
+                >
+                  Voir les autres disponibilités
+                </Button>
+                </>
                 ) : (
                   <Text>Aucune disponibilité</Text>
                 )}
