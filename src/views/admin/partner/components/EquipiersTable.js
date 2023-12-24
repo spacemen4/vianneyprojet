@@ -1,4 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { format } from 'date-fns';
+import { fr } from 'date-fns/locale';
 import {
   Stack,
   Text,
@@ -239,21 +241,21 @@ const EquipiersTable = ({ showAll }) => {
                       >
                         <AlertIcon />
                         <AlertTitle>Disponible pour {action.action_name}</AlertTitle>
-                        <Text>Du {action.starting_date}</Text>
-                        <Text> Au {action.ending_date}</Text>
+                        <Text>Du {format(new Date(action.starting_date), "dd MMMM yyyy à HH:mm", { locale: fr })}</Text>
+                        <Text> Au {format(new Date(action.ending_date), "dd MMMM yyyy à HH:mm", { locale: fr })}</Text>
                       </Alert>
                     ))}
 
-                      <Button
-                        colorScheme="green"
-                        size="sm"
-                        mt={2}
-                        onClick={() => {
-                          // Handle the click event here, e.g., navigate to other disponibilités
-                        }}
-                      >
-                        Voir toutes les disponibilités
-                      </Button>
+                    <Button
+                      colorScheme="green"
+                      size="sm"
+                      mt={2}
+                      onClick={() => {
+                        // Handle the click event here, e.g., navigate to other disponibilités
+                      }}
+                    >
+                      Voir toutes les disponibilités
+                    </Button>
 
                   </>
                 ) : (
