@@ -9,6 +9,7 @@ import {
   Button,
   Box,
   VStack,
+  Select,
 
 } from '@chakra-ui/react';
 import { createClient } from '@supabase/supabase-js';
@@ -185,12 +186,22 @@ const UserForm = () => {
         </FormControl>
         <FormControl>
           <FormLabel htmlFor="statut-dans-la-boite">Statut dans la boîte</FormLabel>
-          <Input
+          <Select
             id="statut-dans-la-boite"
-            type="text"
             value={statutDansLaBoite}
             onChange={(e) => setStatutDansLaBoite(e.target.value)}
-          />
+          >
+            <option value="Partner">Partner</option>
+            <option value="Office Manager">Office Manager</option>
+            <option value="Consultant Senior">Consultant Senior</option>
+            <option value="Manager">Manager</option>
+            <option value="Senior Manager">Senior Manager</option>
+            <option value="Consultant">Consultant</option>
+            <option value="Directeur">Directeur</option>
+            <option value="Consultante">Consultante</option>
+            <option value="Consultante Senior">Consultante Senior</option>
+            <option value="Directrice">Directrice</option>
+          </Select>
         </FormControl>
         <FormControl>
           <FormLabel htmlFor="resume-cv">Résumé CV</FormLabel>
@@ -221,10 +232,10 @@ const UserForm = () => {
         </FormControl>
 
 
-        
 
 
-        
+
+
       </VStack>
 
       <Button mt={4} colorScheme="green" type="submit">Ajouter l'utilisateur</Button>
