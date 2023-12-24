@@ -11,7 +11,7 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { MdOutlineMoreHoriz } from "react-icons/md";
-import { FcAutomatic } from "react-icons/fc";
+import { FcBusinessman } from "react-icons/fc";
 import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = 'https://pvpsmyizvorwwccuwbuq.supabase.co';
@@ -83,12 +83,10 @@ export default function Banner(props) {
             transition="0.2s linear"
             p="0px"
             borderRadius="8px"
-            _hover={{ bg: "transparent" }}
-            _active={{ bg: "transparent" }}
-            _focus={{ bg: "transparent" }}
+            _hover={{ bg: "blue.100", color: "blue.600" }} // Hover effect
           >
             <Flex align="center">
-              <Icon as={FcAutomatic} h="16px" w="16px" me="8px" />
+              <Icon as={FcBusinessman} h="16px" w="16px" me="8px" />
               <Text fontSize="sm" fontWeight="400">
                 {team.nom} {team.prenom}
               </Text>
