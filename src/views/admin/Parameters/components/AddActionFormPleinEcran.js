@@ -111,7 +111,7 @@ const AddActionFormPleinEcran = () => {
           <FormLabel>Commentaire</FormLabel>
           <Input placeholder="Commentaire" onChange={(e) => setAction({ ...action, comment: e.target.value })} />
         </FormControl>
-        <Button mt={4} colorScheme="blue" type="submit">Ajouter l'action</Button>
+        <Button mt={4} colorScheme="blue" type="submit">Ajouter une disponibilité</Button>
       </form>
     </Box>
   );

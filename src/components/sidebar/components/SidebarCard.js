@@ -53,7 +53,7 @@ export default function SidebarDocs() {
           px='10px'
           mt="10px"
           mb='6px'>
-          Le logiciel de l'évênement
+          Le logiciel du conseil
         </Text>
         <Text
           fontSize='14px'
@@ -65,7 +65,7 @@ export default function SidebarDocs() {
           Améliorez votre efficacité opérationnelle 
         </Text>
       </Flex>
-      <Link href='https://horizon-ui.com/pro?ref=horizon-chakra-free'>
+      <Link href='https://meetingpartner.my.canva.site/accompagner-les-consultants'>
         <Button
           bg='whiteAlpha.300'
           _hover={{ bg: "whiteAlpha.200" }}
