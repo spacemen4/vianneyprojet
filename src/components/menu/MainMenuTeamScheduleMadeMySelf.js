@@ -36,13 +36,15 @@ export default function Banner(props) {
   const [teamNames, setTeamNames] = useState([]);
 
   useEffect(() => {
-    // Fetch team names from the "vianney_teams" table
+    // Fetch both "nom" and "prenom" from the "vianney_teams" table
     const fetchTeamNames = async () => {
-      const { data, error } = await supabase.from('vianney_teams').select('nom');
+      const { data, error } = await supabase
+        .from('vianney_teams')
+        .select('nom, prenom');
       if (error) {
         console.error('Error fetching team names:', error);
       } else {
-        setTeamNames(data.map(team => team.nom));
+        setTeamNames(data.map(team => ({ nom: team.nom, prenom: team.prenom })));
       }
     };
 
@@ -74,10 +76,9 @@ export default function Banner(props) {
         borderRadius="20px"
         p="15px"
       >
-        {teamNames.map((teamName, index) => (
+        {teamNames.map((team, index) => (
           <MenuItem
             key={index}
-            
             transition="0.2s linear"
             p="0px"
             borderRadius="8px"
@@ -88,7 +89,7 @@ export default function Banner(props) {
             <Flex align="center">
               <Icon as={FcAutomatic} h="16px" w="16px" me="8px" />
               <Text fontSize="sm" fontWeight="400">
-                {teamName}
+                {team.nom} {team.prenom}
               </Text>
             </Flex>
           </MenuItem>
