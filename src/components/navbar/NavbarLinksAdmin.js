@@ -9,10 +9,7 @@ import {
   import routes from 'routes.js';
   import { SidebarResponsive } from 'components/sidebar/Sidebar';
   
-  export default function HeaderLinks(props) {
-	const { secondary } = props;
-	let menuBg = useColorModeValue('white', 'navy.800');
-  
+export default function HeaderLinks(props) {
 	const shadow = useColorModeValue(
 	  '14px 17px 40px 4px rgba(112, 144, 176, 0.18)',
 	  '14px 17px 40px 4px rgba(112, 144, 176, 0.06)'
