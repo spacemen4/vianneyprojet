@@ -15,7 +15,7 @@ import { FcAutomatic } from "react-icons/fc";
 import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = 'https://pvpsmyizvorwwccuwbuq.supabase.co';
-const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB2cHNteWl6dm9yd3djY3V3YnVxIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTcwMjgzMDg2MCwiZXhwIjoyMDE4NDA2ODYwfQ.9YDEN41__xBFJU91XY9e3r119A03yQ2oq5azmrx1aqY';
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB2cHNteWl6dm9yd3djY3V3YnVxIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTcwMjgzMDg2MCwiZXhwIjoyMDE4NDA2ODYwfQ.9YDEN41__xBFJU91XY9e3r119A03yQ2oq5azmrx1aqY';// Replace with your Supabase API key
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 export default function Banner(props) {
@@ -75,6 +75,7 @@ export default function Banner(props) {
         border="transparent"
         borderRadius="20px"
         p="15px"
+        zIndex="1000" // Set a high zIndex to make it appear above other components
       >
         {teamNames.map((team, index) => (
           <MenuItem
