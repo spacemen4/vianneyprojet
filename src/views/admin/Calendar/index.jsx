@@ -9,7 +9,6 @@ export default function Settings() {
   return (
     <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
       <TeamScheduleMadeMySelf />
-
     </Box>
   );
 }
