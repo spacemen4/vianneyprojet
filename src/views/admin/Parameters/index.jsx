@@ -37,7 +37,14 @@ const Parameters = () => {
             onAddActionClick={handleAddActionClick} // Pass the click handler
           />
         )}
-        {showAddActionForm && <AddActionFormPleinEcran />}
+        {showAddActionForm && (
+          <>
+            <Button leftIcon={<IoIosArrowBack />} onClick={handleBackClick}>
+              Retour
+            </Button>     
+        <AddActionFormPleinEcran />
+        </>
+        )}
         {showEventAndCharacteristics && (
           <>
             <Button leftIcon={<IoIosArrowBack />} onClick={handleBackClick}>
