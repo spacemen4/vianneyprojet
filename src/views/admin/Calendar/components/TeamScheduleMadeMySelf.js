@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Box, Text, Flex, Card, useColorModeValue, ChakraProvider, useToast, Tooltip, AlertDialog, AlertDialogBody, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, AlertDialogOverlay, Button, Input, Stack
+  Box, Flex, Card, ChakraProvider, useToast, Tooltip, AlertDialog, AlertDialogBody, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, AlertDialogOverlay, Button, Input, Stack
 } from '@chakra-ui/react';
 import { FcPlus } from "react-icons/fc";
 import { Calendar, momentLocalizer, Views } from 'react-big-calendar';
@@ -31,7 +31,6 @@ function TeamScheduleByMySelf() {
   const [updatedEventStart, setUpdatedEventStart] = useState('');
   const [updatedEventEnd, setUpdatedEventEnd] = useState('');
   const [teams, setTeams] = useState([]);
-  const textColor = useColorModeValue("secondaryGray.900", "white");
   const handleEventSelect = (event) => {
     setSelectedEvent(event);
     setIsAlertOpen(true);
@@ -84,7 +83,7 @@ function TeamScheduleByMySelf() {
 
   const handleAddActionClick = () => {
     toast({
-      title: "Ajouter une action",
+      title: "Ajouter une disponibilité",
       description: <AddActionForm />,
       status: "info",
       duration: null, // The toast will stay until manually closed
@@ -270,15 +269,8 @@ useEffect(() => {
         <ChakraProvider>
           <Box p={4}>
             <Flex px='25px' justify='space-between' mb='20px' align='center'>
-              <Text
-                color={textColor}
-                fontSize='22px'
-                fontWeight='700'
-                lineHeight='100%'>
-                Emploi du temps
-              </Text>
               <Menu />
-              <Tooltip label="Cliquer pour ajouter une action" hasArrow>
+              <Tooltip label="Cliquer pour ajouter une disponibilité" hasArrow>
                 <Box position='absolute' top='15px' right='15px' cursor='pointer'>
                   <FcPlus size="24px" onClick={handleAddActionClick}/>
                 </Box>
@@ -297,7 +289,7 @@ useEffect(() => {
               endAccessor="end"
               eventPropGetter={eventStyleGetter}
               messages={messages}
-              style={{ height: 500 }}
+
               onSelectEvent={handleEventSelect}
               components={{
                 event: CustomEvent, // Use Custom Event Component

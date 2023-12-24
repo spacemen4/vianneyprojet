@@ -28,7 +28,7 @@ const ParametersDocuments = ({ onEventAndCharacteristicsClick, onAddActionClick 
         m={4} 
         onClick={onAddActionClick} // Ensure this is calling the correct function
       >
-        Ajouter une action
+        Ajouter une disponibilité
       </Button>
     </Box>
   );

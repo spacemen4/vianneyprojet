@@ -83,7 +83,7 @@ function TeamSchedule() {
 
   const handleAddActionClick = () => {
     toast({
-      title: "Ajouter une action",
+      title: "Ajouter une disponibilité",
       description: <AddActionForm />,
       status: "info",
       duration: null, // The toast will stay until manually closed
@@ -277,7 +277,7 @@ useEffect(() => {
                 Emploi du temps
               </Text>
               <Menu />
-              <Tooltip label="Cliquer pour ajouter une action" hasArrow>
+              <Tooltip label="Cliquer pour ajouter une disponibilité" hasArrow>
                 <Box position='absolute' top='15px' right='15px' cursor='pointer'>
                   <FcPlus size="24px" onClick={handleAddActionClick}/>
                 </Box>
