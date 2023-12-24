@@ -221,7 +221,7 @@ const EquipiersTable = ({ showAll }) => {
                 )}
                 {selectedEquipier.actions ? (
                   <>
-                    {selectedEquipier.actions.map((action, index) => (
+                    {selectedEquipier.actions.slice(0, 5).map((action, index) => (
                       <Alert
                         key={index}
                         status="success"
@@ -243,16 +243,18 @@ const EquipiersTable = ({ showAll }) => {
                         <Text> Au {action.ending_date}</Text>
                       </Alert>
                     ))}
-                    <Button
-                      colorScheme="green"
-                      size="sm"
-                      mt={2}
-                      onClick={() => {
-                        // Handle the click event here, e.g., navigate to other disponibilités
-                      }}
-                    >
-                      Voir les autres disponibilités
-                    </Button>
+
+                      <Button
+                        colorScheme="green"
+                        size="sm"
+                        mt={2}
+                        onClick={() => {
+                          // Handle the click event here, e.g., navigate to other disponibilités
+                        }}
+                      >
+                        Voir toutes les disponibilités
+                      </Button>
+
                   </>
                 ) : (
                   <Text>Aucune disponibilité</Text>
