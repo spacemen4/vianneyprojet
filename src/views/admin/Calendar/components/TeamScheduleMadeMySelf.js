@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {
   Box, Flex, Card, ChakraProvider, useToast, Tooltip, AlertDialog, AlertDialogBody, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, AlertDialogOverlay, Button, Input, Stack, Icon, Text, Menu, MenuButton, MenuList, MenuItem, useColorModeValue, useDisclosure
 } from '@chakra-ui/react';
-import { FcPlus, FcBusinessman, FcAbout } from "react-icons/fc";
+import { FcPlus, FcBusinessman, FcAbout, FcBusinesswoman  } from "react-icons/fc";
 import { Calendar, momentLocalizer, Views } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import moment from 'moment';
@@ -36,7 +36,7 @@ function TeamScheduleByMySelf({ onTeamSelect, ...rest }) {
   const [selectedTeamId, setSelectedTeamId] = useState(null);
   const [filteredTeams, setFilteredTeams] = useState([]);
   const [resourceTitleAccessor, setResourceTitleAccessor] = useState('titel');
-
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const deleteEvent = async () => {
     console.log('Selected event on delete:', selectedEvent); // Log the event when attempting to delete
 
@@ -322,6 +322,9 @@ function TeamScheduleByMySelf({ onTeamSelect, ...rest }) {
     : events;
 
   console.log("Filtered Events:", filteredEvents);
+  const handleMenuToggle = () => {
+    setIsMenuOpen(!isMenuOpen); // Toggle the state
+  };
 
   return (
     <Card
@@ -334,7 +337,7 @@ function TeamScheduleByMySelf({ onTeamSelect, ...rest }) {
         <ChakraProvider>
           <Box p={4}>
             <Flex px="25px" justify="space-between" mb="20px" align="center">
-              <Menu isOpen={isOpen} onClose={onClose}>
+              <Menu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)}>
                 <MenuButton
                   align="center"
                   justifyContent="center"
@@ -345,14 +348,21 @@ function TeamScheduleByMySelf({ onTeamSelect, ...rest }) {
                   w="auto"
                   h="37px"
                   lineHeight="100%"
-                  onClick={onOpen}
+                  onClick={handleMenuToggle} // Updated click handler
                   borderRadius="10px"
                   {...rest}
                 >
-                  <Flex align="center">
+                  <Flex
+                    align="center"
+                    borderRadius="10px" // Add border radius
+                    bgGradient="linear(to-r, blue.400, blue.500)" // Gradient background from blue.400 to blue.500
+                    p="2" // Padding, adjust as needed
+                    color="white" // Text color
+                  >
                     <Icon as={FcAbout} color={iconColor} w="24px" h="24px" />
-                    <Text ml="4px">Sélectionner</Text>
+                    <Text ml="4px">Sélectionner un partner</Text>
                   </Flex>
+
                 </MenuButton>
                 <MenuList
                   minW="unset"
@@ -364,7 +374,9 @@ function TeamScheduleByMySelf({ onTeamSelect, ...rest }) {
                 >
                   {/* Option for all teams */}
                   <MenuItem onClick={() => handleTeamSelect(null)}>
-                    Toutes les équipes
+                  <Icon as={FcBusinessman} h="16px" w="16px" me="8px" />
+                  <Icon as={FcBusinesswoman} h="16px" w="16px" me="8px" />
+                    Tous les partners
                   </MenuItem>
                   {/* Existing team options */}
                   {teamNames.map((team, index) => (
