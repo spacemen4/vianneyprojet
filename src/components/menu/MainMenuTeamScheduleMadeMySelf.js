@@ -53,51 +53,51 @@ export default function Banner(props) {
 
   return (
     <Menu isOpen={isOpen} onClose={onClose}>
-      <MenuButton
-        align="center"
-        justifyContent="center"
-        bg={bgButton}
-        _hover={bgHover}
-        _focus={bgFocus}
-        _active={bgFocus}
-        w="auto"
-        w="37px"
-        h="37px"
-        lineHeight="100%"
-        onClick={onOpen}
-        borderRadius="10px"
-        {...rest}
+  <MenuButton
+    align="center"
+    justifyContent="center"
+    bg={bgButton}
+    _hover={bgHover}
+    _focus={bgFocus}
+    _active={bgFocus}
+    w="auto"
+    h="37px"
+    lineHeight="100%"
+    onClick={onOpen}
+    borderRadius="10px"
+    {...rest}
+  >
+    <Flex align="center">
+      <Icon as={FcAbout} color={iconColor} w="24px" h="24px" />
+      <Text ml="4px">Sélectionner</Text>
+    </Flex>
+  </MenuButton>
+  <MenuList
+    minW="unset"
+    maxW="150px !important"
+    border="transparent"
+    borderRadius="20px"
+    p="15px"
+    zIndex="1000"
+  >
+    {teamNames.map((team, index) => (
+      <MenuItem
+        key={index}
+        transition="0.2s linear"
+        p="0px"
+        borderRadius="8px"
+        _hover={{ bg: "blue.100", color: "blue.600" }}
       >
         <Flex align="center">
-          <Icon as={FcAbout} color={iconColor} w="24px" h="24px" />
-          <Text ml="4px">Sélectionner</Text> {/* Added margin-left to separate icon and text */}
+          <Icon as={FcBusinessman} h="16px" w="16px" me="8px" />
+          <Text fontSize="sm" fontWeight="400">
+            {team.nom} {team.prenom}
+          </Text>
         </Flex>
-      </MenuButton>
-      <MenuList
-        minW="unset"
-        maxW="150px !important"
-        border="transparent"
-        borderRadius="20px"
-        p="15px"
-        zIndex="1000" // Set a high zIndex to make it appear above other components
-      >
-        {teamNames.map((team, index) => (
-          <MenuItem
-            key={index}
-            transition="0.2s linear"
-            p="0px"
-            borderRadius="8px"
-            _hover={{ bg: "blue.100", color: "blue.600" }} // Hover effect
-          >
-            <Flex align="center">
-              <Icon as={FcBusinessman} h="16px" w="16px" me="8px" />
-              <Text fontSize="sm" fontWeight="400">
-                {team.nom} {team.prenom}
-              </Text>
-            </Flex>
-          </MenuItem>
-        ))}
-      </MenuList>
-    </Menu>
+      </MenuItem>
+    ))}
+  </MenuList>
+</Menu>
+
   );
 }
