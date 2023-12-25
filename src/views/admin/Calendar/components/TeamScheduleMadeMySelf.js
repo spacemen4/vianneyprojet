@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Box, Flex, Card, ChakraProvider, useToast, Tooltip, AlertDialog, AlertDialogBody, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, AlertDialogOverlay, Button, Input, Stack, Icon, Text, Menu, MenuButton, MenuList, MenuItem, useColorModeValue, useDisclosure
+  Box, Flex, Card, ChakraProvider, useToast, Tooltip, AlertDialog, AlertDialogBody, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, AlertDialogOverlay, Button, Input, Stack, Icon, Text, Menu, MenuButton, MenuList, MenuItem, useColorModeValue, 
 } from '@chakra-ui/react';
 import { FcPlus, FcBusinessman, FcAbout, FcBusinesswoman  } from "react-icons/fc";
 import { Calendar, momentLocalizer, Views } from 'react-big-calendar';
@@ -20,9 +20,8 @@ moment.locale('fr');
 const localizer = momentLocalizer(moment);
 
 function TeamScheduleByMySelf({ onTeamSelect, ...rest }) {
-  const [selectedTeam, setSelectedTeam] = useState(null);
   const [allTeams, setAllTeams] = useState([]);
-  const [selectedTeamDetails, setSelectedTeamDetails] = useState(null);
+  const [ setSelectedTeamDetails] = useState(null);
   const [events, setEvents] = useState([]);
   const [selectedEvent] = useState(null);
   const [isAlertOpen, setIsAlertOpen] = useState(false);
@@ -182,7 +181,7 @@ function TeamScheduleByMySelf({ onTeamSelect, ...rest }) {
     };
 
     fetchData();
-  }, []);
+  }, [teams]);
 
 
   function adjustBrightness(col, amount) {
@@ -237,7 +236,6 @@ function TeamScheduleByMySelf({ onTeamSelect, ...rest }) {
     { bg: "whiteAlpha.100" }
   );
 
-  const { isOpen, onOpen } = useDisclosure();
   const [teamNames, setTeamNames] = useState([]);
 
   useEffect(() => {
