@@ -132,7 +132,6 @@ function TeamScheduleByMySelf({ onTeamSelect, ...rest }) {
     onClose();
   };
 
-  // Fetching team data and setting teams state
   const fetchTeams = async () => {
     try {
       const { data, error } = await supabase.from('vianney_teams').select('*');
@@ -142,7 +141,7 @@ function TeamScheduleByMySelf({ onTeamSelect, ...rest }) {
       }
       return data.map(team => ({
         id: team.id,
-        titel: team.nom,
+        titel: team.nom + ' ' + team.prenom, // Combining nom and prenom
         color: team.color
       }));
     } catch (error) {
@@ -150,6 +149,7 @@ function TeamScheduleByMySelf({ onTeamSelect, ...rest }) {
       return [];
     }
   };
+  
 
 
   useEffect(() => {
@@ -258,22 +258,20 @@ function TeamScheduleByMySelf({ onTeamSelect, ...rest }) {
 
   const handleTeamSelect = async (team) => {
     if (!team) {
-      // Handle "All Teams" selection
       setFilteredTeams(allTeams);
-      setResourceTitleAccessor('titel'); // reset to default title accessor
+      setResourceTitleAccessor('titel'); // Use combined nom and prenom for all teams
       setSelectedTeamId(null);
-      // ... other reset logic if needed ...
     } else if (!team.id) {
       console.error('Selected team ID is undefined or team object is invalid', team);
       return;
     } else {
-      // Handle specific team selection
       setSelectedTeamId(team.id);
       setSelectedTeamDetails(team);
       setFilteredTeams([team]);
-      setResourceTitleAccessor('nom'); // Update for specific team
+      setResourceTitleAccessor('titel'); // You can keep using titel for specific team as well
     }
   };
+  
 
   const messages = {
     allDay: 'Toute la journée',
