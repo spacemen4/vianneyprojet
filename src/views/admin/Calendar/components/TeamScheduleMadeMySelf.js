@@ -175,12 +175,12 @@ function TeamScheduleByMySelf({ onTeamSelect, ...rest }) {
         }));
         setEvents(formattedEvents);
         setAllTeams(teamsData);
-        setFilteredTeams(teamsData); 
+        setFilteredTeams(teamsData);
       }
-      };
-  
-      fetchData();
-    }, []);
+    };
+
+    fetchData();
+  }, []);
 
 
   function adjustBrightness(col, amount) {
@@ -255,18 +255,24 @@ function TeamScheduleByMySelf({ onTeamSelect, ...rest }) {
   }, []);
 
   const handleTeamSelect = async (team) => {
-    if (!team || !team.id) {
+    if (!team) {
+      // Handle "All Teams" selection
+      setFilteredTeams(allTeams);
+      setResourceTitleAccessor('titel'); // reset to default title accessor
+      setSelectedTeamId(null);
+      // ... other reset logic if needed ...
+    } else if (!team.id) {
       console.error('Selected team ID is undefined or team object is invalid', team);
       return;
+    } else {
+      // Handle specific team selection
+      setSelectedTeamId(team.id);
+      setSelectedTeamDetails(team);
+      setFilteredTeams([team]);
+      setResourceTitleAccessor('nom'); // Update for specific team
     }
-  
-    setSelectedTeamId(team.id);
-    setSelectedTeamDetails(team);
-    setFilteredTeams([team]); // set filteredTeams to only include the selected team
-    setResourceTitleAccessor('nom'); // Update this line to use 'nom' as the title accessor
-    // other logic...
   };
-  
+
   const messages = {
     allDay: 'Toute la journée',
     previous: 'Précédent',
@@ -354,6 +360,11 @@ function TeamScheduleByMySelf({ onTeamSelect, ...rest }) {
                   p="15px"
                   zIndex="1000"
                 >
+                  {/* Option for all teams */}
+                  <MenuItem onClick={() => handleTeamSelect(null)}>
+                    Toutes les équipes
+                  </MenuItem>
+                  {/* Existing team options */}
                   {teamNames.map((team, index) => (
                     <MenuItem
                       key={index}
@@ -361,7 +372,7 @@ function TeamScheduleByMySelf({ onTeamSelect, ...rest }) {
                       p="0px"
                       borderRadius="8px"
                       _hover={{ bg: "blue.100", color: "blue.600" }}
-                      onClick={() => handleTeamSelect(team)} // Handle team selection
+                      onClick={() => handleTeamSelect(team)}
                     >
                       <Flex align="center">
                         <Icon as={FcBusinessman} h="16px" w="16px" me="8px" />
@@ -380,7 +391,7 @@ function TeamScheduleByMySelf({ onTeamSelect, ...rest }) {
               </Tooltip>
             </Flex>
             <Calendar
-  key={selectedTeamId || 'all-teams'} // To force re-render on team selection
+              key={selectedTeamId || 'all-teams'} // To force re-render on team selection
   localizer={localizer}
   events={filteredEvents}
   startAccessor="start"
@@ -398,7 +409,7 @@ function TeamScheduleByMySelf({ onTeamSelect, ...rest }) {
 
 
 
-            // ... (other props)
+              // ... (other props)
             />
           </Box>
           <AlertDialog
