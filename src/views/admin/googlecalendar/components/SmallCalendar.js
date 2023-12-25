@@ -1,13 +1,13 @@
-import dayjs from "dayjs";
 import React, { useContext, useEffect, useState } from "react";
+import dayjs from "dayjs";
+import { MdChevronLeft, MdChevronRight } from "react-icons/md";
 import GlobalContext from "../context/GlobalContext";
 import { getMonth } from "../util";
 
 export default function SmallCalendar() {
-  const [currentMonthIdx, setCurrentMonthIdx] = useState(
-    dayjs().month()
-  );
+  const [currentMonthIdx, setCurrentMonthIdx] = useState(dayjs().month());
   const [currentMonth, setCurrentMonth] = useState(getMonth());
+  
   useEffect(() => {
     setCurrentMonth(getMonth(currentMonthIdx));
   }, [currentMonthIdx]);
@@ -26,9 +26,11 @@ export default function SmallCalendar() {
   function handlePrevMonth() {
     setCurrentMonthIdx(currentMonthIdx - 1);
   }
+
   function handleNextMonth() {
     setCurrentMonthIdx(currentMonthIdx + 1);
   }
+
   function getDayClass(day) {
     const format = "DD-MM-YY";
     const nowDay = dayjs().format(format);
@@ -41,25 +43,19 @@ export default function SmallCalendar() {
     } else {
       return "";
     }
-  }
+}
   return (
     <div className="mt-9">
       <header className="flex justify-between">
         <p className="text-gray-500 font-bold">
-          {dayjs(new Date(dayjs().year(), currentMonthIdx)).format(
-            "MMMM YYYY"
-          )}
+          {dayjs(new Date(dayjs().year(), currentMonthIdx)).format("MMMM YYYY")}
         </p>
         <div>
           <button onClick={handlePrevMonth}>
-            <span className="material-icons-outlined cursor-pointer text-gray-600 mx-2">
-              chevron_left
-            </span>
+            <MdChevronLeft className="cursor-pointer text-gray-600 mx-2" />
           </button>
           <button onClick={handleNextMonth}>
-            <span className="material-icons-outlined cursor-pointer text-gray-600 mx-2">
-              chevron_right
-            </span>
+            <MdChevronRight className="cursor-pointer text-gray-600 mx-2" />
           </button>
         </div>
       </header>
