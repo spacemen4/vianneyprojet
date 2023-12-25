@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Box, Flex, Card, ChakraProvider, useToast, Tooltip, AlertDialog, AlertDialogBody, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, AlertDialogOverlay, Button, Input, Stack
+  Box, Flex, Card, ChakraProvider, useToast, Tooltip, AlertDialog, AlertDialogBody, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, AlertDialogOverlay, Button, Input, Stack, Icon, Text, Menu, MenuButton, MenuList, MenuItem, useColorModeValue, useDisclosure
 } from '@chakra-ui/react';
-import { FcPlus } from "react-icons/fc";
+import { FcPlus, FcBusinessman, FcAbout } from "react-icons/fc";
 import { Calendar, momentLocalizer, Views } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import moment from 'moment';
 import 'moment/locale/fr'; // Import French locale
 import './CalendarStyles.css';
-import Menu from "components/menu/MainMenuTeamScheduleMadeMySelf";
 import AddActionForm from './AddActionForm';
 import { createClient } from '@supabase/supabase-js';
 
@@ -20,9 +19,10 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
 moment.locale('fr');
 const localizer = momentLocalizer(moment);
 
-function TeamScheduleByMySelf() {
+function TeamScheduleByMySelf({ onTeamSelect, ...rest }) {
+  const [selectedTeam, setSelectedTeam] = useState(null);
   const [events, setEvents] = useState([]);
-  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [selectedEvent] = useState(null);
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const onClose = () => setIsAlertOpen(false);
   const cancelRef = React.useRef();
@@ -31,14 +31,8 @@ function TeamScheduleByMySelf() {
   const [updatedEventStart, setUpdatedEventStart] = useState('');
   const [updatedEventEnd, setUpdatedEventEnd] = useState('');
   const [teams, setTeams] = useState([]);
-  const handleEventSelect = (event) => {
-    setSelectedEvent(event);
-    setIsAlertOpen(true);
-    setUpdatedEventName(event.titel);
-    setUpdatedEventStart(moment(event.start).format('YYYY-MM-DDTHH:mm'));
-    setUpdatedEventEnd(moment(event.end).format('YYYY-MM-DDTHH:mm'));
-    // Don't set isUpdateMode here; let the user choose
-  };
+  const [selectedTeamId, setSelectedTeamId] = useState(null);
+
 
   const deleteEvent = async () => {
     console.log('Selected event on delete:', selectedEvent); // Log the event when attempting to delete
@@ -131,17 +125,23 @@ function TeamScheduleByMySelf() {
 
 // Fetching team data and setting teams state
 const fetchTeams = async () => {
-  const { data, error } = await supabase.from('vianney_teams').select('*');
-  if (error) {
-    console.error('Error fetching teams:', error);
+  try {
+    const { data, error } = await supabase.from('vianney_teams').select('*');
+    if (error) {
+      console.error('Error fetching teams:', error);
+      return [];
+    }
+    return data.map(team => ({
+      id: team.id,
+      titel: team.nom,
+      color: team.color
+    }));
+  } catch (error) {
+    console.error('An error occurred while fetching teams:', error);
     return [];
   }
-  return data.map(team => ({
-    id: team.id,
-    titel: team.nom,
-    color: team.color // Assuming each team has a unique color
-  }));
 };
+
 
 useEffect(() => {
   const fetchData = async () => {
@@ -212,6 +212,40 @@ useEffect(() => {
       },
     };
   };
+  const iconColor = useColorModeValue("brand.500", "white");
+  const bgButton = useColorModeValue("secondaryGray.300", "whiteAlpha.100");
+  const bgHover = useColorModeValue(
+    { bg: "secondaryGray.400" },
+    { bg: "whiteAlpha.50" }
+  );
+  const bgFocus = useColorModeValue(
+    { bg: "secondaryGray.300" },
+    { bg: "whiteAlpha.100" }
+  );
+
+  const { isOpen, onOpen } = useDisclosure();
+  const [teamNames, setTeamNames] = useState([]);
+
+  useEffect(() => {
+    // Fetch both "nom" and "prenom" from the "vianney_teams" table
+    const fetchTeamNames = async () => {
+      const { data, error } = await supabase
+        .from('vianney_teams')
+        .select('nom, prenom');
+      if (error) {
+        console.error('Error fetching team names:', error);
+      } else {
+        setTeamNames(data.map(team => ({ nom: team.nom, prenom: team.prenom })));
+      }
+    };
+
+    fetchTeamNames();
+  }, []);
+
+  const handleTeamSelect = (team) => {
+    setSelectedTeamId(team.id); // Step 2: Set the selected team's ID
+    onClose();
+  };
 
   const messages = {
     allDay: 'Toute la journée',
@@ -251,52 +285,91 @@ useEffect(() => {
     // ... (add more formats as needed)
   };
 
-  const CustomEvent = ({ event }) => (
-    <Tooltip label={event.titel} aria-label="Event Tooltip">
-      <div style={eventStyleGetter(event).style}>
-        {event.titel}
-      </div>
-    </Tooltip>
-  );
+  const filteredEvents = selectedTeamId
+  ? events.filter((event) => event.resourceId === selectedTeamId)
+  : events;
 
-  return (
-    <Card
-      direction='column'
-      w='100%'
-      px='0px'
-      overflowX={{ sm: "scroll", lg: "hidden" }}>
-      <Box p={4}>
-        <ChakraProvider>
-          <Box p={4}>
-            <Flex px='25px' justify='space-between' mb='20px' align='center'>
-              <Menu />
+    return (
+      <Card
+        direction="column"
+        w="100%"
+        px="0px"
+        overflowX={{ sm: "scroll", lg: "hidden" }}
+      >
+        <Box p={4}>
+          <ChakraProvider>
+            <Box p={4}>
+              <Flex px="25px" justify="space-between" mb="20px" align="center">
+                <Menu isOpen={isOpen} onClose={onClose}>
+      <MenuButton
+        align="center"
+        justifyContent="center"
+        bg={bgButton}
+        _hover={bgHover}
+        _focus={bgFocus}
+        _active={bgFocus}
+        w="auto"
+        h="37px"
+        lineHeight="100%"
+        onClick={onOpen}
+        borderRadius="10px"
+        {...rest}
+      >
+        <Flex align="center">
+          <Icon as={FcAbout} color={iconColor} w="24px" h="24px" />
+          <Text ml="4px">Sélectionner</Text>
+        </Flex>
+      </MenuButton>
+      <MenuList
+        minW="unset"
+        maxW="150px !important"
+        border="transparent"
+        borderRadius="20px"
+        p="15px"
+        zIndex="1000"
+      >
+        {teamNames.map((team, index) => (
+          <MenuItem
+            key={index}
+            transition="0.2s linear"
+            p="0px"
+            borderRadius="8px"
+            _hover={{ bg: "blue.100", color: "blue.600" }}
+            onClick={() => handleTeamSelect(team)} // Handle team selection
+          >
+            <Flex align="center">
+              <Icon as={FcBusinessman} h="16px" w="16px" me="8px" />
+              <Text fontSize="sm" fontWeight="400">
+                {team.nom} {team.prenom}
+              </Text>
+            </Flex>
+          </MenuItem>
+        ))}
+      </MenuList>
+      </Menu>
               <Tooltip label="Cliquer pour ajouter une disponibilité" hasArrow>
-                <Box position='absolute' top='15px' right='15px' cursor='pointer'>
-                  <FcPlus size="24px" onClick={handleAddActionClick}/>
+                <Box position="absolute" top="15px" right="15px" cursor="pointer">
+                  <FcPlus size="24px" onClick={handleAddActionClick} />
                 </Box>
               </Tooltip>
             </Flex>
-          <Calendar
-              localizer={localizer}
-              events={events}
-              resources={teams}
-              resourceIdAccessor="id"
-              resourceTitleAccessor="titel"
-              formats={formats}
-              defaultView={Views.DAY}
-              views={['day', 'week', 'month', 'agenda']}
-              startAccessor="start"
-              endAccessor="end"
-              eventPropGetter={eventStyleGetter}
-              messages={messages}
+            <Calendar
+        localizer={localizer}
+        events={filteredEvents} // Use filtered events
+        resources={teams}
+        resourceIdAccessor="id"
+        resourceTitleAccessor="titel"
+        formats={formats}
+        defaultView={Views.DAY}
+        views={['day', 'week', 'month', 'agenda']}
+        startAccessor="start"
+        endAccessor="end"
+        eventPropGetter={eventStyleGetter}
+        messages={messages}
 
-              onSelectEvent={handleEventSelect}
-              components={{
-                event: CustomEvent, // Use Custom Event Component
-              }}
-            />
-
-        </Box>
+            // ... (other props)
+          />
+          </Box>
         <AlertDialog
             isOpen={isAlertOpen}
             leastDestructiveRef={cancelRef}
@@ -344,10 +417,10 @@ useEffect(() => {
               </AlertDialogContent>
             </AlertDialogOverlay>
           </AlertDialog>
-      </ChakraProvider>
-    </Box>
-  </Card>
-);
+        </ChakraProvider>
+      </Box>
+    </Card>
+  );
 }
 
 export default TeamScheduleByMySelf;
