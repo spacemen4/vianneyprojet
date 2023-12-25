@@ -23,7 +23,6 @@ function TeamScheduleByMySelf({ onTeamSelect, ...rest }) {
   const [selectedTeam, setSelectedTeam] = useState(null);
   const [allTeams, setAllTeams] = useState([]);
   const [selectedTeamDetails, setSelectedTeamDetails] = useState(null);
-  const [resourceTitleAccessor, setResourceTitleAccessor] = useState('nom');
   const [events, setEvents] = useState([]);
   const [selectedEvent] = useState(null);
   const [isAlertOpen, setIsAlertOpen] = useState(false);
@@ -36,6 +35,7 @@ function TeamScheduleByMySelf({ onTeamSelect, ...rest }) {
   const [teams, setTeams] = useState([]);
   const [selectedTeamId, setSelectedTeamId] = useState(null);
   const [filteredTeams, setFilteredTeams] = useState([]);
+  const [resourceTitleAccessor, setResourceTitleAccessor] = useState('titel');
 
   const deleteEvent = async () => {
     console.log('Selected event on delete:', selectedEvent); // Log the event when attempting to delete
@@ -153,10 +153,14 @@ function TeamScheduleByMySelf({ onTeamSelect, ...rest }) {
 
 
   useEffect(() => {
-    // Step 2: Move data fetching code or side effects here
     const fetchData = async () => {
       const teamsData = await fetchTeams();
-      setTeams(teamsData);
+      if (teamsData.length > 0) {
+        setTeams(teamsData);
+        setAllTeams(teamsData);
+        setFilteredTeams(teamsData); // Display all teams initially
+        setResourceTitleAccessor('titel'); // Set accessor for all teams view
+      }
 
       const { data: eventsData, error } = await supabase
         .from('team_action_view_rendering')
@@ -174,8 +178,6 @@ function TeamScheduleByMySelf({ onTeamSelect, ...rest }) {
           color: teamsData.find(t => t.id === action.team_id)?.color || 'lightgrey'
         }));
         setEvents(formattedEvents);
-        setAllTeams(teamsData);
-        setFilteredTeams(teamsData);
       }
     };
 
