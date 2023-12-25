@@ -394,24 +394,24 @@ function TeamScheduleByMySelf({ onTeamSelect, ...rest }) {
             </Flex>
             <Calendar
               key={selectedTeamId || 'all-teams'} // To force re-render on team selection
-  localizer={localizer}
-  events={filteredEvents}
-  startAccessor="start"
-  endAccessor="end"
-  eventPropGetter={eventStyleGetter}
-  messages={messages}
-  resources={filteredTeams}
-  resourceIdAccessor="id"
-  resourceTitleAccessor={resourceTitleAccessor} // Use the updated accessor
-  formats={formats}
-  defaultView={Views.DAY}
-  views={['day', 'week', 'month', 'agenda']}
+              localizer={localizer}
+              events={filteredEvents}
+              startAccessor="start"
+              endAccessor="end"
+              eventPropGetter={eventStyleGetter}
+              messages={messages}
+              resources={filteredTeams}
+              resourceIdAccessor="id"
+              resourceTitleAccessor={resourceTitleAccessor} // Use the updated accessor
+              formats={formats}
+              defaultView={Views.DAY}
+              views={['day', 'week', 'month', 'agenda']}
 
 
 
 
 
-              // ... (other props)
+            // ... (other props)
             />
           </Box>
           <AlertDialog
