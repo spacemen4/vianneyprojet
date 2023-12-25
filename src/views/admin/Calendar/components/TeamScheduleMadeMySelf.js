@@ -259,16 +259,19 @@ function TeamScheduleByMySelf({ onTeamSelect, ...rest }) {
   const handleTeamSelect = async (team) => {
     if (!team) {
       setFilteredTeams(allTeams);
-      setResourceTitleAccessor('titel'); // Use combined nom and prenom for all teams
+      setResourceTitleAccessor('titel'); // Use 'titel' for all teams
       setSelectedTeamId(null);
     } else if (!team.id) {
       console.error('Selected team ID is undefined or team object is invalid', team);
       return;
     } else {
-      setSelectedTeamId(team.id);
-      setSelectedTeamDetails(team);
-      setFilteredTeams([team]);
-      setResourceTitleAccessor('titel'); // You can keep using titel for specific team as well
+      const selectedTeamData = allTeams.find(t => t.id === team.id);
+      if (selectedTeamData) {
+        setSelectedTeamId(team.id);
+        setSelectedTeamDetails(team);
+        setFilteredTeams([selectedTeamData]); // Use the correct team data with 'titel'
+        setResourceTitleAccessor('titel'); // Continue using 'titel'
+      }
     }
   };
   
