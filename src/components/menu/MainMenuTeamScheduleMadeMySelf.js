@@ -10,7 +10,7 @@ import {
   useDisclosure,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { MdOutlineMoreHoriz } from "react-icons/md";
+import { FcAbout } from "react-icons/fc";
 import { FcBusinessman } from "react-icons/fc";
 import { createClient } from '@supabase/supabase-js';
 
@@ -60,6 +60,7 @@ export default function Banner(props) {
         _hover={bgHover}
         _focus={bgFocus}
         _active={bgFocus}
+        w="auto"
         w="37px"
         h="37px"
         lineHeight="100%"
@@ -67,7 +68,10 @@ export default function Banner(props) {
         borderRadius="10px"
         {...rest}
       >
-        <Icon as={MdOutlineMoreHoriz} color={iconColor} w="24px" h="24px" />
+        <Flex align="center">
+          <Icon as={FcAbout} color={iconColor} w="24px" h="24px" />
+          <Text ml="4px">Sélectionner</Text> {/* Added margin-left to separate icon and text */}
+        </Flex>
       </MenuButton>
       <MenuList
         minW="unset"
