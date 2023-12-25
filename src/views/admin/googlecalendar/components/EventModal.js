@@ -75,7 +75,7 @@ export default function EventModal() {
               onChange={(e) => setTitle(e.target.value)}
             />
             <MdSchedule className="text-gray-400" />
-            <p>{daySelected.format("dddd, DD MMMM YYYY")}</p>
+            <p>{daySelected.format("le DD/MM/YYYY")}</p>
             <MdSegment className="text-gray-400" />
             <input
               type="text"
