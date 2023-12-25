@@ -21,6 +21,9 @@ const localizer = momentLocalizer(moment);
 
 function TeamScheduleByMySelf({ onTeamSelect, ...rest }) {
   const [selectedTeam, setSelectedTeam] = useState(null);
+  const [allTeams, setAllTeams] = useState([]);
+  const [selectedTeamDetails, setSelectedTeamDetails] = useState(null);
+  const [resourceTitleAccessor, setResourceTitleAccessor] = useState('nom');
   const [events, setEvents] = useState([]);
   const [selectedEvent] = useState(null);
   const [isAlertOpen, setIsAlertOpen] = useState(false);
@@ -32,7 +35,7 @@ function TeamScheduleByMySelf({ onTeamSelect, ...rest }) {
   const [updatedEventEnd, setUpdatedEventEnd] = useState('');
   const [teams, setTeams] = useState([]);
   const [selectedTeamId, setSelectedTeamId] = useState(null);
-
+  const [filteredTeams, setFilteredTeams] = useState([]);
 
   const deleteEvent = async () => {
     console.log('Selected event on delete:', selectedEvent); // Log the event when attempting to delete
@@ -50,8 +53,14 @@ function TeamScheduleByMySelf({ onTeamSelect, ...rest }) {
 
     const { error } = await supabase
       .from('vianney_actions')
-      .delete()
+      .update({
+        action_name: updatedEventName,
+        starting_date: updatedEventStart,
+        ending_date: updatedEventEnd,
+        last_updated: new Date() // update the last updated time
+      })
       .match({ id: selectedEvent.id });
+
 
     if (error) {
       console.log(messages.errorEventDelete); // Log the error message
@@ -85,7 +94,7 @@ function TeamScheduleByMySelf({ onTeamSelect, ...rest }) {
       position: "top", // Center the toast at the top of the screen
     });
   };
-  
+
 
   const updateEvent = async () => {
     // Validation can be added here for updated event details
@@ -123,30 +132,31 @@ function TeamScheduleByMySelf({ onTeamSelect, ...rest }) {
     onClose();
   };
 
-// Fetching team data and setting teams state
-const fetchTeams = async () => {
-  try {
-    const { data, error } = await supabase.from('vianney_teams').select('*');
-    if (error) {
-      console.error('Error fetching teams:', error);
+  // Fetching team data and setting teams state
+  const fetchTeams = async () => {
+    try {
+      const { data, error } = await supabase.from('vianney_teams').select('*');
+      if (error) {
+        console.error('Error fetching teams:', error);
+        return [];
+      }
+      return data.map(team => ({
+        id: team.id,
+        titel: team.nom,
+        color: team.color
+      }));
+    } catch (error) {
+      console.error('An error occurred while fetching teams:', error);
       return [];
     }
-    return data.map(team => ({
-      id: team.id,
-      titel: team.nom,
-      color: team.color
-    }));
-  } catch (error) {
-    console.error('An error occurred while fetching teams:', error);
-    return [];
-  }
-};
+  };
 
 
-useEffect(() => {
-  const fetchData = async () => {
-    const teamsData = await fetchTeams();
-    setTeams(teamsData);
+  useEffect(() => {
+    // Step 2: Move data fetching code or side effects here
+    const fetchData = async () => {
+      const teamsData = await fetchTeams();
+      setTeams(teamsData);
 
       const { data: eventsData, error } = await supabase
         .from('team_action_view_rendering')
@@ -164,11 +174,13 @@ useEffect(() => {
           color: teamsData.find(t => t.id === action.team_id)?.color || 'lightgrey'
         }));
         setEvents(formattedEvents);
+        setAllTeams(teamsData);
+        setFilteredTeams(teamsData); 
       }
-    };
-
-    fetchData();
-  }, []);
+      };
+  
+      fetchData();
+    }, []);
 
 
   function adjustBrightness(col, amount) {
@@ -231,22 +243,30 @@ useEffect(() => {
     const fetchTeamNames = async () => {
       const { data, error } = await supabase
         .from('vianney_teams')
-        .select('nom, prenom');
+        .select('nom, prenom, id');
       if (error) {
         console.error('Error fetching team names:', error);
       } else {
-        setTeamNames(data.map(team => ({ nom: team.nom, prenom: team.prenom })));
+        setTeamNames(data.map(team => ({ id: team.id, nom: team.nom, prenom: team.prenom })));
       }
     };
 
     fetchTeamNames();
   }, []);
 
-  const handleTeamSelect = (team) => {
-    setSelectedTeamId(team.id); // Step 2: Set the selected team's ID
-    onClose();
+  const handleTeamSelect = async (team) => {
+    if (!team || !team.id) {
+      console.error('Selected team ID is undefined or team object is invalid', team);
+      return;
+    }
+  
+    setSelectedTeamId(team.id);
+    setSelectedTeamDetails(team);
+    setFilteredTeams([team]); // set filteredTeams to only include the selected team
+    setResourceTitleAccessor('nom'); // Update this line to use 'nom' as the title accessor
+    // other logic...
   };
-
+  
   const messages = {
     allDay: 'Toute la journée',
     previous: 'Précédent',
@@ -285,68 +305,74 @@ useEffect(() => {
     // ... (add more formats as needed)
   };
 
-  const filteredEvents = selectedTeamId
-  ? events.filter((event) => event.resourceId === selectedTeamId)
-  : events;
+  // Logging for debugging
+  console.log("All Events:", events);
+  console.log("Selected Team ID:", selectedTeamId);
 
-    return (
-      <Card
-        direction="column"
-        w="100%"
-        px="0px"
-        overflowX={{ sm: "scroll", lg: "hidden" }}
-      >
-        <Box p={4}>
-          <ChakraProvider>
-            <Box p={4}>
-              <Flex px="25px" justify="space-between" mb="20px" align="center">
-                <Menu isOpen={isOpen} onClose={onClose}>
-      <MenuButton
-        align="center"
-        justifyContent="center"
-        bg={bgButton}
-        _hover={bgHover}
-        _focus={bgFocus}
-        _active={bgFocus}
-        w="auto"
-        h="37px"
-        lineHeight="100%"
-        onClick={onOpen}
-        borderRadius="10px"
-        {...rest}
-      >
-        <Flex align="center">
-          <Icon as={FcAbout} color={iconColor} w="24px" h="24px" />
-          <Text ml="4px">Sélectionner</Text>
-        </Flex>
-      </MenuButton>
-      <MenuList
-        minW="unset"
-        maxW="150px !important"
-        border="transparent"
-        borderRadius="20px"
-        p="15px"
-        zIndex="1000"
-      >
-        {teamNames.map((team, index) => (
-          <MenuItem
-            key={index}
-            transition="0.2s linear"
-            p="0px"
-            borderRadius="8px"
-            _hover={{ bg: "blue.100", color: "blue.600" }}
-            onClick={() => handleTeamSelect(team)} // Handle team selection
-          >
-            <Flex align="center">
-              <Icon as={FcBusinessman} h="16px" w="16px" me="8px" />
-              <Text fontSize="sm" fontWeight="400">
-                {team.nom} {team.prenom}
-              </Text>
-            </Flex>
-          </MenuItem>
-        ))}
-      </MenuList>
-      </Menu>
+  const filteredEvents = selectedTeamId
+    ? events.filter((event) => event.resourceId === selectedTeamId)
+    : events;
+
+  console.log("Filtered Events:", filteredEvents);
+
+  return (
+    <Card
+      direction="column"
+      w="100%"
+      px="0px"
+      overflowX={{ sm: "scroll", lg: "hidden" }}
+    >
+      <Box p={4}>
+        <ChakraProvider>
+          <Box p={4}>
+            <Flex px="25px" justify="space-between" mb="20px" align="center">
+              <Menu isOpen={isOpen} onClose={onClose}>
+                <MenuButton
+                  align="center"
+                  justifyContent="center"
+                  bg={bgButton}
+                  _hover={bgHover}
+                  _focus={bgFocus}
+                  _active={bgFocus}
+                  w="auto"
+                  h="37px"
+                  lineHeight="100%"
+                  onClick={onOpen}
+                  borderRadius="10px"
+                  {...rest}
+                >
+                  <Flex align="center">
+                    <Icon as={FcAbout} color={iconColor} w="24px" h="24px" />
+                    <Text ml="4px">Sélectionner</Text>
+                  </Flex>
+                </MenuButton>
+                <MenuList
+                  minW="unset"
+                  maxW="150px !important"
+                  border="transparent"
+                  borderRadius="20px"
+                  p="15px"
+                  zIndex="1000"
+                >
+                  {teamNames.map((team, index) => (
+                    <MenuItem
+                      key={index}
+                      transition="0.2s linear"
+                      p="0px"
+                      borderRadius="8px"
+                      _hover={{ bg: "blue.100", color: "blue.600" }}
+                      onClick={() => handleTeamSelect(team)} // Handle team selection
+                    >
+                      <Flex align="center">
+                        <Icon as={FcBusinessman} h="16px" w="16px" me="8px" />
+                        <Text fontSize="sm" fontWeight="400">
+                          {team.nom} {team.prenom}
+                        </Text>
+                      </Flex>
+                    </MenuItem>
+                  ))}
+                </MenuList>
+              </Menu>
               <Tooltip label="Cliquer pour ajouter une disponibilité" hasArrow>
                 <Box position="absolute" top="15px" right="15px" cursor="pointer">
                   <FcPlus size="24px" onClick={handleAddActionClick} />
@@ -354,23 +380,28 @@ useEffect(() => {
               </Tooltip>
             </Flex>
             <Calendar
-        localizer={localizer}
-        events={filteredEvents} // Use filtered events
-        resources={teams}
-        resourceIdAccessor="id"
-        resourceTitleAccessor="titel"
-        formats={formats}
-        defaultView={Views.DAY}
-        views={['day', 'week', 'month', 'agenda']}
-        startAccessor="start"
-        endAccessor="end"
-        eventPropGetter={eventStyleGetter}
-        messages={messages}
+  key={selectedTeamId || 'all-teams'} // To force re-render on team selection
+  localizer={localizer}
+  events={filteredEvents}
+  startAccessor="start"
+  endAccessor="end"
+  eventPropGetter={eventStyleGetter}
+  messages={messages}
+  resources={filteredTeams}
+  resourceIdAccessor="id"
+  resourceTitleAccessor={resourceTitleAccessor} // Use the updated accessor
+  formats={formats}
+  defaultView={Views.DAY}
+  views={['day', 'week', 'month', 'agenda']}
+
+
+
+
 
             // ... (other props)
-          />
+            />
           </Box>
-        <AlertDialog
+          <AlertDialog
             isOpen={isAlertOpen}
             leastDestructiveRef={cancelRef}
             onClose={onClose}
