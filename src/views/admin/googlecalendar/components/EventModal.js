@@ -51,6 +51,24 @@ const EventModal = ({ isOpen, onClose }) => {
     }
   }, [selectedEvent]);
 
+  useEffect(() => {
+    const fetchTeams = async () => {
+      try {
+        const { data, error } = await supabase.from('vianney_teams').select('*');
+        if (error) {
+          console.error('Error fetching teams:', error);
+        } else {
+          setTeams(data);
+        }
+      } catch (error) {
+        console.error('An error occurred while fetching teams:', error);
+      }
+    };
+  
+    fetchTeams();
+  }, []);
+  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
