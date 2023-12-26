@@ -39,6 +39,7 @@ export default function Day({ day, rowIdx }) {
         </Text>
       </Flex>
       <Flex
+        flexDir="column"
         flex={1}
         cursor="pointer"
         onClick={() => {
@@ -49,14 +50,17 @@ export default function Day({ day, rowIdx }) {
         {dayEvents.map((evt, idx) => (
           <Box
             key={idx}
-            onClick={() => setSelectedEvent(evt)}
+            onClick={(e) => {
+              e.stopPropagation(); // Prevent triggering the day's onClick
+              setSelectedEvent(evt);
+            }}
             bg={`${evt.label}.200`}
             p={1}
-            mr={3}
             color="gray.600"
             fontSize="sm"
             borderRadius="md"
             mb={1}
+            width="100%" // Ensure full width
             isTruncated
           >
             {evt.title}
