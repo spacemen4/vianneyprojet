@@ -1,24 +1,28 @@
-import React, { useContext } from "react";
-import GlobalContext from "../context/GlobalContext";
+import React, { useContext } from 'react';
+import GlobalContext from '../context/GlobalContext';
+import { Checkbox, Text, VStack, Box } from '@chakra-ui/react';
 
 export default function Labels() {
   const { labels, updateLabel } = useContext(GlobalContext);
+
   return (
-    <React.Fragment>
-      <p className="text-gray-500 font-bold mt-10">Label</p>
-      {labels.map(({ label: lbl, checked }, idx) => (
-        <label key={idx} className="items-center mt-3 block">
-          <input
-            type="checkbox"
-            checked={checked}
-            onChange={() =>
-              updateLabel({ label: lbl, checked: !checked })
-            }
-            className={`form-checkbox h-5 w-5 text-${lbl}-400 rounded focus:ring-0 cursor-pointer`}
-          />
-          <span className="ml-2 text-gray-700 capitalize">{lbl}</span>
-        </label>
-      ))}
-    </React.Fragment>
+    <Box mt={10}>
+      <Text color="gray.500" fontWeight="bold">Label</Text>
+      <VStack align="start" mt={3}>
+        {labels.map(({ label: lbl, checked }, idx) => (
+          <Checkbox
+            key={idx}
+            isChecked={checked}
+            onChange={() => updateLabel({ label: lbl, checked: !checked })}
+            colorScheme={lbl} // Assuming you have defined these color schemes in your Chakra UI theme
+            size="lg"
+          >
+            <Text ml={2} color="gray.700" textTransform="capitalize">
+              {lbl}
+            </Text>
+          </Checkbox>
+        ))}
+      </VStack>
+    </Box>
   );
 }

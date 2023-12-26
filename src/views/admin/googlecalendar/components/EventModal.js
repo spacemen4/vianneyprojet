@@ -1,28 +1,56 @@
-import React, { useContext, useState } from "react";
-import { MdClose, MdDelete, MdDragHandle, MdSchedule, MdSegment, MdBookmarkBorder, MdCheck } from "react-icons/md";
+import React, { useContext, useState } from 'react';
 import dayjs from 'dayjs';
-import 'dayjs/locale/fr'; // Import French locale
-import GlobalContext from "../context/GlobalContext";
+import 'dayjs/locale/fr';
+import GlobalContext from '../context/GlobalContext';
+import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  ModalFooter,
+  Button,
+  FormControl,
+  FormLabel,
+  Input,
+  Box,
+  HStack,
+  Icon,
+} from '@chakra-ui/react';
+import {
+  MdDelete,
+  MdSchedule,
+  MdSegment,
+  MdBookmarkBorder,
+  MdCheck,
+} from 'react-icons/md';
 
-const labelsClasses = [
-  "indigo",
-  "gray",
-  "green",
-  "blue",
-  "red",
-  "purple",
-];
+const labelsColors = {
+  indigo: 'indigo.500',
+  gray: 'gray.500',
+  green: 'green.500',
+  blue: 'blue.500',
+  red: 'red.500',
+  purple: 'purple.500',
+};
 
 export default function EventModal() {
-  const { setShowEventModal, daySelected, dispatchCalEvent, selectedEvent } = useContext(GlobalContext);
+  const {
+    setShowEventModal,
+    daySelected,
+    dispatchCalEvent,
+    selectedEvent,
+  } = useContext(GlobalContext);
 
-  const [title, setTitle] = useState(selectedEvent ? selectedEvent.title : "");
-  const [description, setDescription] = useState(selectedEvent ? selectedEvent.description : "");
+  const [title, setTitle] = useState(selectedEvent ? selectedEvent.title : '');
+  const [description, setDescription] = useState(
+    selectedEvent ? selectedEvent.description : ''
+  );
   const [selectedLabel, setSelectedLabel] = useState(
-    selectedEvent ? labelsClasses.find((lbl) => lbl === selectedEvent.label) : labelsClasses[0]
+    selectedEvent ? selectedEvent.label : 'indigo'
   );
 
-  // Set dayjs locale to French
   dayjs.locale('fr');
 
   function handleSubmit(e) {
@@ -35,83 +63,86 @@ export default function EventModal() {
       id: selectedEvent ? selectedEvent.id : Date.now(),
     };
     if (selectedEvent) {
-      dispatchCalEvent({ type: "update", payload: calendarEvent });
+      dispatchCalEvent({ type: 'update', payload: calendarEvent });
     } else {
-      dispatchCalEvent({ type: "push", payload: calendarEvent });
+      dispatchCalEvent({ type: 'push', payload: calendarEvent });
     }
     setShowEventModal(false);
   }
 
   return (
-    <div className="h-screen w-full fixed left-0 top-0 flex justify-center items-center">
-      <form className="bg-white rounded-lg shadow-2xl w-1/4">
-        <header className="bg-gray-100 px-4 py-2 flex justify-between items-center">
-          <MdDragHandle className="text-gray-400" />
-          <div>
-            {selectedEvent && (
-              <MdDelete
-                onClick={() => {
-                  dispatchCalEvent({ type: "delete", payload: selectedEvent });
-                  setShowEventModal(false);
-                }}
-                className="text-gray-400 cursor-pointer"
-              />
-            )}
-            <button onClick={() => setShowEventModal(false)}>
-              <MdClose className="text-gray-400" />
-            </button>
-          </div>
-        </header>
-        <div className="p-3">
-          <div className="grid grid-cols-1/5 items-end gap-y-7">
-            <div></div>
-            <input
-              type="text"
-              name="title"
-              placeholder="Ajouter un titre"
+    <Modal isOpen={true} onClose={() => setShowEventModal(false)}>
+      <ModalOverlay />
+      <ModalContent>
+        <ModalHeader>
+          {selectedEvent ? 'Edit Event' : 'Create Event'}
+          {selectedEvent && (
+            <Icon
+              as={MdDelete}
+              ml={2}
+              cursor="pointer"
+              onClick={() => {
+                dispatchCalEvent({ type: 'delete', payload: selectedEvent });
+                setShowEventModal(false);
+              }}
+            />
+          )}
+        </ModalHeader>
+        <ModalCloseButton />
+        <ModalBody>
+          <FormControl id="event-title" isRequired>
+            <FormLabel>Title</FormLabel>
+            <Input
+              placeholder="Add Title"
               value={title}
-              required
-              className="pt-3 border-0 text-gray-600 text-xl font-semibold pb-2 w-full border-b-2 border-gray-200 focus:outline-none focus:ring-0 focus:border-blue-500"
               onChange={(e) => setTitle(e.target.value)}
             />
-            <MdSchedule className="text-gray-400" />
-            <p>{daySelected.format("le DD/MM/YYYY")}</p>
-            <MdSegment className="text-gray-400" />
-            <input
-              type="text"
-              name="description"
-              placeholder="Ajouter une description"
+          </FormControl>
+          <FormControl id="event-date" mt={4}>
+            <FormLabel>Date</FormLabel>
+            <Box>{daySelected.format('DD/MM/YYYY')}</Box>
+          </FormControl>
+          <FormControl id="event-description" mt={4}>
+            <FormLabel>Description</FormLabel>
+            <Input
+              placeholder="Add Description"
               value={description}
-              required
-              className="pt-3 border-0 text-gray-600 pb-2 w-full border-b-2 border-gray-200 focus:outline-none focus:ring-0 focus:border-blue-500"
               onChange={(e) => setDescription(e.target.value)}
             />
-            <MdBookmarkBorder className="text-gray-400" />
-            <div className="flex gap-x-2">
-              {labelsClasses.map((lblClass, i) => (
-                <span
-                  key={i}
-                  onClick={() => setSelectedLabel(lblClass)}
-                  className={`bg-${lblClass}-500 w-6 h-6 rounded-full flex items-center justify-center cursor-pointer`}
+          </FormControl>
+          <FormControl id="event-label" mt={4}>
+            <FormLabel>Label</FormLabel>
+            <HStack>
+              {Object.keys(labelsColors).map((label) => (
+                <Box
+                  key={label}
+                  bg={labelsColors[label]}
+                  w={6}
+                  h={6}
+                  borderRadius="full"
+                  cursor="pointer"
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                  onClick={() => setSelectedLabel(label)}
                 >
-                  {selectedLabel === lblClass && (
-                    <MdCheck className="text-white text-sm" />
+                  {selectedLabel === label && (
+                    <Icon as={MdCheck} color="white" />
                   )}
-                </span>
+                </Box>
               ))}
-            </div>
-          </div>
-        </div>
-        <footer className="flex justify-end border-t p-3 mt-5">
-          <button
-            type="submit"
-            onClick={handleSubmit}
-            className="bg-blue-500 hover:bg-blue-600 px-6 py-2 rounded text-white"
-          >
-            Sauvegarder
-          </button>
-        </footer>
-      </form>
-    </div>
+            </HStack>
+          </FormControl>
+        </ModalBody>
+        <ModalFooter>
+          <Button colorScheme="blue" mr={3} onClick={handleSubmit}>
+            Save
+          </Button>
+          <Button variant="ghost" onClick={() => setShowEventModal(false)}>
+            Cancel
+          </Button>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
   );
 }

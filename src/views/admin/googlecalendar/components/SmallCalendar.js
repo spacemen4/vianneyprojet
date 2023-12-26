@@ -3,6 +3,7 @@ import dayjs from "dayjs";
 import { MdChevronLeft, MdChevronRight } from "react-icons/md";
 import GlobalContext from "../context/GlobalContext";
 import { getMonth } from "../util";
+import { Box, Text, Flex, Button, Grid, GridItem } from "@chakra-ui/react";
 
 export default function SmallCalendar() {
   const [currentMonthIdx, setCurrentMonthIdx] = useState(dayjs().month());
@@ -12,12 +13,7 @@ export default function SmallCalendar() {
     setCurrentMonth(getMonth(currentMonthIdx));
   }, [currentMonthIdx]);
 
-  const {
-    monthIndex,
-    setSmallCalendarMonth,
-    setDaySelected,
-    daySelected,
-  } = useContext(GlobalContext);
+  const { monthIndex, setSmallCalendarMonth, setDaySelected, daySelected } = useContext(GlobalContext);
 
   useEffect(() => {
     setCurrentMonthIdx(monthIndex);
@@ -37,51 +33,54 @@ export default function SmallCalendar() {
     const currDay = day.format(format);
     const slcDay = daySelected && daySelected.format(format);
     if (nowDay === currDay) {
-      return "bg-blue-500 rounded-full text-white";
+      return { bg: "blue.500", color: "white", borderRadius: "full" };
     } else if (currDay === slcDay) {
-      return "bg-blue-100 rounded-full text-blue-600 font-bold";
+      return { bg: "blue.100", color: "blue.600", fontWeight: "bold", borderRadius: "full" };
     } else {
-      return "";
+      return {};
     }
-}
+  }
+
   return (
-    <div className="mt-9">
-      <header className="flex justify-between">
-        <p className="text-gray-500 font-bold">
+    <Box p={1} m={1} >
+      <Flex justifyContent="between">
+        <Text color="gray.500" fontWeight="bold">
           {dayjs(new Date(dayjs().year(), currentMonthIdx)).format("MMMM YYYY")}
-        </p>
-        <div>
-          <button onClick={handlePrevMonth}>
+        </Text>
+        <Box>
+          <Button onClick={handlePrevMonth}>
             <MdChevronLeft className="cursor-pointer text-gray-600 mx-2" />
-          </button>
-          <button onClick={handleNextMonth}>
+          </Button>
+          <Button onClick={handleNextMonth}>
             <MdChevronRight className="cursor-pointer text-gray-600 mx-2" />
-          </button>
-        </div>
-      </header>
-      <div className="grid grid-cols-7 grid-rows-6">
+          </Button>
+        </Box>
+      </Flex>
+      <Grid templateColumns="repeat(7, 1fr)" templateRows="repeat(6, 1fr)">
         {currentMonth[0].map((day, i) => (
-          <span key={i} className="text-sm py-1 text-center">
-            {day.format("dd").charAt(0)}
-          </span>
+          <GridItem key={i} textAlign="center">
+            <Text fontSize="sm" py={1}>{day.format("dd").charAt(0)}</Text>
+          </GridItem>
         ))}
         {currentMonth.map((row, i) => (
           <React.Fragment key={i}>
             {row.map((day, idx) => (
-              <button
+              <Button
                 key={idx}
                 onClick={() => {
                   setSmallCalendarMonth(currentMonthIdx);
                   setDaySelected(day);
                 }}
-                className={`py-1 w-full ${getDayClass(day)}`}
+                {...getDayClass(day)}
+                w="full"
+                py={1}
               >
-                <span className="text-sm">{day.format("D")}</span>
-              </button>
+                <Text fontSize="sm">{day.format("D")}</Text>
+              </Button>
             ))}
           </React.Fragment>
         ))}
-      </div>
-    </div>
+      </Grid>
+    </Box>
   );
 }
