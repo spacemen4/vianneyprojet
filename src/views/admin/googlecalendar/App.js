@@ -7,7 +7,8 @@ import Month from "./components/Month";
 import GlobalContext from "./context/GlobalContext";
 import EventModal from "./components/EventModal";
 import dayjs from 'dayjs';
-import 'dayjs/locale/fr'; 
+import 'dayjs/locale/fr';
+import CreateEventButton from "./components/CreateEventButton";
 
 function App() {
   const [currenMonth, setCurrentMonth] = useState(getMonth());
@@ -23,6 +24,7 @@ function App() {
       {showEventModal && <EventModal />}
       <Flex direction="column" height="100vh">
         <CalendarHeader />
+        
         <Flex
           className="main-container"
           flex={1}
@@ -30,10 +32,12 @@ function App() {
         >
           <Box
             className="sidebar"
-            display={["none", "block"]}
             width={["full", "350px"]}
           >
-            <Sidebar />
+            <CreateEventButton />        
+            <Box display={["none", "block"]}>
+              <Sidebar />
+            </Box>
           </Box>
           <Month month={currenMonth} />
         </Flex>

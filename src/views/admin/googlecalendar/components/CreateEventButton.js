@@ -10,7 +10,7 @@ export default function CreateEventButton() {
     <div>
       <Button
         onClick={() => setAddActionModalOpen(true)}
-        p={2}
+        p={1}
         borderRadius="full"
         display="flex"
         alignItems="center"

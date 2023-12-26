@@ -4,7 +4,7 @@ import { Grid } from "@chakra-ui/react";
 
 export default function Month({ month }) {
   return (
-    <Grid flex="1" templateColumns="repeat(7, 1fr)" templateRows="repeat(5, 1fr)">
+    <Grid flex="1" templateColumns="repeat(7, 1fr)" templateRows="repeat(5, 1fr)" p={1}>
       {month.map((row, i) => (
         <React.Fragment key={i}>
           {row.map((day, idx) => (

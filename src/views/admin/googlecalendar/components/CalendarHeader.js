@@ -27,7 +27,7 @@ export default function CalendarHeader() {
   return (
     <Flex
       alignItems="center"
-      p={4}
+      p={1}
       flexWrap={["wrap", "nowrap"]} // Wrap on small screens, no wrap on larger screens
     >
       <Icon as={FcCalendar} w={12} h={12} mr={2} />
