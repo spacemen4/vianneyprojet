@@ -14,7 +14,9 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
 export default function Day({ day, rowIdx }) {
   const [dayEvents, setDayEvents] = useState([]);
   const { setDaySelected, setShowEventModal, setSelectedEvent } = useContext(GlobalContext);
-
+  const formatDate = (date) => {
+    return dayjs(date).format('DD/MM/YYYY');
+  }
   useEffect(() => {
     const fetchActions = async () => {
       const { data, error } = await supabase
@@ -71,7 +73,7 @@ export default function Day({ day, rowIdx }) {
         {dayEvents.map((evt, idx) => (
           <Tooltip
             key={idx}
-            label={`Action Name: ${evt.action_name}\nStart Date: ${dayjs(evt.starting_date).format('DD/MM/YYYY')}\nEnd Date: ${dayjs(evt.ending_date).format('DD/MM/YYYY')}\nComment: ${evt.action_comment || 'N/A'}\nLast Updated: ${dayjs(evt.last_updated).format('DD/MM/YYYY')}`}
+            label={`Nom de l'action: ${evt.action_name}\nDate de début: ${formatDate(evt.starting_date)}\nDate de fin: ${formatDate(evt.ending_date)}\nCommentaire: ${evt.action_comment || 'N/A'}\nDernière mise à jour: ${formatDate(evt.last_updated)}`}
             fontSize="sm"
             placement="right"
             hasArrow
