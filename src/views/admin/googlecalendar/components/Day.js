@@ -3,7 +3,7 @@ import dayjs from "dayjs";
 import isBetween from "dayjs/plugin/isBetween";
 import GlobalContext from "../context/GlobalContext";
 import { createClient } from '@supabase/supabase-js';
-import { Box, Text, Flex } from "@chakra-ui/react";
+import { Box, Text, Flex, Tooltip } from "@chakra-ui/react";
 
 dayjs.extend(isBetween);
 
@@ -33,8 +33,8 @@ export default function Day({ day, rowIdx }) {
   
     fetchActions();
   }, [day]);
-  
 
+  
   function getCurrentDayClass() {
     return day.format("DD-MM-YY") === dayjs().format("DD-MM-YY")
       ? { bg: "blue.600", color: "white", borderRadius: "full", w: "7" }
@@ -69,23 +69,30 @@ export default function Day({ day, rowIdx }) {
         }}
       >
         {dayEvents.map((evt, idx) => (
-          <Box
+          <Tooltip
             key={idx}
-            onClick={(e) => {
-              e.stopPropagation();
-              setSelectedEvent(evt);
-            }}
-            bg={evt.color || 'gray.200'}
-            p={1}
-            color="gray.600"
+            label={`Action Name: ${evt.action_name}\nStart Date: ${dayjs(evt.starting_date).format('DD/MM/YYYY')}\nEnd Date: ${dayjs(evt.ending_date).format('DD/MM/YYYY')}\nComment: ${evt.action_comment || 'N/A'}\nLast Updated: ${dayjs(evt.last_updated).format('DD/MM/YYYY')}`}
             fontSize="sm"
-            borderRadius="md"
-            mb={1}
-            width="100%"
-            isTruncated
+            placement="right"
+            hasArrow
           >
-            {evt.action_name}
-          </Box>
+            <Box
+              onClick={(e) => {
+                e.stopPropagation();
+                setSelectedEvent(evt);
+              }}
+              bg={evt.color || 'gray.200'}
+              p={1}
+              color="gray.600"
+              fontSize="sm"
+              borderRadius="md"
+              mb={1}
+              width="100%"
+              isTruncated
+            >
+              {evt.action_name}
+            </Box>
+          </Tooltip>
         ))}
       </Flex>
     </Box>
