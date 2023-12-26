@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import GlobalContext from '../context/GlobalContext';
 import { v4 as uuidv4 } from 'uuid';
 import {
   Box,
@@ -28,6 +29,7 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 const EventModal = ({ isOpen, onClose }) => {
   const [teams, setTeams] = useState([]);
+  const { selectedEvent } = useContext(GlobalContext);
   const [action, setAction] = useState({
     teamId: '',
     actionName: '',
@@ -38,56 +40,59 @@ const EventModal = ({ isOpen, onClose }) => {
   const [alert, setAlert] = useState({ status: '', message: '', isVisible: false });
 
   useEffect(() => {
-    const fetchTeams = async () => {
-      const { data, error } = await supabase.from('vianney_teams').select('*');
-      if (error) {
-        console.error('Erreur lors de la récupération des équipes:', error);
-      } else {
-        setTeams(data);
-      }
-    };
-
-    fetchTeams();
-  }, []);
+    if (selectedEvent) {
+      setAction({
+        teamId: selectedEvent.team_to_which_its_attached,
+        actionName: selectedEvent.action_name,
+        startingDateTime: selectedEvent.starting_date,
+        endingDateTime: selectedEvent.ending_date,
+        comment: selectedEvent.action_comment
+      });
+    }
+  }, [selectedEvent]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
-    const newAction = {
-      id: uuidv4(),
+
+    const actionToSave = {
       team_to_which_its_attached: action.teamId,
       action_name: action.actionName,
       starting_date: action.startingDateTime,
       ending_date: action.endingDateTime,
       action_comment: action.comment
     };
-  
-    const { error } = await supabase
-      .from('vianney_actions')
-      .insert([newAction]);
-  
-    if (error) {
-      console.error('Erreur lors de l insertion des données: ', error);
+
+    let result;
+    if (selectedEvent) {
+      // Update existing event
+      result = await supabase
+        .from('vianney_actions')
+        .update(actionToSave)
+        .match({ id: selectedEvent.id });
+    } else {
+      // Create new event
+      result = await supabase
+        .from('vianney_actions')
+        .insert([{ ...actionToSave, id: uuidv4() }]);
+    }
+
+    if (result.error) {
+      console.error('Error:', result.error);
       setAlert({
         status: 'error',
-        message: "Un problème est survenu lors de l'ajout de l'action.",
+        message: 'Un problème est survenu lors de la sauvegarde de l\'action.',
         isVisible: true
       });
     } else {
       setAlert({
         status: 'success',
-        message: "L'action a été ajoutée avec succès.",
+        message: 'L\'action a été sauvegardée avec succès.',
         isVisible: true
       });
-      setAction({
-        teamId: '',
-        actionName: '',
-        startingDateTime: '',
-        endingDateTime: '',
-        comment: ''
-      });
+      // Reset form or close modal
     }
   };
+
 
   const closeAlert = () => {
     setAlert({ ...alert, isVisible: false });
@@ -112,29 +117,29 @@ const EventModal = ({ isOpen, onClose }) => {
           )}
           <form onSubmit={handleSubmit}>
             <FormControl isRequired>
-          <FormLabel>Équipe</FormLabel>
-          <Select placeholder="Sélectionner une équipe" onChange={(e) => setAction({ ...action, teamId: e.target.value })}>
-            {teams.map(team => (
-              <option key={team.id} value={team.id}>{team.nom}</option>
-            ))}
-          </Select>
-        </FormControl>
-        <FormControl isRequired mt={4}>
-          <FormLabel>Nom de l'action</FormLabel>
-          <Input placeholder="Nom de l'action" onChange={(e) => setAction({ ...action, actionName: e.target.value })} />
-        </FormControl>
-        <FormControl mt={4}>
-          <FormLabel>Date de début</FormLabel>
-          <Input type="datetime-local" onChange={(e) => setAction({ ...action, startingDateTime: e.target.value })} />
-        </FormControl>
-        <FormControl mt={4}>
-          <FormLabel>Date de fin</FormLabel>
-          <Input type="datetime-local" onChange={(e) => setAction({ ...action, endingDateTime: e.target.value })} />
-        </FormControl>
-        <FormControl mt={4}>
-          <FormLabel>Commentaire</FormLabel>
-          <Input placeholder="Commentaire" onChange={(e) => setAction({ ...action, comment: e.target.value })} />
-        </FormControl>
+              <FormLabel>Équipe</FormLabel>
+              <Select placeholder="Sélectionner une équipe" onChange={(e) => setAction({ ...action, teamId: e.target.value })}>
+                {teams.map(team => (
+                  <option key={team.id} value={team.id}>{team.nom}</option>
+                ))}
+              </Select>
+            </FormControl>
+            <FormControl isRequired mt={4}>
+              <FormLabel>Nom de l'action</FormLabel>
+              <Input placeholder="Nom de l'action" onChange={(e) => setAction({ ...action, actionName: e.target.value })} />
+            </FormControl>
+            <FormControl mt={4}>
+              <FormLabel>Date de début</FormLabel>
+              <Input type="datetime-local" onChange={(e) => setAction({ ...action, startingDateTime: e.target.value })} />
+            </FormControl>
+            <FormControl mt={4}>
+              <FormLabel>Date de fin</FormLabel>
+              <Input type="datetime-local" onChange={(e) => setAction({ ...action, endingDateTime: e.target.value })} />
+            </FormControl>
+            <FormControl mt={4}>
+              <FormLabel>Commentaire</FormLabel>
+              <Input placeholder="Commentaire" onChange={(e) => setAction({ ...action, comment: e.target.value })} />
+            </FormControl>
           </form>
         </ModalBody>
         <ModalFooter>

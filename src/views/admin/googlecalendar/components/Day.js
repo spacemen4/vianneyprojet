@@ -92,6 +92,8 @@ export default function Day({ day, rowIdx }) {
               onClick={(e) => {
                 e.stopPropagation();
                 setSelectedEvent(evt);
+                setDaySelected(day);
+                setShowEventModal(true);
               }}
               bg={evt.color || 'gray.200'}
               p={1}
