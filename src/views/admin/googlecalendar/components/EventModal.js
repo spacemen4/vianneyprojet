@@ -17,10 +17,11 @@ import {
   Box,
   HStack,
   Icon,
-  Select, // Import Select component
+  Select,
 } from '@chakra-ui/react';
 import { MdDelete, MdCheck } from 'react-icons/md';
 import { createClient } from '@supabase/supabase-js';
+import { v4 as uuidv4 } from 'uuid'; // Import UUID library
 
 const supabaseUrl = 'https://pvpsmyizvorwwccuwbuq.supabase.co';
 const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB2cHNteWl6dm9yd3djY3V3YnVxIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTcwMjgzMDg2MCwiZXhwIjoyMDE4NDA2ODYwfQ.9YDEN41__xBFJU91XY9e3r119A03yQ2oq5azmrx1aqY';
@@ -52,11 +53,11 @@ export default function EventModal() {
     red: 'red.500',
     purple: 'purple.500',
   };
-  const [team, setTeam] = useState(''); // New state for Équipe
-  const [actionName, setActionName] = useState(''); // New state for Nom de l'action
-  const [startDate, setStartDate] = useState(''); // New state for Date de début
-  const [endDate, setEndDate] = useState(''); // New state for Date de fin
-  const [comment, setComment] = useState(''); // New state for Commentaire
+
+  const [actionName, setActionName] = useState('');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [comment, setComment] = useState('');
 
   dayjs.locale('fr');
 
@@ -87,14 +88,18 @@ export default function EventModal() {
       description,
       label: selectedLabel,
       day: daySelected.valueOf(),
-      id: selectedEvent ? selectedEvent.id : Date.now(),
-      team: selectedTeam, // Include the selected team in the event data
+      id: selectedEvent ? selectedEvent.id : uuidv4(), // Use UUID for event ID
+      team: selectedTeam,
+      action_name: actionName,
+      starting_date: startDate,
+      ending_date: endDate,
+      action_comment: comment,
     };
 
     // Push data to Supabase
     const { error } = selectedEvent
-      ? await supabase.from('your-table-name').update(event).match({ id: selectedEvent.id })
-      : await supabase.from('your-table-name').insert([event]);
+      ? await supabase.from('vianney_actions').update(event).match({ id: selectedEvent.id })
+      : await supabase.from('vianney_actions').insert([event]);
 
     if (error) {
       console.error('Error:', error);
@@ -144,8 +149,8 @@ export default function EventModal() {
                 </option>
               ))}
             </Select>
-
           </FormControl>
+
           <FormControl id="event-action-name" isRequired mt={4}>
             <FormLabel>Nom de l'action*</FormLabel>
             <Input
@@ -180,28 +185,28 @@ export default function EventModal() {
               value={comment}
               onChange={(e) => setComment(e.target.value)}
             />
-            <HStack>
-              {Object.keys(labelsColors).map((label) => (
-                <Box
-                  key={label}
-                  bg={labelsColors[label]}
-                  w={6}
-                  h={6}
-                  borderRadius="full"
-                  cursor="pointer"
-                  display="flex"
-                  alignItems="center"
-                  justifyContent="center"
-                  onClick={() => setSelectedLabel(label)}
-                >
-                  {selectedLabel === label && (
-                    <Icon as={MdCheck} color="white" />
-                  )}
-                </Box>
-              ))}
-            </HStack>
-            </FormControl>
+          </FormControl>
 
+          <HStack mt={4}>
+            {Object.keys(labelsColors).map((label) => (
+              <Box
+                key={label}
+                bg={labelsColors[label]}
+                w={6}
+                h={6}
+                borderRadius="full"
+                cursor="pointer"
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+                onClick={() => setSelectedLabel(label)}
+              >
+                {selectedLabel === label && (
+                  <Icon as={MdCheck} color="white" />
+                )}
+              </Box>
+            ))}
+          </HStack>
         </ModalBody>
         <ModalFooter>
           <Button colorScheme="blue" mr={3} onClick={handleSubmit}>
