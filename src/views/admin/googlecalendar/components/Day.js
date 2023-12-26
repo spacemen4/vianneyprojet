@@ -3,7 +3,7 @@ import dayjs from "dayjs";
 import isBetween from "dayjs/plugin/isBetween";
 import GlobalContext from "../context/GlobalContext";
 import { createClient } from '@supabase/supabase-js';
-import { Box, Text, Flex, Tooltip } from "@chakra-ui/react";
+import { Box, Text, Flex, Tooltip, VStack } from "@chakra-ui/react";
 
 dayjs.extend(isBetween);
 
@@ -35,18 +35,16 @@ export default function Day({ day, rowIdx }) {
 
     fetchActions();
   }, [day]);
-  const formatTooltipLabel = (evt) => {
-    return [
-      `Nom de l'action: ${evt.action_name}`,
-      `Date de début: ${formatDate(evt.starting_date)}`,
-      `Date de fin: ${formatDate(evt.ending_date)}`,
-      `Commentaire: ${evt.action_comment || 'N/A'}`,
-      `Dernière mise à jour: ${formatDate(evt.last_updated)}`,
-      `ID de l'équipe: ${evt.team_id}`,
-      `Nom de l'équipe: ${evt.name_of_the_team}`,
-      `Nom: ${evt.nom || 'N/A'}`, // Displaying the 'nom' field
-      `Prénom: ${evt.prenom || 'N/A'}` // Displaying the 'prenom' field
-    ].join('\n');
+  const formatTooltipContent = (evt) => {
+    return (
+      <VStack align="left" spacing={1}>
+        <Text>Intervenant: {evt.nom || 'N/A'} {evt.prenom || 'N/A'}</Text>
+        <Text>Disponible pour: {evt.action_name}</Text>
+        <Text>Du: {formatDate(evt.starting_date)} au {formatDate(evt.ending_date)}</Text>
+        <Text>Commentaire: {evt.action_comment || 'N/A'}</Text>
+        <Text>Dernière mise à jour: {formatDate(evt.last_updated)}</Text>
+      </VStack>
+    );
   };
 
   function getCurrentDayClass() {
@@ -85,7 +83,7 @@ export default function Day({ day, rowIdx }) {
         {dayEvents.map((evt, idx) => (
           <Tooltip
             key={idx}
-            label={formatTooltipLabel(evt)}
+            label={formatTooltipContent(evt)}
             fontSize="sm"
             placement="right"
             hasArrow
