@@ -13,16 +13,14 @@ export default function Day({ day, rowIdx }) {
   const { setDaySelected, setShowEventModal, setSelectedEvent } = useContext(GlobalContext);
 
   useEffect(() => {
-    // Fetch actions from Supabase
     const fetchActions = async () => {
       const { data, error } = await supabase
-        .from('vianney_actions')
+        .from('team_action_view_rendering')
         .select('*');
 
       if (error) {
         console.error('Error fetching actions:', error);
       } else {
-        // Filter actions for the specific day
         const events = data.filter(
           action => dayjs(action.starting_date).format("DD-MM-YY") === day.format("DD-MM-YY")
         );
@@ -70,19 +68,19 @@ export default function Day({ day, rowIdx }) {
           <Box
             key={idx}
             onClick={(e) => {
-              e.stopPropagation(); // Prevent triggering the day's onClick
+              e.stopPropagation();
               setSelectedEvent(evt);
             }}
-            bg={`${evt.label}.200`}
+            bg={evt.color || 'gray.200'}
             p={1}
             color="gray.600"
             fontSize="sm"
             borderRadius="md"
             mb={1}
-            width="100%" // Ensure full width
+            width="100%"
             isTruncated
           >
-            {evt.title}
+            {evt.action_name}
           </Box>
         ))}
       </Flex>
