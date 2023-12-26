@@ -18,10 +18,7 @@ import {
   HStack,
   Icon,
 } from '@chakra-ui/react';
-import {
-  MdDelete,
-  MdCheck,
-} from 'react-icons/md';
+import { MdDelete, MdCheck } from 'react-icons/md';
 
 const labelsColors = {
   indigo: 'indigo.500',
@@ -66,14 +63,18 @@ export default function EventModal() {
     }
     setShowEventModal(false);
   }
+  const [team, setTeam] = useState(''); // New state for Équipe
+  const [actionName, setActionName] = useState(''); // New state for Nom de l'action
+  const [startDate, setStartDate] = useState(''); // New state for Date de début
+  const [endDate, setEndDate] = useState(''); // New state for Date de fin
+  const [comment, setComment] = useState(''); // New state for Commentaire
 
   return (
     <Modal isOpen={true} onClose={() => setShowEventModal(false)}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>
-          {selectedEvent ? 'Edit Event' : 'Create Event'}
-          {selectedEvent && (
+        <ModalHeader>{selectedEvent ? 'Edit Event' : 'Create Event'}
+        {selectedEvent && (
             <Icon
               as={MdDelete}
               ml={2}
@@ -86,29 +87,50 @@ export default function EventModal() {
           )}
         </ModalHeader>
         <ModalCloseButton />
-        <ModalBody>
-          <FormControl id="event-title" isRequired>
-            <FormLabel>Title</FormLabel>
+        <ModalBody>          
+          <FormControl id="event-team" isRequired mt={4}>
+            <FormLabel>Équipe*</FormLabel>
             <Input
-              placeholder="Add Title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
+              placeholder="Enter Team"
+              value={team}
+              onChange={(e) => setTeam(e.target.value)}
             />
           </FormControl>
-          <FormControl id="event-date" mt={4}>
-            <FormLabel>Date</FormLabel>
-            <Box>{daySelected.format('DD/MM/YYYY')}</Box>
-          </FormControl>
-          <FormControl id="event-description" mt={4}>
-            <FormLabel>Description</FormLabel>
+
+          <FormControl id="event-action-name" isRequired mt={4}>
+            <FormLabel>Nom de l'action*</FormLabel>
             <Input
-              placeholder="Add Description"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Enter Action Name"
+              value={actionName}
+              onChange={(e) => setActionName(e.target.value)}
             />
           </FormControl>
-          <FormControl id="event-label" mt={4}>
-            <FormLabel>Label</FormLabel>
+
+          <FormControl id="event-start-date" isRequired mt={4}>
+            <FormLabel>Date de début*</FormLabel>
+            <Input
+              type="date"
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+            />
+          </FormControl>
+
+          <FormControl id="event-end-date" isRequired mt={4}>
+            <FormLabel>Date de fin*</FormLabel>
+            <Input
+              type="date"
+              value={endDate}
+              onChange={(e) => setEndDate(e.target.value)}
+            />
+          </FormControl>
+
+          <FormControl id="event-comment" mt={4}>
+            <FormLabel>Commentaire</FormLabel>
+            <Input
+              placeholder="Add Comment"
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+            />
             <HStack>
               {Object.keys(labelsColors).map((label) => (
                 <Box
