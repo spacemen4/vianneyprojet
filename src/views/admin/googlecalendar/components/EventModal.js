@@ -20,9 +20,6 @@ import {
 } from '@chakra-ui/react';
 import {
   MdDelete,
-  MdSchedule,
-  MdSegment,
-  MdBookmarkBorder,
   MdCheck,
 } from 'react-icons/md';
 
