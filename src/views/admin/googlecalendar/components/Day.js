@@ -22,17 +22,17 @@ export default function Day({ day, rowIdx }) {
       const { data, error } = await supabase
         .from('team_action_view_rendering')
         .select('*');
-  
+
       if (error) {
         console.error('Error fetching actions:', error);
       } else {
-        const events = data.filter(action => 
+        const events = data.filter(action =>
           dayjs(day).isBetween(dayjs(action.starting_date).subtract(1, 'day'), dayjs(action.ending_date), null, '[]')
         );
         setDayEvents(events);
       }
     };
-  
+
     fetchActions();
   }, [day]);
   const formatTooltipLabel = (evt) => {
@@ -44,9 +44,8 @@ export default function Day({ day, rowIdx }) {
       `Dernière mise à jour: ${formatDate(evt.last_updated)}`,
       `ID de l'équipe: ${evt.team_id}`,
       `Nom de l'équipe: ${evt.name_of_the_team}`,
-      // Add more fields as needed
-      // `Nom: ${evt.nom || 'N/A'}`,
-      // `Prénom: ${evt.prenom || 'N/A'}`
+      `Nom: ${evt.nom || 'N/A'}`, // Displaying the 'nom' field
+      `Prénom: ${evt.prenom || 'N/A'}` // Displaying the 'prenom' field
     ].join('\n');
   };
 
