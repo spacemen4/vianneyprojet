@@ -2,13 +2,12 @@ import React, { useContext } from "react";
 import { MdChevronLeft, MdChevronRight } from "react-icons/md";
 import { FcCalendar } from "react-icons/fc";
 import dayjs from "dayjs";
-import 'dayjs/locale/fr'; // Import the French locale
+import 'dayjs/locale/fr';
 import GlobalContext from "../context/GlobalContext";
+import { Flex, Button, Text, Icon } from "@chakra-ui/react";
 
 export default function CalendarHeader() {
   const { monthIndex, setMonthIndex } = useContext(GlobalContext);
-
-  // Set the locale for dayjs to French
   dayjs.locale('fr');
 
   function handlePrevMonth() {
@@ -21,28 +20,28 @@ export default function CalendarHeader() {
 
   function handleReset() {
     setMonthIndex(
-      monthIndex === dayjs().month()
-        ? monthIndex + Math.random()
-        : dayjs().month()
+      monthIndex === dayjs().month() ? monthIndex + Math.random() : dayjs().month()
     );
   }
 
   return (
-    <header className="px-4 py-2 flex items-center">
-      <FcCalendar className="mr-2 w-12 h-12" />
-      <h1 className="mr-10 text-xl text-gray-500 font-bold">Calendrier</h1>
-      <button onClick={handleReset} className="border rounded py-2 px-4 mr-5">
+    <Flex alignItems="center" p={4}>
+      <Icon as={FcCalendar} w={12} h={12} mr={2} />
+      <Text mr={10} fontSize="xl" color="gray.500" fontWeight="bold">
+        Calendrier
+      </Text>
+      <Button onClick={handleReset} borderRadius="md" py={2} px={4} mr={5}>
         Aujourd'hui
-      </button>
-      <button onClick={handlePrevMonth}>
-        <MdChevronLeft className="cursor-pointer text-gray-600 mx-2" />
-      </button>
-      <button onClick={handleNextMonth}>
-        <MdChevronRight className="cursor-pointer text-gray-600 mx-2" />
-      </button>
-      <h2 className="ml-4 text-xl text-gray-500 font-bold">
+      </Button>
+      <Button onClick={handlePrevMonth}>
+        <MdChevronLeft className="cursor-pointer text-gray-600 " />
+      </Button>
+      <Button onClick={handleNextMonth}>
+        <MdChevronRight className="cursor-pointer text-gray-600 " />
+      </Button>
+      <Text ml={4} fontSize="xl" color="gray.500" fontWeight="bold">
         {dayjs(new Date(dayjs().year(), monthIndex)).format("MMMM YYYY")}
-      </h2>
-    </header>
+      </Text>
+    </Flex>
   );
 }
