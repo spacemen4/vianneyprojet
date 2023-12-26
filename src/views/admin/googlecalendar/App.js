@@ -31,7 +31,7 @@ function App() {
           <Box
             className="sidebar"
             display={["none", "block"]}
-            width={["full", "auto"]}
+            width={["full", "350px"]}
           >
             <Sidebar />
           </Box>

@@ -42,12 +42,12 @@ export default function SmallCalendar() {
   }
 
   return (
-    <Box p={1} m={1} >
+    <Box p={2} m={2} border="1px" borderRadius="10px" borderColor="gray.200">
       <Flex justifyContent="between">
         <Text color="gray.500" fontWeight="bold">
           {dayjs(new Date(dayjs().year(), currentMonthIdx)).format("MMMM YYYY")}
         </Text>
-        <Box>
+        <Box m={2}>
           <Button onClick={handlePrevMonth}>
             <MdChevronLeft className="cursor-pointer text-gray-600 mx-2" />
           </Button>
