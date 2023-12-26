@@ -1,18 +1,37 @@
 import React, { useContext, useState, useEffect } from "react";
 import dayjs from "dayjs";
 import GlobalContext from "../context/GlobalContext";
+import { createClient } from '@supabase/supabase-js';
 import { Box, Text, Flex } from "@chakra-ui/react";
+
+const supabaseUrl = 'https://pvpsmyizvorwwccuwbuq.supabase.co';
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB2cHNteWl6dm9yd3djY3V3YnVxIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTcwMjgzMDg2MCwiZXhwIjoyMDE4NDA2ODYwfQ.9YDEN41__xBFJU91XY9e3r119A03yQ2oq5azmrx1aqY';
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 export default function Day({ day, rowIdx }) {
   const [dayEvents, setDayEvents] = useState([]);
-  const { setDaySelected, setShowEventModal, filteredEvents, setSelectedEvent } = useContext(GlobalContext);
+  const { setDaySelected, setShowEventModal, setSelectedEvent } = useContext(GlobalContext);
 
   useEffect(() => {
-    const events = filteredEvents.filter(
-      evt => dayjs(evt.day).format("DD-MM-YY") === day.format("DD-MM-YY")
-    );
-    setDayEvents(events);
-  }, [filteredEvents, day]);
+    // Fetch actions from Supabase
+    const fetchActions = async () => {
+      const { data, error } = await supabase
+        .from('vianney_actions')
+        .select('*');
+
+      if (error) {
+        console.error('Error fetching actions:', error);
+      } else {
+        // Filter actions for the specific day
+        const events = data.filter(
+          action => dayjs(action.starting_date).format("DD-MM-YY") === day.format("DD-MM-YY")
+        );
+        setDayEvents(events);
+      }
+    };
+
+    fetchActions();
+  }, [day]);
 
   function getCurrentDayClass() {
     return day.format("DD-MM-YY") === dayjs().format("DD-MM-YY")
