@@ -1,17 +1,23 @@
 import React, { useContext } from "react";
 import { FcPlus } from "react-icons/fc";
 import GlobalContext from "../context/GlobalContext";
+import { Button, Icon, Text } from "@chakra-ui/react";
 
 export default function CreateEventButton() {
   const { setShowEventModal } = useContext(GlobalContext);
 
   return (
-    <button
+    <Button
       onClick={() => setShowEventModal(true)}
-      className="border p-2 rounded-full flex items-center shadow-md hover:shadow-2xl"
+      p={2}
+      borderRadius="full"
+      display="flex"
+      alignItems="center"
+      boxShadow="md"
+      _hover={{ boxShadow: "2xl" }}
     >
-      <FcPlus className="w-7 h-7" />
-      <span className="pl-3 pr-7">Créer</span>
-    </button>
+      <Icon as={FcPlus} w={7} h={7} />
+      <Text pl={3} pr={7}>Créer</Text>
+    </Button>
   );
 }
