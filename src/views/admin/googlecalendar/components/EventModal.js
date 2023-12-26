@@ -73,6 +73,7 @@ const EventModal = ({ isOpen, onClose }) => {
     e.preventDefault();
 
     const actionToSave = {
+      id: uuidv4(),
       team_to_which_its_attached: action.teamId,
       action_name: action.actionName,
       starting_date: action.startingDateTime,
