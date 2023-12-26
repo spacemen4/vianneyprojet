@@ -1,16 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-
-import 'dayjs/locale/fr';
-
-import { Box, Button, FormControl, FormLabel, Input, Select, Alert, AlertIcon, AlertTitle, AlertDescription, CloseButton } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  FormControl,
+  FormLabel,
+  Input,
+  Select,
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  AlertDescription,
+  CloseButton,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  ModalFooter
+} from '@chakra-ui/react';
 import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = 'https://pvpsmyizvorwwccuwbuq.supabase.co';
 const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB2cHNteWl6dm9yd3djY3V3YnVxIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTcwMjgzMDg2MCwiZXhwIjoyMDE4NDA2ODYwfQ.9YDEN41__xBFJU91XY9e3r119A03yQ2oq5azmrx1aqY';
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-const AddActionForm = () => {
+const EventModal = ({ isOpen, onClose }) => {
   const [teams, setTeams] = useState([]);
   const [action, setAction] = useState({
     teamId: '',
@@ -78,19 +94,24 @@ const AddActionForm = () => {
   };
 
   return (
-    <Box p={4}>
-      {alert.isVisible && (
-        <Alert status={alert.status} mb={4}>
-          <AlertIcon />
-          <Box flex="1">
-            <AlertTitle>{alert.status === 'error' ? 'Erreur!' : 'Succès!'}</AlertTitle>
-            <AlertDescription display="block">{alert.message}</AlertDescription>
-          </Box>
-          <CloseButton position="absolute" right="8px" top="8px" onClick={closeAlert} />
-        </Alert>
-      )}
-      <form onSubmit={handleSubmit}>
-        <FormControl isRequired>
+    <Modal isOpen={isOpen} onClose={onClose}>
+      <ModalOverlay />
+      <ModalContent>
+        <ModalHeader>Ajouter une action</ModalHeader>
+        <ModalCloseButton />
+        <ModalBody>
+          {alert.isVisible && (
+            <Alert status={alert.status} mb={4}>
+              <AlertIcon />
+              <Box flex="1">
+                <AlertTitle>{alert.status === 'error' ? 'Erreur!' : 'Succès!'}</AlertTitle>
+                <AlertDescription display="block">{alert.message}</AlertDescription>
+              </Box>
+              <CloseButton position="absolute" right="8px" top="8px" onClick={closeAlert} />
+            </Alert>
+          )}
+          <form onSubmit={handleSubmit}>
+            <FormControl isRequired>
           <FormLabel>Équipe</FormLabel>
           <Select placeholder="Sélectionner une équipe" onChange={(e) => setAction({ ...action, teamId: e.target.value })}>
             {teams.map(team => (
@@ -114,10 +135,17 @@ const AddActionForm = () => {
           <FormLabel>Commentaire</FormLabel>
           <Input placeholder="Commentaire" onChange={(e) => setAction({ ...action, comment: e.target.value })} />
         </FormControl>
-        <Button mt={4} colorScheme="blue" type="submit">Ajouter l'action</Button>
-      </form>
-    </Box>
+          </form>
+        </ModalBody>
+        <ModalFooter>
+          <Button colorScheme="blue" mr={3} onClick={handleSubmit}>
+            Ajouter l'action
+          </Button>
+          <Button variant="ghost" onClick={onClose}>Annuler</Button>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
   );
 };
 
-export default AddActionForm;
+export default EventModal;
