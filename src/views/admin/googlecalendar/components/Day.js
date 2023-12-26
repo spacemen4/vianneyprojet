@@ -1,8 +1,11 @@
 import React, { useContext, useState, useEffect } from "react";
 import dayjs from "dayjs";
+import isBetween from "dayjs/plugin/isBetween";
 import GlobalContext from "../context/GlobalContext";
 import { createClient } from '@supabase/supabase-js';
 import { Box, Text, Flex } from "@chakra-ui/react";
+
+dayjs.extend(isBetween);
 
 const supabaseUrl = 'https://pvpsmyizvorwwccuwbuq.supabase.co';
 const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB2cHNteWl6dm9yd3djY3V3YnVxIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTcwMjgzMDg2MCwiZXhwIjoyMDE4NDA2ODYwfQ.9YDEN41__xBFJU91XY9e3r119A03yQ2oq5azmrx1aqY';
@@ -17,19 +20,20 @@ export default function Day({ day, rowIdx }) {
       const { data, error } = await supabase
         .from('team_action_view_rendering')
         .select('*');
-
+  
       if (error) {
         console.error('Error fetching actions:', error);
       } else {
-        const events = data.filter(
-          action => dayjs(action.starting_date).format("DD-MM-YY") === day.format("DD-MM-YY")
+        const events = data.filter(action => 
+          dayjs(day).isBetween(dayjs(action.starting_date).subtract(1, 'day'), dayjs(action.ending_date), null, '[]')
         );
         setDayEvents(events);
       }
     };
-
+  
     fetchActions();
   }, [day]);
+  
 
   function getCurrentDayClass() {
     return day.format("DD-MM-YY") === dayjs().format("DD-MM-YY")
