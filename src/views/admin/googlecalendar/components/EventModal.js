@@ -17,6 +17,7 @@ import {
   Box,
   HStack,
   Icon,
+  Select, // Import Select component
 } from '@chakra-ui/react';
 import { MdDelete, MdCheck } from 'react-icons/md';
 import { createClient } from '@supabase/supabase-js';
@@ -40,6 +41,9 @@ export default function EventModal() {
   const [selectedLabel, setSelectedLabel] = useState(
     selectedEvent ? selectedEvent.label : 'indigo'
   );
+
+  const [teams, setTeams] = useState([]); // State to store teams
+  const [selectedTeam, setSelectedTeam] = useState(''); // State to store the selected team
   const labelsColors = {
     indigo: 'indigo.500',
     gray: 'gray.500',
@@ -48,7 +52,6 @@ export default function EventModal() {
     red: 'red.500',
     purple: 'purple.500',
   };
-
   const [team, setTeam] = useState(''); // New state for Équipe
   const [actionName, setActionName] = useState(''); // New state for Nom de l'action
   const [startDate, setStartDate] = useState(''); // New state for Date de début
@@ -56,6 +59,26 @@ export default function EventModal() {
   const [comment, setComment] = useState(''); // New state for Commentaire
 
   dayjs.locale('fr');
+
+  useEffect(() => {
+    // Fetch teams from Supabase
+    const fetchTeams = async () => {
+      try {
+        const { data, error } = await supabase.from('vianney_teams').select('nom');
+        if (error) {
+          console.error('Error fetching teams:', error);
+        } else {
+          setTeams(data.map((team) => team.nom));
+          // Set the selected team to the first team in the list (you can change this if needed)
+          setSelectedTeam(data.length > 0 ? data[0].nom : '');
+        }
+      } catch (error) {
+        console.error('Error fetching teams:', error);
+      }
+    };
+
+    fetchTeams();
+  }, []);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -65,6 +88,7 @@ export default function EventModal() {
       label: selectedLabel,
       day: daySelected.valueOf(),
       id: selectedEvent ? selectedEvent.id : Date.now(),
+      team: selectedTeam, // Include the selected team in the event data
     };
 
     // Push data to Supabase
@@ -109,13 +133,19 @@ export default function EventModal() {
         <ModalBody>
           <FormControl id="event-team" isRequired mt={4}>
             <FormLabel>Équipe*</FormLabel>
-            <Input
-              placeholder="Enter Team"
-              value={team}
-              onChange={(e) => setTeam(e.target.value)}
-            />
-          </FormControl>
+            <Select
+              placeholder="Select Team"
+              value={selectedTeam}
+              onChange={(e) => setSelectedTeam(e.target.value)}
+            >
+              {teams.map((teamName) => (
+                <option key={teamName} value={teamName}>
+                  {teamName}
+                </option>
+              ))}
+            </Select>
 
+          </FormControl>
           <FormControl id="event-action-name" isRequired mt={4}>
             <FormLabel>Nom de l'action*</FormLabel>
             <Input
@@ -170,7 +200,8 @@ export default function EventModal() {
                 </Box>
               ))}
             </HStack>
-          </FormControl>
+            </FormControl>
+
         </ModalBody>
         <ModalFooter>
           <Button colorScheme="blue" mr={3} onClick={handleSubmit}>
