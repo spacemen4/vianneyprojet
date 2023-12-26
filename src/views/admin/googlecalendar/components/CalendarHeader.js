@@ -25,7 +25,11 @@ export default function CalendarHeader() {
   }
 
   return (
-    <Flex alignItems="center" p={4}>
+    <Flex
+      alignItems="center"
+      p={4}
+      flexWrap={["wrap", "nowrap"]} // Wrap on small screens, no wrap on larger screens
+    >
       <Icon as={FcCalendar} w={12} h={12} mr={2} />
       <Text mr={10} fontSize="xl" color="gray.500" fontWeight="bold">
         Calendrier
@@ -34,12 +38,18 @@ export default function CalendarHeader() {
         Aujourd'hui
       </Button>
       <Button onClick={handlePrevMonth}>
-        <MdChevronLeft className="cursor-pointer text-gray-600 " />
+        <MdChevronLeft className="cursor-pointer text-gray-600" />
       </Button>
       <Button onClick={handleNextMonth}>
-        <MdChevronRight className="cursor-pointer text-gray-600 " />
+        <MdChevronRight className="cursor-pointer text-gray-600" />
       </Button>
-      <Text ml={4} fontSize="xl" color="gray.500" fontWeight="bold">
+      <Text
+        ml={[0, 4]} // Adjust left margin based on screen size
+        fontSize="xl"
+        color="gray.500"
+        fontWeight="bold"
+        flexBasis={["100%", "auto"]} // Full width (i.e., new line) on small screens, auto width on larger screens
+      >
         {dayjs(new Date(dayjs().year(), monthIndex)).format("MMMM YYYY")}
       </Text>
     </Flex>
