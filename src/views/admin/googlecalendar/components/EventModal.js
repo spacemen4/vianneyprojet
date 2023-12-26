@@ -1,222 +1,123 @@
-import React, { useContext, useState, useEffect } from 'react';
-import dayjs from 'dayjs';
+import React, { useState, useEffect } from 'react';
+import { v4 as uuidv4 } from 'uuid';
+
 import 'dayjs/locale/fr';
-import GlobalContext from '../context/GlobalContext';
-import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  ModalFooter,
-  Button,
-  FormControl,
-  FormLabel,
-  Input,
-  Box,
-  HStack,
-  Icon,
-  Select,
-} from '@chakra-ui/react';
-import { MdDelete, MdCheck } from 'react-icons/md';
+
+import { Box, Button, FormControl, FormLabel, Input, Select, Alert, AlertIcon, AlertTitle, AlertDescription, CloseButton } from '@chakra-ui/react';
 import { createClient } from '@supabase/supabase-js';
-import { v4 as uuidv4 } from 'uuid'; // Import UUID library
 
 const supabaseUrl = 'https://pvpsmyizvorwwccuwbuq.supabase.co';
 const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB2cHNteWl6dm9yd3djY3V3YnVxIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTcwMjgzMDg2MCwiZXhwIjoyMDE4NDA2ODYwfQ.9YDEN41__xBFJU91XY9e3r119A03yQ2oq5azmrx1aqY';
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-export default function EventModal() {
-  const {
-    setShowEventModal,
-    daySelected,
-    dispatchCalEvent,
-    selectedEvent,
-  } = useContext(GlobalContext);
-
-  const [title, setTitle] = useState(selectedEvent ? selectedEvent.title : '');
-  const [description, setDescription] = useState(
-    selectedEvent ? selectedEvent.description : ''
-  );
-  const [selectedLabel, setSelectedLabel] = useState(
-    selectedEvent ? selectedEvent.label : 'indigo'
-  );
-
-  const [teams, setTeams] = useState([]); // State to store teams
-  const [selectedTeam, setSelectedTeam] = useState(''); // State to store the selected team
-  const labelsColors = {
-    indigo: 'indigo.500',
-    gray: 'gray.500',
-    green: 'green.500',
-    blue: 'blue.500',
-    red: 'red.500',
-    purple: 'purple.500',
-  };
-
-  const [actionName, setActionName] = useState('');
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
-  const [comment, setComment] = useState('');
-
-  dayjs.locale('fr');
+const AddActionForm = () => {
+  const [teams, setTeams] = useState([]);
+  const [action, setAction] = useState({
+    teamId: '',
+    actionName: '',
+    startingDateTime: '',
+    endingDateTime: '',
+    comment: ''
+  });
+  const [alert, setAlert] = useState({ status: '', message: '', isVisible: false });
 
   useEffect(() => {
-    // Fetch teams from Supabase
     const fetchTeams = async () => {
-      try {
-        const { data, error } = await supabase.from('vianney_teams').select('nom');
-        if (error) {
-          console.error('Error fetching teams:', error);
-        } else {
-          setTeams(data.map((team) => team.nom));
-          // Set the selected team to the first team in the list (you can change this if needed)
-          setSelectedTeam(data.length > 0 ? data[0].nom : '');
-        }
-      } catch (error) {
-        console.error('Error fetching teams:', error);
+      const { data, error } = await supabase.from('vianney_teams').select('*');
+      if (error) {
+        console.error('Erreur lors de la récupération des équipes:', error);
+      } else {
+        setTeams(data);
       }
     };
 
     fetchTeams();
   }, []);
 
-  async function handleSubmit(e) {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const event = {
-      title,
-      description,
-      label: selectedLabel,
-      day: daySelected.valueOf(),
-      id: selectedEvent ? selectedEvent.id : uuidv4(), // Use UUID for event ID
-      team: selectedTeam,
-      action_name: actionName,
-      starting_date: startDate,
-      ending_date: endDate,
-      action_comment: comment,
+  
+    const newAction = {
+      id: uuidv4(),
+      team_to_which_its_attached: action.teamId,
+      action_name: action.actionName,
+      starting_date: action.startingDateTime,
+      ending_date: action.endingDateTime,
+      action_comment: action.comment
     };
-
-    // Push data to Supabase
-    const { error } = selectedEvent
-      ? await supabase.from('vianney_actions').update(event).match({ id: selectedEvent.id })
-      : await supabase.from('vianney_actions').insert([event]);
-
+  
+    const { error } = await supabase
+      .from('vianney_actions')
+      .insert([newAction]);
+  
     if (error) {
-      console.error('Error:', error);
+      console.error('Erreur lors de l insertion des données: ', error);
+      setAlert({
+        status: 'error',
+        message: "Un problème est survenu lors de l'ajout de l'action.",
+        isVisible: true
+      });
     } else {
-      // Fetch data from Supabase (assuming your table is 'vianney_actions')
-      const { data: actionsData, error: fetchError } = await supabase.from('vianney_actions').select('*');
-      if (fetchError) {
-        console.error('Error fetching data from Supabase:', fetchError);
-      } else {
-        // Dispatch fetched data to update the context state
-        dispatchCalEvent({ type: 'update', payload: actionsData });
-      }
-
-      setShowEventModal(false);
+      setAlert({
+        status: 'success',
+        message: "L'action a été ajoutée avec succès.",
+        isVisible: true
+      });
+      setAction({
+        teamId: '',
+        actionName: '',
+        startingDateTime: '',
+        endingDateTime: '',
+        comment: ''
+      });
     }
-  }
+  };
+
+  const closeAlert = () => {
+    setAlert({ ...alert, isVisible: false });
+  };
 
   return (
-    <Modal isOpen={true} onClose={() => setShowEventModal(false)}>
-      <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>{selectedEvent ? 'Edit Event' : 'Create Event'}
-          {selectedEvent && (
-            <Icon
-              as={MdDelete}
-              ml={2}
-              cursor="pointer"
-              onClick={() => {
-                dispatchCalEvent({ type: 'delete', payload: selectedEvent });
-                setShowEventModal(false);
-              }}
-            />
-          )}
-        </ModalHeader>
-        <ModalCloseButton />
-        <ModalBody>
-          <FormControl id="event-team" isRequired mt={4}>
-            <FormLabel>Équipe*</FormLabel>
-            <Select
-              placeholder="Select Team"
-              value={selectedTeam}
-              onChange={(e) => setSelectedTeam(e.target.value)}
-            >
-              {teams.map((teamName) => (
-                <option key={teamName} value={teamName}>
-                  {teamName}
-                </option>
-              ))}
-            </Select>
-          </FormControl>
-
-          <FormControl id="event-action-name" isRequired mt={4}>
-            <FormLabel>Nom de l'action*</FormLabel>
-            <Input
-              placeholder="Enter Action Name"
-              value={actionName}
-              onChange={(e) => setActionName(e.target.value)}
-            />
-          </FormControl>
-
-          <FormControl id="event-start-date" isRequired mt={4}>
-            <FormLabel>Date de début*</FormLabel>
-            <Input
-              type="date"
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
-            />
-          </FormControl>
-
-          <FormControl id="event-end-date" isRequired mt={4}>
-            <FormLabel>Date de fin*</FormLabel>
-            <Input
-              type="date"
-              value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
-            />
-          </FormControl>
-
-          <FormControl id="event-comment" mt={4}>
-            <FormLabel>Commentaire</FormLabel>
-            <Input
-              placeholder="Add Comment"
-              value={comment}
-              onChange={(e) => setComment(e.target.value)}
-            />
-          </FormControl>
-
-          <HStack mt={4}>
-            {Object.keys(labelsColors).map((label) => (
-              <Box
-                key={label}
-                bg={labelsColors[label]}
-                w={6}
-                h={6}
-                borderRadius="full"
-                cursor="pointer"
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-                onClick={() => setSelectedLabel(label)}
-              >
-                {selectedLabel === label && (
-                  <Icon as={MdCheck} color="white" />
-                )}
-              </Box>
+    <Box p={4}>
+      {alert.isVisible && (
+        <Alert status={alert.status} mb={4}>
+          <AlertIcon />
+          <Box flex="1">
+            <AlertTitle>{alert.status === 'error' ? 'Erreur!' : 'Succès!'}</AlertTitle>
+            <AlertDescription display="block">{alert.message}</AlertDescription>
+          </Box>
+          <CloseButton position="absolute" right="8px" top="8px" onClick={closeAlert} />
+        </Alert>
+      )}
+      <form onSubmit={handleSubmit}>
+        <FormControl isRequired>
+          <FormLabel>Équipe</FormLabel>
+          <Select placeholder="Sélectionner une équipe" onChange={(e) => setAction({ ...action, teamId: e.target.value })}>
+            {teams.map(team => (
+              <option key={team.id} value={team.id}>{team.nom}</option>
             ))}
-          </HStack>
-        </ModalBody>
-        <ModalFooter>
-          <Button colorScheme="blue" mr={3} onClick={handleSubmit}>
-            Save
-          </Button>
-          <Button variant="ghost" onClick={() => setShowEventModal(false)}>
-            Cancel
-          </Button>
-        </ModalFooter>
-      </ModalContent>
-    </Modal>
+          </Select>
+        </FormControl>
+        <FormControl isRequired mt={4}>
+          <FormLabel>Nom de l'action</FormLabel>
+          <Input placeholder="Nom de l'action" onChange={(e) => setAction({ ...action, actionName: e.target.value })} />
+        </FormControl>
+        <FormControl mt={4}>
+          <FormLabel>Date de début</FormLabel>
+          <Input type="datetime-local" onChange={(e) => setAction({ ...action, startingDateTime: e.target.value })} />
+        </FormControl>
+        <FormControl mt={4}>
+          <FormLabel>Date de fin</FormLabel>
+          <Input type="datetime-local" onChange={(e) => setAction({ ...action, endingDateTime: e.target.value })} />
+        </FormControl>
+        <FormControl mt={4}>
+          <FormLabel>Commentaire</FormLabel>
+          <Input placeholder="Commentaire" onChange={(e) => setAction({ ...action, comment: e.target.value })} />
+        </FormControl>
+        <Button mt={4} colorScheme="blue" type="submit">Ajouter l'action</Button>
+      </form>
+    </Box>
   );
-}
+};
+
+export default AddActionForm;
