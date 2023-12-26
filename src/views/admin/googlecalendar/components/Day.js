@@ -35,8 +35,21 @@ export default function Day({ day, rowIdx }) {
   
     fetchActions();
   }, [day]);
+  const formatTooltipLabel = (evt) => {
+    return [
+      `Nom de l'action: ${evt.action_name}`,
+      `Date de début: ${formatDate(evt.starting_date)}`,
+      `Date de fin: ${formatDate(evt.ending_date)}`,
+      `Commentaire: ${evt.action_comment || 'N/A'}`,
+      `Dernière mise à jour: ${formatDate(evt.last_updated)}`,
+      `ID de l'équipe: ${evt.team_id}`,
+      `Nom de l'équipe: ${evt.name_of_the_team}`,
+      // Add more fields as needed
+      // `Nom: ${evt.nom || 'N/A'}`,
+      // `Prénom: ${evt.prenom || 'N/A'}`
+    ].join('\n');
+  };
 
-  
   function getCurrentDayClass() {
     return day.format("DD-MM-YY") === dayjs().format("DD-MM-YY")
       ? { bg: "blue.600", color: "white", borderRadius: "full", w: "7" }
@@ -73,7 +86,7 @@ export default function Day({ day, rowIdx }) {
         {dayEvents.map((evt, idx) => (
           <Tooltip
             key={idx}
-            label={`Nom de l'action: ${evt.action_name}\nDate de début: ${formatDate(evt.starting_date)}\nDate de fin: ${formatDate(evt.ending_date)}\nCommentaire: ${evt.action_comment || 'N/A'}\nDernière mise à jour: ${formatDate(evt.last_updated)}`}
+            label={formatTooltipLabel(evt)}
             fontSize="sm"
             placement="right"
             hasArrow
