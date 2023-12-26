@@ -9,11 +9,15 @@ import EventModal from "./components/EventModal";
 import dayjs from 'dayjs';
 import 'dayjs/locale/fr';
 import CreateEventButton from "./components/CreateEventButton";
+import ModifyEventForm from "./components/ModifyEventForm";
+import Day from "./components/Day";
 
 function App() {
   const [currenMonth, setCurrentMonth] = useState(getMonth());
-  const { monthIndex, showEventModal } = useContext(GlobalContext);
+  const { monthIndex, showEventModal, selectedEvent } = useContext(GlobalContext); // Add selectedEvent state
+  const [showModifyForm, setShowModifyForm] = useState(false); // Add state to control modification form display
   dayjs.locale('fr');
+
 
   useEffect(() => {
     setCurrentMonth(getMonth(monthIndex));
@@ -21,7 +25,8 @@ function App() {
 
   return (
     <ChakraProvider>
-      {showEventModal && <EventModal />}
+      {showEventModal && !showModifyForm && <EventModal />}
+      {showModifyForm && <ModifyEventForm eventUUID={selectedEvent} setShowModifyForm={setShowModifyForm} />}
       <Flex direction="column" height="100vh">
         <CalendarHeader />
         
@@ -39,7 +44,7 @@ function App() {
               <Sidebar />
             </Box>
           </Box>
-          <Month month={currenMonth} />
+          <Month month={currenMonth} setShowModifyForm={setShowModifyForm} />
         </Flex>
       </Flex>
     </ChakraProvider>

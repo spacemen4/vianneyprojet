@@ -11,12 +11,13 @@ const supabaseUrl = 'https://pvpsmyizvorwwccuwbuq.supabase.co';
 const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB2cHNteWl6dm9yd3djY3V3YnVxIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTcwMjgzMDg2MCwiZXhwIjoyMDE4NDA2ODYwfQ.9YDEN41__xBFJU91XY9e3r119A03yQ2oq5azmrx1aqY';
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-export default function Day({ day, rowIdx }) {
+export default function Day({ day, rowIdx, setShowModifyForm }) {
   const [dayEvents, setDayEvents] = useState([]);
   const { setDaySelected, setShowEventModal, setSelectedEvent } = useContext(GlobalContext);
   const formatDate = (date) => {
     return dayjs(date).format('DD/MM/YYYY');
   }
+
   useEffect(() => {
     const fetchActions = async () => {
       const { data, error } = await supabase
@@ -35,14 +36,15 @@ export default function Day({ day, rowIdx }) {
 
     fetchActions();
   }, [day]);
-  const formatTooltipContent = (evt) => {
+
+  const formatTooltipContent = (event) => {
     return (
       <VStack align="left" spacing={1}>
-        <Text>Intervenant: {evt.nom || 'N/A'} {evt.prenom || 'N/A'}</Text>
-        <Text>Disponible pour: {evt.action_name}</Text>
-        <Text>Du: {formatDate(evt.starting_date)} au {formatDate(evt.ending_date)}</Text>
-        <Text>Commentaire: {evt.action_comment || 'N/A'}</Text>
-        <Text>Dernière mise à jour: {formatDate(evt.last_updated)}</Text>
+        <Text>Intervenant: {event.nom || 'N/A'} {event.prenom || 'N/A'}</Text>
+        <Text>Disponible pour: {event.action_name}</Text>
+        <Text>Du: {formatDate(event.starting_date)} au {formatDate(event.ending_date)}</Text>
+        <Text>Commentaire: {event.action_comment || 'N/A'}</Text>
+        <Text>Dernière mise à jour: {formatDate(event.last_updated)}</Text>
       </VStack>
     );
   };
@@ -80,10 +82,10 @@ export default function Day({ day, rowIdx }) {
           setShowEventModal(true);
         }}
       >
-        {dayEvents.map((evt, idx) => (
+        {dayEvents.map((event, idx) => (
           <Tooltip
             key={idx}
-            label={formatTooltipContent(evt)}
+            label={formatTooltipContent(event)}
             fontSize="sm"
             placement="right"
             hasArrow
@@ -91,11 +93,11 @@ export default function Day({ day, rowIdx }) {
             <Box
               onClick={(e) => {
                 e.stopPropagation();
-                setSelectedEvent(evt);
                 setDaySelected(day);
-                setShowEventModal(true);
+                setSelectedEvent(event.id); // Pass UUID to setSelectedEvent
+                setShowModifyForm(true); // Open the modification form
               }}
-              bg={evt.color || 'gray.200'}
+              bg={event.color || 'gray.200'}
               p={1}
               color="gray.600"
               fontSize="sm"
@@ -104,7 +106,7 @@ export default function Day({ day, rowIdx }) {
               width="100%"
               isTruncated
             >
-              {evt.action_name}
+              {event.action_name}
             </Box>
           </Tooltip>
         ))}

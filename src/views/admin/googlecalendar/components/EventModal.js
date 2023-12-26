@@ -27,7 +27,7 @@ const supabaseUrl = 'https://pvpsmyizvorwwccuwbuq.supabase.co';
 const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB2cHNteWl6dm9yd3djY3V3YnVxIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTcwMjgzMDg2MCwiZXhwIjoyMDE4NDA2ODYwfQ.9YDEN41__xBFJU91XY9e3r119A03yQ2oq5azmrx1aqY';
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-const EventModal = ({ isOpen, onClose }) => {
+const EventModal = ({ isOpen, onClose, selectedActionId }) => {
   const [teams, setTeams] = useState([]);
   const { selectedEvent } = useContext(GlobalContext);
   const [action, setAction] = useState({
@@ -38,6 +38,30 @@ const EventModal = ({ isOpen, onClose }) => {
     comment: ''
   });
   const [alert, setAlert] = useState({ status: '', message: '', isVisible: false });
+  const fetchActionDetails = async (actionId) => {
+    try {
+      const { data, error } = await supabase
+        .from('vianney_actions')
+        .select('*')
+        .eq('id', actionId)
+        .single();
+  
+      if (error) {
+        console.error('Error fetching action details:', error);
+      } else {
+        // Update the action details in the component state
+        setAction({
+          teamId: data.team_to_which_its_attached,
+          actionName: data.action_name,
+          startingDateTime: data.starting_date,
+          endingDateTime: data.ending_date,
+          comment: data.action_comment
+        });
+      }
+    } catch (error) {
+      console.error('An error occurred while fetching action details:', error);
+    }
+  };
 
   useEffect(() => {
     if (selectedEvent) {
@@ -48,8 +72,11 @@ const EventModal = ({ isOpen, onClose }) => {
         endingDateTime: selectedEvent.ending_date,
         comment: selectedEvent.action_comment
       });
+    } else if (selectedActionId) {
+      // Fetch action details using selectedActionId
+      fetchActionDetails(selectedActionId);
     }
-  }, [selectedEvent]);
+  }, [selectedEvent, selectedActionId]);
 
   useEffect(() => {
     const fetchTeams = async () => {
