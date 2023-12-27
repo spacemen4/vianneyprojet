@@ -11,6 +11,8 @@ import 'dayjs/locale/fr';
 import CreateEventButton from "./components/CreateEventButton";
 import ModifyEventForm from "./components/ModifyEventForm";
 import Day from "./components/Day";
+import ModifyActionComponent from "./components/ModifyActionComponent";
+import ModifyActionButton from "./components/ModifyActionButton";
 
 function App() {
   const [currenMonth, setCurrentMonth] = useState(getMonth());
@@ -40,6 +42,7 @@ function App() {
             width={["full", "350px"]}
           >
             <CreateEventButton />        
+            <ModifyActionButton/>
             <Box display={["none", "block"]}>
               <Sidebar />
             </Box>
