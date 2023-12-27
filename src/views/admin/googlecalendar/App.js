@@ -39,8 +39,10 @@ function App() {
             className="sidebar"
             width={["full", "350px"]}
           >
-            <CreateEventButton />        
-            <ModifyActionButton/>
+            <Flex alignItems="center"> {/* Flex container to align buttons horizontally */}
+              <CreateEventButton />
+              <ModifyActionButton />
+            </Flex>
             <Box display={["none", "block"]}>
               <Sidebar />
             </Box>
