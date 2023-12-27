@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FormControl, FormLabel, Input, Textarea, Button, Box, Select } from '@chakra-ui/react';
+import { FormControl, FormLabel, Input, Textarea, Button, Box, Select, Text } from '@chakra-ui/react';
 import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = 'https://pvpsmyizvorwwccuwbuq.supabase.co';
@@ -13,6 +13,7 @@ const ModifyActionComponent = () => {
     startingDate: '',
     endingDate: '',
     actionComment: '',
+    teamName: '', // Store the team name
   });
 
   const [existingActions, setExistingActions] = useState([]);
@@ -37,24 +38,41 @@ const ModifyActionComponent = () => {
 
   const handleActionSelect = async (selectedActionId) => {
     try {
-      const { data, error } = await supabase
+      const { data: actionData, error: actionError } = await supabase
         .from('vianney_actions')
         .select('*')
         .eq('id', selectedActionId)
         .single();
 
-      if (error) {
-        console.error('Error fetching action data:', error);
+      if (actionError) {
+        console.error('Error fetching action data:', actionError);
       } else {
         // Update the action state with the selected action data
         setAction({
           ...action,
           actionId: selectedActionId,
-          actionName: data.action_name,
-          startingDate: data.starting_date,
-          endingDate: data.ending_date,
-          actionComment: data.action_comment,
+          actionName: actionData.action_name,
+          startingDate: actionData.starting_date,
+          endingDate: actionData.ending_date,
+          actionComment: actionData.action_comment,
         });
+
+        // Fetch the associated team name
+        const { data: teamData, error: teamError } = await supabase
+          .from('vianney_teams')
+          .select('nom')
+          .eq('id', actionData.team_to_which_its_attached)
+          .single();
+
+        if (teamError) {
+          console.error('Error fetching team name:', teamError);
+        } else {
+          // Update the team name in the state
+          setAction({
+            ...action,
+            teamName: teamData.nom,
+          });
+        }
       }
     } catch (error) {
       console.error('An error occurred while fetching action data:', error);
@@ -109,6 +127,7 @@ const ModifyActionComponent = () => {
           </option>
         ))}
       </Select>
+      {action.teamName && <Text>Nom de l'équipe : {action.teamName}</Text>}
       <form onSubmit={handleSubmit}>
         <FormControl isRequired>
           <FormLabel>Nom de l'action</FormLabel>
