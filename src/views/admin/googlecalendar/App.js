@@ -10,8 +10,6 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/fr';
 import CreateEventButton from "./components/CreateEventButton";
 import ModifyEventForm from "./components/ModifyEventForm";
-import Day from "./components/Day";
-import ModifyActionComponent from "./components/ModifyActionComponent";
 import ModifyActionButton from "./components/ModifyActionButton";
 
 function App() {
