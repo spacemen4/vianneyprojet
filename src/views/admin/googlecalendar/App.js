@@ -11,6 +11,7 @@ import 'dayjs/locale/fr';
 import CreateEventButton from "./components/CreateEventButton";
 import ModifyActionButton from "./components/ModifyActionButton";
 import ModifyActionButtonBis from "./components/ModifyActionButtonBis";
+import ActionIdDisplay from "./components/ActionIdDisplay"; // Import the ActionIdDisplay component
 
 function App() {
   const [currenMonth, setCurrentMonth] = useState(getMonth());
@@ -46,6 +47,7 @@ function App() {
                 <ModifyActionButton initialActionData={selectedActionData} />
               </div>
               <ModifyActionButtonBis/>
+              <ActionIdDisplay actionId={selectedActionData?.action_id} /> {/* Pass the action_id property */}
             </Flex>
             <Box display={["none", "block"]}>
               <Sidebar />
