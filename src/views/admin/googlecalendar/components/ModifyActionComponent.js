@@ -6,7 +6,7 @@ const supabaseUrl = 'https://pvpsmyizvorwwccuwbuq.supabase.co';
 const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB2cHNteWl6dm9yd3djY3V3YnVxIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTcwMjgzMDg2MCwiZXhwIjoyMDE4NDA2ODYwfQ.9YDEN41__xBFJU91XY9e3r119A03yQ2oq5azmrx1aqY';
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-const ModifyActionComponent = () => {
+const ModifyActionComponent = ({ actionData }) => {
   const [action, setAction] = useState({
     actionId: '', // Store the selected action ID
     actionName: '',
@@ -19,6 +19,17 @@ const ModifyActionComponent = () => {
   const [existingActions, setExistingActions] = useState([]);
 
   useEffect(() => {
+    if (actionData) {
+      setAction({
+        actionId: actionData.id, // Make sure the property names match with what you pass
+        actionName: actionData.action_name,
+        startingDate: actionData.starting_date,
+        endingDate: actionData.ending_date,
+        actionComment: actionData.action_comment,
+        teamName: '', // Initialize team name as empty, fetch it later if needed
+      });
+    }
+
     // Fetch existing actions when the component mounts
     const fetchExistingActions = async () => {
       try {
@@ -34,7 +45,7 @@ const ModifyActionComponent = () => {
     };
 
     fetchExistingActions();
-  }, []);
+  }, [actionData]);
 
   const handleActionSelect = async (selectedActionId) => {
     try {
