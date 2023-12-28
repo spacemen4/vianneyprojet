@@ -11,7 +11,7 @@ const supabaseUrl = 'https://pvpsmyizvorwwccuwbuq.supabase.co';
 const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB2cHNteWl6dm9yd3djY3V3YnVxIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTcwMjgzMDg2MCwiZXhwIjoyMDE4NDA2ODYwfQ.9YDEN41__xBFJU91XY9e3r119A03yQ2oq5azmrx1aqY';
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-export default function Day({ day, rowIdx, setShowModifyForm }) {
+export default function Day({ day, rowIdx, setShowModifyForm, setSelectedAction }) {
   const [dayEvents, setDayEvents] = useState([]);
   const { setDaySelected, setShowEventModal, setSelectedEvent } = useContext(GlobalContext);
   const formatDate = (date) => {
@@ -84,7 +84,7 @@ export default function Day({ day, rowIdx, setShowModifyForm }) {
       >
         {dayEvents.map((event, idx) => (
           <Tooltip
-            key={idx}
+          key={idx}
             label={formatTooltipContent(event)}
             fontSize="sm"
             placement="right"
@@ -94,8 +94,8 @@ export default function Day({ day, rowIdx, setShowModifyForm }) {
               onClick={(e) => {
                 e.stopPropagation();
                 setDaySelected(day);
-                setSelectedEvent(event.id); // Pass UUID to setSelectedEvent
-                setShowModifyForm(true); // Open the modification form
+                setSelectedEvent(event.id);
+                setSelectedAction(event); // Pass action data to ModifyActionButton
               }}
               bg={event.color || 'gray.200'}
               p={1}

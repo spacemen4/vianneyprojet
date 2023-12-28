@@ -9,16 +9,18 @@ import EventModal from "./components/EventModal";
 import dayjs from 'dayjs';
 import 'dayjs/locale/fr';
 import CreateEventButton from "./components/CreateEventButton";
-import ModifyEventForm from "./components/ModifyEventForm";
 import ModifyActionButton from "./components/ModifyActionButton";
+import ModifyActionButtonBis from "./components/ModifyActionButtonBis";
 
 function App() {
   const [currenMonth, setCurrentMonth] = useState(getMonth());
-  const { monthIndex, showEventModal, selectedEvent } = useContext(GlobalContext); // Add selectedEvent state
-  const [showModifyForm, setShowModifyForm] = useState(false); // Add state to control modification form display
+  const { monthIndex, showEventModal } = useContext(GlobalContext); // Add selectedEvent state
+  const [showModifyForm, setShowModifyForm] = useState(false); 
+  const [selectedActionData, setSelectedActionData] = useState(null);
   dayjs.locale('fr');
-
-
+  const modifyActionButtonStyle = {
+    display: 'none', // This style will hide the button
+  };
   useEffect(() => {
     setCurrentMonth(getMonth(monthIndex));
   }, [monthIndex]);
@@ -26,7 +28,6 @@ function App() {
   return (
     <ChakraProvider>
       {showEventModal && !showModifyForm && <EventModal />}
-      {showModifyForm && <ModifyEventForm eventUUID={selectedEvent} setShowModifyForm={setShowModifyForm} />}
       <Flex direction="column" height="100vh">
         <CalendarHeader />
         
@@ -39,15 +40,22 @@ function App() {
             className="sidebar"
             width={["full", "350px"]}
           >
-            <Flex alignItems="center"> {/* Flex container to align buttons horizontally */}
+            <Flex alignItems="center">
               <CreateEventButton />
-              <ModifyActionButton />
+              <div style={modifyActionButtonStyle}>
+                <ModifyActionButton initialActionData={selectedActionData} />
+              </div>
+              <ModifyActionButtonBis/>
             </Flex>
             <Box display={["none", "block"]}>
               <Sidebar />
             </Box>
           </Box>
-          <Month month={currenMonth} setShowModifyForm={setShowModifyForm} />
+          <Month
+            month={currenMonth}
+            setShowModifyForm={setShowModifyForm}
+            setSelectedAction={setSelectedActionData} // Pass the callback down
+          />
         </Flex>
       </Flex>
     </ChakraProvider>
