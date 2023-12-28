@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, Icon, Text, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody } from "@chakra-ui/react";
 import { FaEdit } from "react-icons/fa"; // You can use the edit icon from Font Awesome or any other icon library
-import ModifyActionComponent from "./ModifyActionComponent";
+import ModifyActionComponentBis from "./ModifyActionComponentBis";
 
 export default function ModifyActionButton() {
   const [isModifyActionModalOpen, setModifyActionModalOpen] = useState(false);
@@ -34,7 +34,7 @@ export default function ModifyActionButton() {
           <ModalHeader>Modifier l'action</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <ModifyActionComponent />
+            <ModifyActionComponentBis />
           </ModalBody>
         </ModalContent>
       </Modal>

@@ -6,7 +6,7 @@ const supabaseUrl = 'https://pvpsmyizvorwwccuwbuq.supabase.co';
 const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB2cHNteWl6dm9yd3djY3V3YnVxIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTcwMjgzMDg2MCwiZXhwIjoyMDE4NDA2ODYwfQ.9YDEN41__xBFJU91XY9e3r119A03yQ2oq5azmrx1aqY';
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-const ModifyActionComponent = ({ actionData }) => {
+const ModifyActionComponentBis = ({ actionData }) => {
   const [action, setAction] = useState({
     actionId: '', // Store the selected action ID
     actionName: '',
@@ -127,6 +127,17 @@ const ModifyActionComponent = ({ actionData }) => {
 
   return (
     <Box>
+        <Select
+        placeholder="Sélectionner une action"
+        onChange={(e) => handleActionSelect(e.target.value)}
+        value={action.actionId}
+      >
+        {existingActions.map((existingAction) => (
+          <option key={existingAction.id} value={existingAction.id}>
+            {existingAction.action_name}
+          </option>
+        ))}
+      </Select>
       {action.teamName && <Text>Nom de l'équipe : {action.teamName}</Text>}
       <form onSubmit={handleSubmit}>
         <FormControl isRequired>
@@ -172,4 +183,4 @@ const ModifyActionComponent = ({ actionData }) => {
   );
 };
 
-export default ModifyActionComponent;
+export default ModifyActionComponentBis;
