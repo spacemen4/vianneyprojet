@@ -41,7 +41,7 @@ const App = () => {
   const { monthIndex, showEventModal } = useContext(GlobalContext); // Add selectedEvent state
   const [showModifyForm, setShowModifyForm] = useState(false);
   const [selectedActionData, setSelectedActionData] = useState(null);
-  const [selectedAction, setSelectedAction] = useState(null); // Renamed for clarity
+const [selectedAction, setSelectedAction] = useState(null); // Renamed for clarity
   const { setDaySelected, setShowEventModal, setSelectedEvent } = useContext(GlobalContext);
   const [isModifyActionModalOpen, setModifyActionModalOpen] = useState(false);
   const modifyActionButtonStyle = {
@@ -65,8 +65,7 @@ const App = () => {
       const fetchActions = async () => {
         const { data, error } = await supabase
           .from('team_action_view_rendering')
-          .select('*');
-
+          .select('*'); 
         if (error) {
           console.error('Error fetching actions:', error);
         } else {
@@ -164,7 +163,8 @@ const App = () => {
             <Flex alignItems="center">
               <CreateEventButton />
               <div style={modifyActionButtonStyle}>
-              <ModifyAction initialActionData={selectedActionData} />
+              // In App component
+                <ModifyAction initialActionData={selectedActionData} />
               </div>
               <ModifyActionButtonBis />
               <ActionIdDisplay actionId={selectedActionData?.action_id} /> {/* Pass the action_id property */}

@@ -19,9 +19,10 @@ const ModifyAction = ({ initialActionData }) => {
     const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
     useEffect(() => {
+        console.log("Initial Action Data:", initialActionData); // Log to check the structure
         if (initialActionData) {
             setAction({
-                actionId: initialActionData.id,
+                actionId: initialActionData.action_id,
                 actionName: initialActionData.action_name,
                 startingDate: initialActionData.starting_date,
                 endingDate: initialActionData.ending_date,
@@ -40,30 +41,31 @@ const ModifyAction = ({ initialActionData }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         console.log('Updating action with ID:', action.actionId);
-      
+
         const updatedAction = {
-          action_name: action.actionName,
-          starting_date: action.startingDate,
-          ending_date: action.endingDate,
-          action_comment: action.actionComment,
+            action_id: action.actionId,
+            action_name: action.actionName,
+            starting_date: action.startingDate,
+            ending_date: action.endingDate,
+            action_comment: action.actionComment,
         };
-      
+
         try {
-          const { error } = await supabase
-            .from('vianney_actions')
-            .update(updatedAction)
-            .eq('id', action.actionId); // Ensure actionId is correctly set
-      
-          if (error) {
-            console.error('Error updating action:', error);
-          } else {
-            console.log('Action updated successfully');
-            // Handle success, e.g., close the modal or display a success message
-          }
+            const { error } = await supabase
+                .from('vianney_actions')
+                .update(updatedAction)
+                .eq('id', action.actionId); // Ensure actionId is correctly set
+
+            if (error) {
+                console.error('Error updating action:', error);
+            } else {
+                console.log('Action updated successfully');
+                // Handle success, e.g., close the modal or display a success message
+            }
         } catch (error) {
-          console.error('An error occurred while updating action:', error);
+            console.error('An error occurred while updating action:', error);
         }
-      };
+    };
 
     return (
         <div>
@@ -91,6 +93,12 @@ const ModifyAction = ({ initialActionData }) => {
                             <Box>
                                 {action.teamName && <Text>Nom de l'équipe : {action.teamName}</Text>}
                                 <form onSubmit={handleSubmit}>
+                                    <Input
+                                        type="uuid"
+                                        name="actionId"
+                                        value={action.actionId}
+                                        onChange={handleInputChange}
+                                    />
                                     <FormControl isRequired>
                                         <FormLabel>Nom de l'action</FormLabel>
                                         <Input
