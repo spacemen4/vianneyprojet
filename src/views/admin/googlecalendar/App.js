@@ -41,15 +41,24 @@ const App = () => {
   const { monthIndex, showEventModal } = useContext(GlobalContext); // Add selectedEvent state
   const [showModifyForm, setShowModifyForm] = useState(false);
   const [selectedActionData, setSelectedActionData] = useState(null);
-  const { setDaySelected, setShowEventModal, setSelectedEvent, setSelectedAction } = useContext(GlobalContext);
+  const [selectedAction, setSelectedAction] = useState(null); // Renamed for clarity
+  const { setDaySelected, setShowEventModal, setSelectedEvent} = useContext(GlobalContext);
+  const [isModifyActionModalOpen, setModifyActionModalOpen] = useState(false);
   const modifyActionButtonStyle = {
     display: 'none', // This style will hide the button
   };
   useEffect(() => {
     setCurrentMonth(getMonth(monthIndex));
   }, [monthIndex]);
+  useEffect(() => {
+    if (selectedAction) {
+      setSelectedActionData(selectedAction); // Set the selected action data for ModifyActionButton
+      setModifyActionModalOpen(true); // Open the modal
+    }
+  }, [selectedAction]);
+  
 
-  const DayComponent = ({ day, rowIdx }) => {
+  const DayComponent = ({ day, rowIdx, setSelectedAction }) => {
     const [dayEvents, setDayEvents] = useState([]);
 
     useEffect(() => {
@@ -117,7 +126,7 @@ const App = () => {
                   e.stopPropagation();
                   setDaySelected(day);
                   setSelectedEvent(event.id);
-                  setSelectedAction(event); // Pass action data to ModifyActionButton
+                  setSelectedAction(event);
                 }}
                 bg={event.color || 'gray.200'}
                 p={1}
@@ -155,7 +164,12 @@ const App = () => {
             <Flex alignItems="center">
               <CreateEventButton />
               <div style={modifyActionButtonStyle}>
-                <ModifyActionButton initialActionData={selectedActionData} />
+              <ModifyActionButton 
+  initialActionData={selectedActionData}
+  isModalOpen={isModifyActionModalOpen}
+  setModalOpen={setModifyActionModalOpen}
+/>
+
               </div>
               <ModifyActionButtonBis />
               <ActionIdDisplay actionId={selectedActionData?.action_id} /> {/* Pass the action_id property */}
@@ -172,6 +186,7 @@ const App = () => {
                     day={day}
                     rowIdx={i}
                     key={idx}
+                    setSelectedAction={setSelectedAction} // Add this line
                   />
                 ))}
               </React.Fragment>

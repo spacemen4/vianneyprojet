@@ -3,7 +3,7 @@ import { Button, Icon, Text, Modal, ModalOverlay, ModalContent, ModalHeader, Mod
 import { FaEdit } from "react-icons/fa"; // You can use the edit icon from Font Awesome or any other icon library
 import ModifyActionComponent from "./ModifyActionComponent";
 
-export default function ModifyActionButton({ initialActionData }) {
+export default function ModifyActionButton({ initialActionData, isModalOpen, setModalOpen }) {
   const [isModifyActionModalOpen, setModifyActionModalOpen] = useState(false);
   const [selectedActionData, setSelectedActionData] = useState(null); // Store the selected action data
 
