@@ -9,7 +9,7 @@ import dayjs from 'dayjs';
 import isBetween from "dayjs/plugin/isBetween";
 import 'dayjs/locale/fr';
 import CreateEventButton from "./components/CreateEventButton";
-import ModifyActionButton from "./components/ModifyActionButton";
+import ModifyAction from "./components/ModifyAction";
 import ModifyActionButtonBis from "./components/ModifyActionButtonBis";
 import ActionIdDisplay from "./components/ActionIdDisplay"; // Import the ActionIdDisplay component
 import { createClient } from '@supabase/supabase-js';
@@ -42,7 +42,7 @@ const App = () => {
   const [showModifyForm, setShowModifyForm] = useState(false);
   const [selectedActionData, setSelectedActionData] = useState(null);
   const [selectedAction, setSelectedAction] = useState(null); // Renamed for clarity
-  const { setDaySelected, setShowEventModal, setSelectedEvent} = useContext(GlobalContext);
+  const { setDaySelected, setShowEventModal, setSelectedEvent } = useContext(GlobalContext);
   const [isModifyActionModalOpen, setModifyActionModalOpen] = useState(false);
   const modifyActionButtonStyle = {
     display: 'none', // This style will hide the button
@@ -56,7 +56,7 @@ const App = () => {
       setModifyActionModalOpen(true); // Open the modal
     }
   }, [selectedAction]);
-  
+
 
   const DayComponent = ({ day, rowIdx, setSelectedAction }) => {
     const [dayEvents, setDayEvents] = useState([]);
@@ -164,12 +164,7 @@ const App = () => {
             <Flex alignItems="center">
               <CreateEventButton />
               <div style={modifyActionButtonStyle}>
-              <ModifyActionButton 
-  initialActionData={selectedActionData}
-  isModalOpen={isModifyActionModalOpen}
-  setModalOpen={setModifyActionModalOpen}
-/>
-
+              <ModifyAction initialActionData={selectedActionData} />
               </div>
               <ModifyActionButtonBis />
               <ActionIdDisplay actionId={selectedActionData?.action_id} /> {/* Pass the action_id property */}

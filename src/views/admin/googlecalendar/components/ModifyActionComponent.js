@@ -100,20 +100,21 @@ const ModifyActionComponent = ({ actionData }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    console.log('Updating action with ID:', action.actionId);
+  
     const updatedAction = {
       action_name: action.actionName,
       starting_date: action.startingDate,
       ending_date: action.endingDate,
       action_comment: action.actionComment,
     };
-
+  
     try {
       const { error } = await supabase
         .from('vianney_actions')
         .update(updatedAction)
-        .eq('id', action.actionId);
-
+        .eq('id', action.actionId); // Ensure actionId is correctly set
+  
       if (error) {
         console.error('Error updating action:', error);
       } else {
@@ -124,6 +125,7 @@ const ModifyActionComponent = ({ actionData }) => {
       console.error('An error occurred while updating action:', error);
     }
   };
+  
 
   return (
     <Box>
