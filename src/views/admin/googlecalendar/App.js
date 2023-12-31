@@ -55,7 +55,7 @@ const App = () => {
     setSelectedTeams(updatedSelectedTeams);
   };
 
-  const setSelectedTeamsCallback = (teams) => {
+const setSelectedTeamsCallback = (teams) => {
     setSelectedTeams(teams);
   };
   const modifyActionButtonStyle = {
@@ -70,6 +70,25 @@ const App = () => {
       setModifyActionModalOpen(true); 
     }
   }, [selectedAction, ModifyActionModalOpen]);
+
+  useEffect(() => {
+    // Fetch data from Supabase when the component mounts
+    async function fetchTeamMembers() {
+      const { data, error } = await supabase.from("vianney_teams").select("*");
+
+      if (error) {
+        console.error("Error fetching team members:", error.message);
+        return;
+      }
+
+      // Initialize the selectedTeams array with false values for each team
+      setSelectedTeams(Array(data.length).fill(false));
+      // Store the team members in state
+      setTeamMembers(data);
+    }
+
+    fetchTeamMembers();
+  }, []);
 
   const DayComponent = ({ day, rowIdx }) => {
     const [dayEvents, setDayEvents] = useState([]);
@@ -185,7 +204,7 @@ const App = () => {
           >
             <Flex alignItems="center">
               <Box mr="20px">
-              <CreateEventButton />
+                <CreateEventButton />
               </Box>
               <div style={modifyActionButtonStyle}>
                 <ModifyAction initialActionData={selectedActionData} />
@@ -201,8 +220,8 @@ const App = () => {
                   <li key={index}>
                     <Flex alignItems="center">
                       <Checkbox
-                        onChange={() => handleCheckboxChange(member.uuid)} // Use the member's UUID as a unique identifier
-                        isChecked={selectedTeams.includes(member.uuid)} // Check if the UUID is in the selectedTeams array
+                      onChange={() => handleCheckboxChange(index)}
+                      isChecked={selectedTeams[index]}
                       />
                       <Badge marginLeft="2" color={member.color || "blue"}>{`${member.nom} ${member.prenom}`}</Badge>
                     </Flex>
@@ -218,7 +237,7 @@ const App = () => {
                   <DayComponent
                     day={day}
                     rowIdx={i}
-                    key={idx}
+key={idx}
 setSelectedAction={setSelectedAction}
                   selectedTeams={selectedTeams} // Add this line
                   />
