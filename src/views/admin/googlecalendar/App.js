@@ -1,8 +1,8 @@
 import React, { useState, useContext, useEffect } from "react";
+import SmallCalendar from "./components/SmallCalendar";
 import { getMonth } from "./util";
-import { ChakraProvider, Flex, Box, Text, VStack, Tooltip, Grid } from "@chakra-ui/react";
+import { ChakraProvider, Flex, Box, Text, VStack, Tooltip, Grid, Badge,Checkbox } from "@chakra-ui/react";
 import CalendarHeader from "./components/CalendarHeader";
-import Sidebar from "./components/Sidebar";
 import GlobalContext from "./context/GlobalContext";
 import EventModal from "./components/EventModal";
 import dayjs from 'dayjs';
@@ -45,6 +45,19 @@ const App = () => {
   const { setDaySelected, setShowEventModal, setSelectedEvent } = useContext(GlobalContext);
   const [ModifyActionModalOpen, setModifyActionModalOpen] = useState(false);
   const [selectedTeams, setSelectedTeams] = useState([]);
+  const [teamMembers, setTeamMembers] = useState([]);
+  const handleCheckboxChange = (index) => {
+    // Create a copy of the selectedTeams array
+    const updatedSelectedTeams = [...selectedTeams];
+    // Toggle the value at the specified index
+    updatedSelectedTeams[index] = !updatedSelectedTeams[index];
+    // Update the state with the new selectedTeams array
+    setSelectedTeams(updatedSelectedTeams);
+  };
+
+  const setSelectedTeamsCallback = (teams) => {
+    setSelectedTeams(teams);
+  };
   const modifyActionButtonStyle = {
     display: 'none', // This style will hide the button
   };
@@ -58,32 +71,35 @@ const App = () => {
     }
   }, [selectedAction, ModifyActionModalOpen]);
 
-
-  const DayComponent = ({ day, rowIdx, setSelectedAction, selectedTeams }) => {
+  const DayComponent = ({ day, rowIdx }) => {
     const [dayEvents, setDayEvents] = useState([]);
   
     useEffect(() => {
       const fetchActions = async () => {
-        const { data, error } = await supabase
-          .from('team_action_view_rendering')
-          .select('*');
-        if (error) {
+        try {
+          const { data, error } = await supabase
+            .from('team_action_view_rendering')
+            .select('*');
+          if (error) {
+            console.error('Error fetching actions:', error);
+          } else {
+            // Filter actions based on selected teams
+            const events = data.filter((action) =>
+              dayjs(day).isBetween(
+                dayjs(action.starting_date).subtract(1, 'day'),
+                dayjs(action.ending_date),
+                null,
+                '[]'
+              ) &&
+              (selectedTeams.length === 0 || selectedTeams.includes(action.name_of_the_team))
+            );
+            setDayEvents(events);
+          }
+        } catch (error) {
           console.error('Error fetching actions:', error);
-        } else {
-          // Filter actions based on selected teams
-          const events = data.filter((action) =>
-            dayjs(day).isBetween(
-              dayjs(action.starting_date).subtract(1, 'day'),
-              dayjs(action.ending_date),
-              null,
-              '[]'
-            ) &&
-            (selectedTeams.length === 0 || selectedTeams.includes(action.team_name))
-          );
-          setDayEvents(events);
         }
       };
-  
+    
       fetchActions();
     }, [day, selectedTeams]);
 
@@ -178,7 +194,21 @@ const App = () => {
               <ModifyActionBis/>
             </Flex>
             <Box display={["none", "block"]}>
-              <Sidebar />
+              <SmallCalendar />
+              <Text fontSize="xl" fontWeight="bold">Team Members:</Text>
+              <ul>
+                {teamMembers.map((member, index) => (
+                  <li key={index}>
+                    <Flex alignItems="center">
+                      <Checkbox
+                        onChange={() => handleCheckboxChange(member.uuid)} // Use the member's UUID as a unique identifier
+                        isChecked={selectedTeams.includes(member.uuid)} // Check if the UUID is in the selectedTeams array
+                      />
+                      <Badge marginLeft="2" color={member.color || "blue"}>{`${member.nom} ${member.prenom}`}</Badge>
+                    </Flex>
+                  </li>
+                ))}
+              </ul>
             </Box>
           </Box>
           <Grid flex="1" templateColumns="repeat(7, 1fr)" templateRows="repeat(5, 1fr)" p={1}>
@@ -186,12 +216,12 @@ const App = () => {
               <React.Fragment key={i}>
                 {row.map((day, idx) => (
                   <DayComponent
-                  day={day}
-                  rowIdx={i}
-                  key={idx}
-                  setSelectedAction={setSelectedAction}
+                    day={day}
+                    rowIdx={i}
+                    key={idx}
+setSelectedAction={setSelectedAction}
                   selectedTeams={selectedTeams} // Add this line
-                />                
+                  />
                 ))}
               </React.Fragment>
             ))}
