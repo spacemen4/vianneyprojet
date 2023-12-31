@@ -161,7 +161,9 @@ const App = () => {
             width={["full", "350px"]}
           >
             <Flex alignItems="center">
+              <Box mr="20px">
               <CreateEventButton />
+              </Box>
               <div style={modifyActionButtonStyle}>
                 <ModifyAction initialActionData={selectedActionData} />
                 <ActionIdDisplay actionId={selectedActionData?.action_id} /> 
