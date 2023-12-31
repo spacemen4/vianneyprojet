@@ -9,6 +9,7 @@ import { createClient } from '@supabase/supabase-js';
 
 const ModifyAction = ({ initialActionData }) => {
     const [isModalOpen, setModalOpen] = useState(false);
+    const [teamData, setTeamData] = useState(null);
     const [action, setAction] = useState({
         actionId: '',
         actionName: '',
@@ -36,6 +37,30 @@ const ModifyAction = ({ initialActionData }) => {
             setModalOpen(true);
         }
     }, [initialActionData]);
+
+    useEffect(() => {
+        // Fetch team data from the view
+        const fetchTeamData = async () => {
+            try {
+                const { data, error } = await supabase
+                    .from('team_member_view')
+                    .select('team_nom, team_prenom')
+                    .eq('action_id', action.actionId); // Filter by action ID
+
+                if (error) {
+                    console.error('Error fetching team data:', error);
+                } else if (data && data.length > 0) {
+                    // Store the team data in state
+                    setTeamData(data[0]);
+                }
+            } catch (error) {
+                console.error('An error occurred while fetching team data:', error);
+            }
+        };
+
+        // Call the fetchTeamData function
+        fetchTeamData();
+    }, [action.actionId, supabase]);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -141,9 +166,11 @@ const ModifyAction = ({ initialActionData }) => {
                         <ModalBody>
                             {/* Form elements here */}
                             <Box>
-                                {action.teamName && <Text>Nom de l'équipe : {action.teamName}</Text>}
+                                {teamData && (
+                                    <Text>Nom de l'équipe : {teamData.team_nom} {teamData.team_prenom}</Text>
+                                )}
                                 <form onSubmit={handleSubmit}>
-
+                                    
                                     <FormControl isRequired>
                                         <FormLabel>Nom de l'action</FormLabel>
                                         <Input
