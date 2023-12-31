@@ -1,4 +1,4 @@
-import {Text, Checkbox, Box, Flex } from "@chakra-ui/react";
+import { Text, Checkbox, Box, Flex, Badge } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { createClient } from '@supabase/supabase-js';
 
@@ -12,7 +12,7 @@ const Labels = () => {
   useEffect(() => {
     // Fetch data from Supabase when the component mounts
     async function fetchTeamMembers() {
-      const { data, error } = await supabase.from("vianney_teams").select("nom, prenom");
+      const { data, error } = await supabase.from("vianney_teams").select("*");
 
       if (error) {
         console.error("Error fetching team members:", error.message);
@@ -39,8 +39,10 @@ const Labels = () => {
         {teamMembers.map((member, index) => (
           <li key={index}>
             <Flex alignItems="center">
-              <Checkbox onChange={() => handleCheckboxChange(index)} />
-              <Text marginLeft="2">{`${member.nom} ${member.prenom}`}</Text>
+              <Checkbox
+                onChange={() => handleCheckboxChange(index)}                
+              />
+              <Badge marginLeft="2" color={member.color || "blue"}>{`${member.nom} ${member.prenom}`}</Badge>
             </Flex>
           </li>
         ))}
