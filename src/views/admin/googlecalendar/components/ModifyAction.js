@@ -67,6 +67,28 @@ const ModifyAction = ({ initialActionData }) => {
         }
     };
 
+    const handleDelete = async () => {
+        console.log('Deleting action with ID:', action.actionId);
+    
+        try {
+            const { error } = await supabase
+                .from('vianney_actions')
+                .delete()
+                .eq('id', action.actionId);
+    
+            if (error) {
+                console.error('Error deleting action:', error);
+            } else {
+                console.log('Action deleted successfully');
+                setModalOpen(false);
+                // Handle deletion success, e.g., close the modal or refresh the list
+            }
+        } catch (error) {
+            console.error('An error occurred while deleting action:', error);
+        }
+    };
+    
+
     return (
         <div>
             <Button
@@ -93,12 +115,7 @@ const ModifyAction = ({ initialActionData }) => {
                             <Box>
                                 {action.teamName && <Text>Nom de l'équipe : {action.teamName}</Text>}
                                 <form onSubmit={handleSubmit}>
-                                    <Input
-                                        type="uuid"
-                                        name="actionId"
-                                        value={action.actionId}
-                                        onChange={handleInputChange}
-                                    />
+                                    
                                     <FormControl isRequired>
                                         <FormLabel>Nom de l'action</FormLabel>
                                         <Input
@@ -137,6 +154,10 @@ const ModifyAction = ({ initialActionData }) => {
                                     <Button colorScheme="blue" type="submit">
                                         Modifier l'action
                                     </Button>
+                                    <Button colorScheme="red" onClick={handleDelete}>
+    Delete Action
+</Button>
+
                                 </form>
                             </Box>
                         </ModalBody>
