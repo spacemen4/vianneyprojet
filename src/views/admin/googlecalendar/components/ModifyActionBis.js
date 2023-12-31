@@ -135,7 +135,7 @@ const ModifyActionBis = () => {
                     startingDate: actionData.starting_date,
                     endingDate: actionData.ending_date,
                     actionComment: actionData.action_comment,
-                    teamName: `${actionData.nom} ${actionData.prenom}`, // Concatenating nom and prenom
+                    teamName: [actionData.nom, actionData.prenom].filter(Boolean).join(' '),
                 });                
             }
         } catch (error) {
