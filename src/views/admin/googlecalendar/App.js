@@ -13,6 +13,7 @@ import ModifyAction from "./components/ModifyAction";
 import ModifyActionButtonBis from "./components/ModifyActionButtonBis";
 import ActionIdDisplay from "./components/ActionIdDisplay"; // Import the ActionIdDisplay component
 import { createClient } from '@supabase/supabase-js';
+import ModifyActionBis from "./components/ModifyActionBis";
 
 dayjs.locale('fr');
 dayjs.extend(isBetween);
@@ -164,9 +165,9 @@ const App = () => {
               <CreateEventButton />
               <div style={modifyActionButtonStyle}>
                 <ModifyAction initialActionData={selectedActionData} />
+                <ActionIdDisplay actionId={selectedActionData?.action_id} /> 
               </div>
-              <ModifyActionButtonBis />
-              <ActionIdDisplay actionId={selectedActionData?.action_id} /> 
+              <ModifyActionBis/>
             </Flex>
             <Box display={["none", "block"]}>
               <Sidebar />
