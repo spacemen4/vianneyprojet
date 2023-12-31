@@ -1,4 +1,4 @@
-import { Box, Text, Checkbox } from "@chakra-ui/react";
+import {Text, Checkbox, Box, Flex } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { createClient } from '@supabase/supabase-js';
 
@@ -38,8 +38,10 @@ const Labels = () => {
       <ul>
         {teamMembers.map((member, index) => (
           <li key={index}>
-            <Checkbox onChange={() => handleCheckboxChange(index)} />
-            <Text>{`${member.nom} ${member.prenom}`}</Text>
+            <Flex alignItems="center">
+              <Checkbox onChange={() => handleCheckboxChange(index)} />
+              <Text marginLeft="2">{`${member.nom} ${member.prenom}`}</Text>
+            </Flex>
           </li>
         ))}
       </ul>
