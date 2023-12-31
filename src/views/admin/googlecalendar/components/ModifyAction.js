@@ -151,10 +151,10 @@ const ModifyAction = ({ initialActionData }) => {
                                             onChange={handleInputChange}
                                         />
                                     </FormControl>
-                                    <Button colorScheme="blue" type="submit">
+                                    <Button m="10px" colorScheme="blue" type="submit">
                                         Modifier l'action
                                     </Button>
-                                    <Button colorScheme="red" onClick={handleDelete}>
+                                    <Button m="10px" colorScheme="red" onClick={handleDelete}>
                                         Delete Action
                                     </Button>
                                 </form>
