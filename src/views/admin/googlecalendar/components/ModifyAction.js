@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Icon, Text, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, FormControl, FormLabel, Input, Textarea, Box } from '@chakra-ui/react';
+import {
+    Button, Icon, Text, Modal, ModalOverlay, ModalContent, ModalHeader,
+    ModalCloseButton, ModalBody, FormControl, FormLabel, Input, Textarea,
+    Box, useToast
+} from '@chakra-ui/react';
 import { FaEdit } from 'react-icons/fa';
 import { createClient } from '@supabase/supabase-js';
 
@@ -13,7 +17,7 @@ const ModifyAction = ({ initialActionData }) => {
         actionComment: '',
         teamName: '',
     });
-
+    const toast = useToast();
     const supabaseUrl = 'https://pvpsmyizvorwwccuwbuq.supabase.co';
     const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB2cHNteWl6dm9yd3djY3V3YnVxIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTcwMjgzMDg2MCwiZXhwIjoyMDE4NDA2ODYwfQ.9YDEN41__xBFJU91XY9e3r119A03yQ2oq5azmrx1aqY';
     const supabase = createClient(supabaseUrl, supabaseAnonKey);
@@ -57,15 +61,27 @@ const ModifyAction = ({ initialActionData }) => {
                 .eq('id', action.actionId); // Ensure actionId is correctly set
 
             if (error) {
-                console.error('Error updating action:', error);
+                toast({
+                    title: "Erreur",
+                    description: "Une erreur s'est produite lors de la mise à jour de l'action.",
+                    status: "error",
+                    duration: 5000,
+                    isClosable: true,
+                });
             } else {
-                console.log('Action updated successfully');
-                // Handle success, e.g., close the modal or display a success message
+                toast({
+                    title: "Succès",
+                    description: "L'action a été mise à jour avec succès.",
+                    status: "success",
+                    duration: 5000,
+                    isClosable: true,
+                });
             }
         } catch (error) {
             console.error('An error occurred while updating action:', error);
         }
     };
+
 
     const handleDelete = async () => {
         console.log('Deleting action with ID:', action.actionId);
@@ -76,10 +92,22 @@ const ModifyAction = ({ initialActionData }) => {
                 .delete()
                 .eq('id', action.actionId);
 
-            if (error) {
-                console.error('Error deleting action:', error);
-            } else {
-                console.log('Action deleted successfully');
+                if (error) {
+                    toast({
+                        title: "Erreur",
+                        description: "Une erreur s'est produite lors de la suppression de l'action.",
+                        status: "error",
+                        duration: 5000,
+                        isClosable: true,
+                    });
+                } else {
+                    toast({
+                        title: "Succès",
+                        description: "L'action a été supprimée avec succès.",
+                        status: "success",
+                        duration: 5000,
+                        isClosable: true,
+                    });
                 setModalOpen(false);
                 // Handle deletion success, e.g., close the modal or refresh the list
             }
