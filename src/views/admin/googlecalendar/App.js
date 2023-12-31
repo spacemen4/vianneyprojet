@@ -150,7 +150,6 @@ const App = () => {
       {showEventModal && !showModifyForm && <EventModal />}
       <Flex direction="column" height="100vh">
         <CalendarHeader />
-
         <Flex
           className="main-container"
           flex={1}
