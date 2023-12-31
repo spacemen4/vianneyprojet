@@ -44,6 +44,7 @@ const App = () => {
   const [selectedAction, setSelectedAction] = useState(null); 
   const { setDaySelected, setShowEventModal, setSelectedEvent } = useContext(GlobalContext);
   const [ModifyActionModalOpen, setModifyActionModalOpen] = useState(false);
+  const [selectedTeams, setSelectedTeams] = useState([]);
   const modifyActionButtonStyle = {
     display: 'none', // This style will hide the button
   };
@@ -58,9 +59,9 @@ const App = () => {
   }, [selectedAction, ModifyActionModalOpen]);
 
 
-  const DayComponent = ({ day, rowIdx, setSelectedAction }) => {
+  const DayComponent = ({ day, rowIdx, setSelectedAction, selectedTeams }) => {
     const [dayEvents, setDayEvents] = useState([]);
-
+  
     useEffect(() => {
       const fetchActions = async () => {
         const { data, error } = await supabase
@@ -69,15 +70,22 @@ const App = () => {
         if (error) {
           console.error('Error fetching actions:', error);
         } else {
-          const events = data.filter(action =>
-            dayjs(day).isBetween(dayjs(action.starting_date).subtract(1, 'day'), dayjs(action.ending_date), null, '[]')
+          // Filter actions based on selected teams
+          const events = data.filter((action) =>
+            dayjs(day).isBetween(
+              dayjs(action.starting_date).subtract(1, 'day'),
+              dayjs(action.ending_date),
+              null,
+              '[]'
+            ) &&
+            (selectedTeams.length === 0 || selectedTeams.includes(action.team_name))
           );
           setDayEvents(events);
         }
       };
-
+  
       fetchActions();
-    }, [day]);
+    }, [day, selectedTeams]);
 
     function getCurrentDayClass() {
       return day.format("DD-MM-YY") === dayjs().format("DD-MM-YY")
@@ -178,11 +186,12 @@ const App = () => {
               <React.Fragment key={i}>
                 {row.map((day, idx) => (
                   <DayComponent
-                    day={day}
-                    rowIdx={i}
-                    key={idx}
-                    setSelectedAction={setSelectedAction} // Add this line
-                  />
+                  day={day}
+                  rowIdx={i}
+                  key={idx}
+                  setSelectedAction={setSelectedAction}
+                  selectedTeams={selectedTeams} // Add this line
+                />                
                 ))}
               </React.Fragment>
             ))}

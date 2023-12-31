@@ -9,6 +9,7 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 const Sidebar = () => {
   const [teamMembers, setTeamMembers] = useState([]);
+  const [selectedTeams, setSelectedTeams] = useState([]);
 
   useEffect(() => {
     // Fetch data from Supabase when the component mounts
@@ -20,6 +21,8 @@ const Sidebar = () => {
         return;
       }
 
+      // Initialize the selectedTeams array with false values for each team
+      setSelectedTeams(Array(data.length).fill(false));
       // Store the team members in state
       setTeamMembers(data);
     }
@@ -28,9 +31,12 @@ const Sidebar = () => {
   }, []);
 
   const handleCheckboxChange = (index) => {
-    // Handle checkbox state changes if needed
-    // You can manage the checkbox state here
-    // For simplicity, this example doesn't include checkbox state management
+    // Create a copy of the selectedTeams array
+    const updatedSelectedTeams = [...selectedTeams];
+    // Toggle the value at the specified index
+    updatedSelectedTeams[index] = !updatedSelectedTeams[index];
+    // Update the state with the new selectedTeams array
+    setSelectedTeams(updatedSelectedTeams);
   };
 
   return (
@@ -43,7 +49,7 @@ const Sidebar = () => {
             <Flex alignItems="center">
               <Checkbox
                 onChange={() => handleCheckboxChange(index)}
-                isChecked={true} 
+                isChecked={selectedTeams[index]}
               />
               <Badge marginLeft="2" color={member.color || "blue"}>{`${member.nom} ${member.prenom}`}</Badge>
             </Flex>
