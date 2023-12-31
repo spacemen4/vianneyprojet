@@ -40,7 +40,8 @@ const Labels = () => {
           <li key={index}>
             <Flex alignItems="center">
               <Checkbox
-                onChange={() => handleCheckboxChange(index)}                
+                onChange={() => handleCheckboxChange(index)}
+                isChecked={true} 
               />
               <Badge marginLeft="2" color={member.color || "blue"}>{`${member.nom} ${member.prenom}`}</Badge>
             </Flex>
