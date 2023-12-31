@@ -10,7 +10,6 @@ import isBetween from "dayjs/plugin/isBetween";
 import 'dayjs/locale/fr';
 import CreateEventButton from "./components/CreateEventButton";
 import ModifyAction from "./components/ModifyAction";
-import ModifyActionButtonBis from "./components/ModifyActionButtonBis";
 import ActionIdDisplay from "./components/ActionIdDisplay"; // Import the ActionIdDisplay component
 import { createClient } from '@supabase/supabase-js';
 import ModifyActionBis from "./components/ModifyActionBis";

@@ -38,7 +38,7 @@ const ModifyActionBis = () => {
             }
         };
         fetchExistingActions();
-    }, []);
+    }, [supabase]);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
