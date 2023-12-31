@@ -118,12 +118,13 @@ const ModifyActionBis = () => {
 
     const handleActionSelect = async (selectedActionId) => {
         try {
+            // Fetching action data
             const { data: actionData, error: actionError } = await supabase
-                .from('vianney_actions')
+                .from('team_action_view_rendering') // Using the view for easier data retrieval
                 .select('*')
-                .eq('id', selectedActionId)
+                .eq('action_id', selectedActionId)
                 .single();
-
+    
             if (actionError) {
                 console.error('Error fetching action data:', actionError);
             } else {
@@ -134,12 +135,14 @@ const ModifyActionBis = () => {
                     startingDate: actionData.starting_date,
                     endingDate: actionData.ending_date,
                     actionComment: actionData.action_comment,
-                });
+                    teamName: `${actionData.nom} ${actionData.prenom}`, // Concatenating nom and prenom
+                });                
             }
         } catch (error) {
             console.error('An error occurred while fetching action data:', error);
         }
     };
+    
 
     return (
         <div>
@@ -174,7 +177,7 @@ const ModifyActionBis = () => {
                                     </option>
                                 ))}
                             </Select>
-                            {action.teamName && <Text>Nom de l'équipe : {action.teamName}</Text>}
+                            {action.teamName && <Text>Consultant : {action.teamName}</Text>}
                             <form onSubmit={handleSubmit}>
                                 <FormControl isRequired>
                                     <FormLabel>Nom de l'action</FormLabel>
