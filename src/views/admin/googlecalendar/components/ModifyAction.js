@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {
     Button, Icon, Text, Modal, ModalOverlay, ModalContent, ModalHeader,
     ModalCloseButton, ModalBody, FormControl, FormLabel, Input, Textarea,
-    Box, useToast
+    Box, useToast, Badge
 } from '@chakra-ui/react';
 import { FaEdit } from 'react-icons/fa';
 import { createClient } from '@supabase/supabase-js';
@@ -117,22 +117,22 @@ const ModifyAction = ({ initialActionData }) => {
                 .delete()
                 .eq('id', action.actionId);
 
-                if (error) {
-                    toast({
-                        title: "Erreur",
-                        description: "Une erreur s'est produite lors de la suppression de l'action.",
-                        status: "error",
-                        duration: 5000,
-                        isClosable: true,
-                    });
-                } else {
-                    toast({
-                        title: "Succès",
-                        description: "L'action a été supprimée avec succès.",
-                        status: "success",
-                        duration: 5000,
-                        isClosable: true,
-                    });
+            if (error) {
+                toast({
+                    title: "Erreur",
+                    description: "Une erreur s'est produite lors de la suppression de l'action.",
+                    status: "error",
+                    duration: 5000,
+                    isClosable: true,
+                });
+            } else {
+                toast({
+                    title: "Succès",
+                    description: "L'action a été supprimée avec succès.",
+                    status: "success",
+                    duration: 5000,
+                    isClosable: true,
+                });
                 setModalOpen(false);
                 // Handle deletion success, e.g., close the modal or refresh the list
             }
@@ -167,10 +167,18 @@ const ModifyAction = ({ initialActionData }) => {
                             {/* Form elements here */}
                             <Box>
                                 {teamData && (
-                                    <Text>Nom de l'équipe : {teamData.team_nom} {teamData.team_prenom}</Text>
+                                    <Badge
+                                        bgColor="lightblue"
+                                        color="black"
+                                        p="2"
+                                        mb="2"
+                                        borderRadius={5}
+                                    >
+                                        Consultant : {teamData.team_nom} {teamData.team_prenom}
+                                    </Badge>
                                 )}
                                 <form onSubmit={handleSubmit}>
-                                    
+
                                     <FormControl isRequired>
                                         <FormLabel>Nom de l'action</FormLabel>
                                         <Input
@@ -210,7 +218,7 @@ const ModifyAction = ({ initialActionData }) => {
                                         Modifier l'action
                                     </Button>
                                     <Button m="10px" colorScheme="red" onClick={handleDelete}>
-                                        Delete Action
+                                        Supprimer
                                     </Button>
                                 </form>
                             </Box>

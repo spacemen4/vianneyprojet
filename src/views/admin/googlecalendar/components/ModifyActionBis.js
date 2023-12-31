@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {
     Button, Icon, Text, Modal, ModalOverlay, ModalContent, ModalHeader,
     ModalCloseButton, ModalBody, FormControl, FormLabel, Input, Textarea,
-    Box, Select, useToast
+    Box, Select, useToast, Badge
 } from '@chakra-ui/react';
 import { FaEdit } from 'react-icons/fa';
 import { createClient } from '@supabase/supabase-js';
@@ -124,7 +124,7 @@ const ModifyActionBis = () => {
                 .select('*')
                 .eq('action_id', selectedActionId)
                 .single();
-    
+
             if (actionError) {
                 console.error('Error fetching action data:', actionError);
             } else {
@@ -136,13 +136,13 @@ const ModifyActionBis = () => {
                     endingDate: actionData.ending_date,
                     actionComment: actionData.action_comment,
                     teamName: [actionData.nom, actionData.prenom].filter(Boolean).join(' '),
-                });                
+                });
             }
         } catch (error) {
             console.error('An error occurred while fetching action data:', error);
         }
     };
-    
+
 
     return (
         <div>
@@ -177,7 +177,15 @@ const ModifyActionBis = () => {
                                     </option>
                                 ))}
                             </Select>
-                            {action.teamName && <Text>Consultant : {action.teamName}</Text>}
+                            {action.teamName && <Badge
+                                bgColor="lightblue"
+                                color="black"
+                                p="2"
+                                m="2"
+                                borderRadius={5}
+                            >
+                                Consultant : {action.teamName}
+                                </Badge>}
                             <form onSubmit={handleSubmit}>
                                 <FormControl isRequired>
                                     <FormLabel>Nom de l'action</FormLabel>
@@ -218,7 +226,7 @@ const ModifyActionBis = () => {
                                     Modifier l'action
                                 </Button>
                                 <Button m="10px" colorScheme="red" onClick={handleDelete}>
-                                    Supprimer l'action
+                                    Supprimer
                                 </Button>
                             </form>
                         </Box>
