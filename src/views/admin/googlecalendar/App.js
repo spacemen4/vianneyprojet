@@ -55,9 +55,6 @@ const App = () => {
     setSelectedTeams(updatedSelectedTeams);
   };
 
-const setSelectedTeamsCallback = (teams) => {
-    setSelectedTeams(teams);
-  };
   const modifyActionButtonStyle = {
     display: 'none', // This style will hide the button
   };
@@ -120,7 +117,7 @@ const setSelectedTeamsCallback = (teams) => {
       };
     
       fetchActions();
-    }, [day, selectedTeams]);
+    }, [day]);
 
     function getCurrentDayClass() {
       return day.format("DD-MM-YY") === dayjs().format("DD-MM-YY")
