@@ -55,7 +55,6 @@ function CustomerContactForm() {
       ]);
 
     if (error) {
-      console.error('Error inserting data:', error);
       toast({
         title: "Erreur",
         description: "Une erreur s'est produite lors de l'envoi des données.",
@@ -68,8 +67,7 @@ function CustomerContactForm() {
     }
 
     if (data && data.length > 0) {
-      console.log('Data inserted:', data);
-      console.log('UUID of the new record:', data[0].id);
+
 
       toast({
         title: "Succès",
