@@ -99,7 +99,7 @@ function CustomerContactForm() {
         {renderAlert()}
 
         <form onSubmit={handleSubmit} width="100%">
-          <FormControl id="nom-entreprise" isRequired>
+          <FormControl id="nom-entreprise" isRequired mt="10px">
             <FormLabel>Nom de l'Entreprise</FormLabel>
             <Input
               name="nomEntreprise"
@@ -115,7 +115,7 @@ function CustomerContactForm() {
             )}
           </FormControl>
 
-          <FormControl id="nom-contact" isRequired>
+          <FormControl id="nom-contact" isRequired mt="10px">
             <FormLabel>Nom du Contact</FormLabel>
             <Input
               name="nomContact"
@@ -131,7 +131,7 @@ function CustomerContactForm() {
             )}
           </FormControl>
 
-          <FormControl id="email" isRequired>
+          <FormControl id="email" isRequired mt="10px">
             <FormLabel>Adresse Email</FormLabel>
             <Input
               name="email"
@@ -149,7 +149,7 @@ function CustomerContactForm() {
             )}
           </FormControl>
 
-          <FormControl id="telephone">
+          <FormControl id="telephone" mt="10px">
             <FormLabel>Numéro de Téléphone</FormLabel>
             <Input
               name="telephone"
@@ -159,7 +159,7 @@ function CustomerContactForm() {
             />
           </FormControl>
 
-          <FormControl id="type-service" isRequired>
+          <FormControl id="type-service" isRequired mt="10px">
             <FormLabel>Type de Service</FormLabel>
             <Select
               name="typeService"
@@ -180,7 +180,7 @@ function CustomerContactForm() {
             )}
           </FormControl>
 
-          <FormControl id="besoins">
+          <FormControl id="besoins" mt="10px">
             <FormLabel>Besoins</FormLabel>
             <Textarea
               name="besoins"
@@ -193,7 +193,7 @@ function CustomerContactForm() {
             )}
           </FormControl>
 
-          <Button type="submit" colorScheme="blue">
+          <Button type="submit" colorScheme="blue" mt="10px">
             Soumettre
           </Button>
         </form>
