@@ -13,6 +13,7 @@ import Partner from "views/admin/partner";
 import Calendar from "views/admin/Calendar";
 import Parameters from "views/admin/Parameters";
 import GlobalCalendar from "views/admin/googlecalendar";
+import ConsultantBooking from "views/admin/ConsultantBooking";
 
 const routes = [
   {
@@ -57,6 +58,14 @@ const routes = [
     path: "/global-calendar", // Update the path as needed
     icon: <Icon as={FcCalendar} width='20px' height='20px' color='inherit' />, // Use an appropriate icon
     component: GlobalCalendar, // Replace with your new component when ready
+    // Add any additional properties if needed
+  },
+  {
+    name: "Chercher et réserver un consultant",
+    layout: "/admin",
+    path: "/consultant-booking", // Choose an appropriate path
+    icon: <Icon as={FcBusinessman} width='20px' height='20px' color='inherit' />, // Choose an appropriate icon
+    component: ConsultantBooking, // Reference your new component
     // Add any additional properties if needed
   },
 ];
