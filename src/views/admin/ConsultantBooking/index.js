@@ -25,14 +25,14 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 function CustomerContactForm() {
   const [formData, setFormData] = useState({
-    nomEntreprise: '', // Updated label and name for Company Name
-    nomContact: '', // Updated label and name for Contact Name
+    nomEntreprise: '',
+    nomContact: '',
     email: '',
-    telephone: '', // Updated label for Phone Number
-    typeService: '', // Updated label and name for Service Type
-    besoins: '', // Updated label for Needs
+    telephone: '',
+    typeService: '',
+    besoins: '',
   });
-  const [alertData] = useState(null);
+  const [alertData, setAlertData] = useState(null);
   const toast = useToast();
 
   const showToast = (title, description, status) => {
@@ -46,8 +46,26 @@ function CustomerContactForm() {
     });
   };
 
+  const validateField = (fieldName, fieldValue) => {
+    if (!fieldValue) {
+      showToast(`${fieldName} est requis`, `Le champ ${fieldName} est vide.`, 'error');
+      return false;
+    }
+    return true;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (
+      !validateField('Nom de l\'Entreprise', formData.nomEntreprise) ||
+      !validateField('Nom du Contact', formData.nomContact) ||
+      !validateField('Adresse Email', formData.email) ||
+      !validateField('Type de Service', formData.typeService)
+    ) {
+      return;
+    }
+
     const newId = uuidv4();
 
     const { data, error } = await supabase
@@ -55,12 +73,12 @@ function CustomerContactForm() {
       .insert([
         {
           id: newId,
-          company_name: formData.nomEntreprise, // Updated field name
-          contact_name: formData.nomContact, // Updated field name
+          company_name: formData.nomEntreprise,
+          contact_name: formData.nomContact,
           email: formData.email,
-          phone: formData.telephone, // Updated field name
-          service_type: formData.typeService, // Updated field name
-          needs: formData.besoins, // Updated field name
+          phone: formData.telephone,
+          service_type: formData.typeService,
+          needs: formData.besoins,
         },
       ]);
 
@@ -99,7 +117,7 @@ function CustomerContactForm() {
         {renderAlert()}
 
         <form onSubmit={handleSubmit} width="100%">
-          <FormControl id="nom-entreprise" isRequired mt="10px">
+          <FormControl id="nom-entreprise" mt="10px">
             <FormLabel>Nom de l'Entreprise</FormLabel>
             <Input
               name="nomEntreprise"
@@ -115,7 +133,7 @@ function CustomerContactForm() {
             )}
           </FormControl>
 
-          <FormControl id="nom-contact" isRequired mt="10px">
+          <FormControl id="nom-contact" mt="10px">
             <FormLabel>Nom du Contact</FormLabel>
             <Input
               name="nomContact"
@@ -131,7 +149,7 @@ function CustomerContactForm() {
             )}
           </FormControl>
 
-          <FormControl id="email" isRequired mt="10px">
+          <FormControl id="email" mt="10px">
             <FormLabel>Adresse Email</FormLabel>
             <Input
               name="email"
@@ -159,7 +177,7 @@ function CustomerContactForm() {
             />
           </FormControl>
 
-          <FormControl id="type-service" isRequired mt="10px">
+          <FormControl id="type-service" mt="10px">
             <FormLabel>Type de Service</FormLabel>
             <Select
               name="typeService"
