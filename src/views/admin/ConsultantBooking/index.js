@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import {
   FormControl,
   FormLabel,
@@ -36,16 +37,20 @@ function CustomerContactForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
   
+    // Generate a new UUID for the submission
+    const newId = uuidv4();
+  
     const { data, error } = await supabase
       .from('customer_contacts')
       .insert([
         {
+          id: newId, // Include the UUID in the insert data
           company_name: formData.companyName,
           contact_name: formData.contactName,
           email: formData.email,
           phone: formData.phone,
-          service_type: formData.serviceType, // Include service type
-          needs: formData.needs,             // Include needs
+          service_type: formData.serviceType,
+          needs: formData.needs,
         },
       ]);
   
@@ -63,6 +68,9 @@ function CustomerContactForm() {
     }
   
     console.log('Data inserted:', data);
+    // Access the UUID of the newly inserted record
+    console.log('UUID of the new record:', data[0].id);
+  
     toast({
       title: "Succès",
       description: "Les détails du contact ont été envoyés avec succès.",
@@ -72,6 +80,7 @@ function CustomerContactForm() {
       position: "top",
     });
   };
+  
 
   return (
     <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
