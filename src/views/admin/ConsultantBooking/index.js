@@ -9,6 +9,7 @@ import {
   Heading,
   Select,
   Textarea,
+  useToast,
 } from '@chakra-ui/react';
 import { createClient } from '@supabase/supabase-js';
 
@@ -24,7 +25,7 @@ function CustomerContactForm() {
     email: '',
     phone: '',
   });
-
+  const toast = useToast();
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prevState => ({ ...prevState, [name]: value }));
@@ -36,22 +37,31 @@ function CustomerContactForm() {
     const { data, error } = await supabase
       .from('customer_contacts')
       .insert([
-        {
-          company_name: formData.companyName,
-          contact_name: formData.contactName,
-          email: formData.email,
-          phone: formData.phone,
-          service_type: formData.serviceType,
-          needs: formData.needs,
-        },
+        // ... form data
       ]);
   
     if (error) {
       console.error('Error inserting data:', error);
+      toast({
+        title: "Erreur",
+        description: "Une erreur s'est produite lors de l'envoi des données.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "top",
+      });
       return;
     }
   
     console.log('Data inserted:', data);
+    toast({
+      title: "Succès",
+      description: "Les détails du contact ont été envoyés avec succès.",
+      status: "success",
+      duration: 5000,
+      isClosable: true,
+      position: "top",
+    });
   };
 
   return (
