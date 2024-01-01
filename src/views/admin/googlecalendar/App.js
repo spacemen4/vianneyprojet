@@ -88,7 +88,7 @@ const App = () => {
 
   const DayComponent = ({ day, rowIdx }) => {
     const [dayEvents, setDayEvents] = useState([]);
-  
+    
     useEffect(() => {
       const fetchActions = async () => {
         try {
@@ -98,31 +98,30 @@ const App = () => {
           if (error) {
             console.error('Error fetching actions:', error);
           } else {
-            // Filter actions based on selected teams
-            const filteredActions = data.filter(action =>
+            const actionsForDay = data.filter(action =>
               dayjs(day).isBetween(
                 dayjs(action.starting_date).subtract(1, 'day'),
                 dayjs(action.ending_date),
                 null,
                 '[]'
-              ) && selectedTeams[action.teamIndex] // Assume 'teamIndex' is the index of the team in the teamMembers array
+              )
             );
-            setDayEvents(filteredActions);
+            setDayEvents(actionsForDay); // Set actions for the specific day
           }
         } catch (error) {
           console.error('Error fetching actions:', error);
         }
       };
-  
+    
       fetchActions();
-    }, [day, selectedTeams]); // Add selectedTeams as a dependency
+    }, [day]); // Dependency only on day
   
     function getCurrentDayClass() {
       return day.format("DD-MM-YY") === dayjs().format("DD-MM-YY")
         ? { bg: "blue.600", color: "white", borderRadius: "full", w: "7" }
         : {};
     }
-
+  
     return (
       <Box border="1px" borderColor="gray.200" flexDir="column" display="flex">
         <Flex flexDir="column" alignItems="center">
@@ -178,7 +177,7 @@ const App = () => {
               </Box>
             </Tooltip>
           ))}
-        </Flex>
+</Flex>
       </Box>
     );
   };
@@ -235,7 +234,7 @@ const App = () => {
                     rowIdx={i}
 key={idx}
 setSelectedAction={setSelectedAction}
-                  selectedTeams={selectedTeams} // Add this line
+                 selectedTeams={selectedTeams} // Add this line
                   />
                 ))}
               </React.Fragment>
