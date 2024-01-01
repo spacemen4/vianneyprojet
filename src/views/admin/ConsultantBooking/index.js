@@ -31,7 +31,7 @@ function CustomerContactForm() {
   }
 
   return (
-    <Box p={4}>
+    <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
       <VStack spacing={4} as="form" onSubmit={handleSubmit}>
         <Heading as="h3" size="lg">Customer Contact Details</Heading>
 
