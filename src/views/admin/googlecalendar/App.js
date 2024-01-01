@@ -214,7 +214,7 @@ const App = () => {
             </Flex>
             <Box display={["none", "block"]}>
               <SmallCalendar />
-              <Text fontSize="xl" fontWeight="bold">Team Members:</Text>
+              <Text fontSize="xl" fontWeight="bold">Trier par consultant:</Text>
               <ul>
                 {teamMembers.map((member, index) => (
                   <li key={index}>
