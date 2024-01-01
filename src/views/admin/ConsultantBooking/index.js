@@ -11,10 +11,6 @@ import {
   Select,
   Textarea,
   useToast,
-  Alert,
-  AlertIcon,
-  AlertTitle,
-  AlertDescription,
 } from '@chakra-ui/react';
 import { createClient } from '@supabase/supabase-js';
 
@@ -22,26 +18,35 @@ const supabaseUrl = 'https://pvpsmyizvorwwccuwbuq.supabase.co';
 const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB2cHNteWl6dm9yd3djY3V3YnVxIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTcwMjgzMDg2MCwiZXhwIjoyMDE4NDA2ODYwfQ.9YDEN41__xBFJU91XY9e3r119A03yQ2oq5azmrx1aqY';
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-
 function CustomerContactForm() {
   const [formData, setFormData] = useState({
     companyName: '',
     contactName: '',
     email: '',
     phone: '',
-    serviceType: '', // New field for service type
-    needs: '',      // New field for needs
+    serviceType: '',
+    needs: '',
   });
   const toast = useToast();
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prevState => ({ ...prevState, [name]: value }));
   }
 
+  const showToast = (title, description, status) => {
+    toast({
+      title: title,
+      description: description,
+      status: status,
+      duration: 5000,
+      isClosable: true,
+      position: "top",
+    });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Generate a new UUID for the submission
     const newId = uuidv4();
 
     const { data, error } = await supabase
@@ -59,30 +64,14 @@ function CustomerContactForm() {
       ]);
 
     if (error) {
-      toast({
-        title: "Erreur",
-        description: "Une erreur s'est produite lors de l'envoi des données.",
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-        position: "top",
-      });
+      showToast("Error", "There was an error submitting the form.", "error");
       return;
     }
 
     if (data && data.length > 0) {
-
-
-      toast({
-        title: "Succès",
-        description: "Les détails du contact ont été envoyés avec succès.",
-        status: "success",
-        duration: 5000,
-        isClosable: true,
-        position: "top",
-      });
+      showToast("Success", "Contact details submitted successfully.", "success");
     } else {
-      console.log('No data returned from the database.');
+      showToast("Success", "Contact details submitted successfully.", "success");
     }
   };
 
