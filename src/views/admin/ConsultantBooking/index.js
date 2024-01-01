@@ -7,6 +7,8 @@ import {
   Box,
   VStack,
   Heading,
+  Select,
+  Textarea,
 } from '@chakra-ui/react';
 
 function CustomerContactForm() {
@@ -70,6 +72,30 @@ function CustomerContactForm() {
             type="tel"
             value={formData.phone}
             onChange={handleChange} 
+          />
+        </FormControl>
+
+        <FormControl id="service-type" isRequired>
+          <FormLabel>Type of Service</FormLabel>
+          <Select 
+            name="serviceType"
+            placeholder="Select service"
+            value={formData.serviceType}
+            onChange={handleChange}>
+            <option value="due-diligences">Due diligences</option>
+            <option value="transformation">Transformation</option>
+            <option value="restructuring">Restructuring</option>
+            <option value="evaluation">Évaluation</option>
+          </Select>
+        </FormControl>
+
+        <FormControl id="needs">
+          <FormLabel>Quels sont vos besoins ?</FormLabel>
+          <Textarea 
+            name="needs"
+            value={formData.needs}
+            onChange={handleChange}
+            placeholder="Describe your needs" 
           />
         </FormControl>
 
