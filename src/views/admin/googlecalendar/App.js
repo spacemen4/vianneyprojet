@@ -170,7 +170,7 @@ const App = () => {
                 }}
                 bg={isTeamSelected(event) ? event.color || 'gray.200' : 'transparent'} // Background color based on team selection
                 p={1}
-                color="gray.600"
+                color={isTeamSelected(event) ? "gray.600" : "transparent"} 
                 fontSize="sm"
                 borderRadius="md"
                 mb={1}
@@ -179,6 +179,7 @@ const App = () => {
               >
                 {event.action_name}
               </Box>
+
             </Tooltip>
           ))}
         </Flex>
