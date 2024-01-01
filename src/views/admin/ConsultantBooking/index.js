@@ -27,7 +27,7 @@ function CustomerContactForm() {
     phone: '',
     serviceType: '', // New field for service type
     needs: '',      // New field for needs
-  });  
+  });
   const toast = useToast();
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -39,12 +39,12 @@ function CustomerContactForm() {
 
     // Generate a new UUID for the submission
     const newId = uuidv4();
-  
+
     const { data, error } = await supabase
       .from('customer_contacts')
       .insert([
         {
-id: newId, // Include the UUID in the insert data
+          id: newId, // Include the UUID in the insert data
           company_name: formData.companyName,
           contact_name: formData.contactName,
           email: formData.email,
@@ -53,7 +53,7 @@ id: newId, // Include the UUID in the insert data
           needs: formData.needs,
         },
       ]);
-  
+
     if (error) {
       console.error('Error inserting data:', error);
       toast({
@@ -66,11 +66,11 @@ id: newId, // Include the UUID in the insert data
       });
       return;
     }
-  
+
     if (data && data.length > 0) {
       console.log('Data inserted:', data);
       console.log('UUID of the new record:', data[0].id);
-  
+
       toast({
         title: "Succès",
         description: "Les détails du contact ont été envoyés avec succès.",
@@ -83,8 +83,6 @@ id: newId, // Include the UUID in the insert data
       console.log('No data returned from the database.');
     }
   };
-  
-  
 
   return (
     <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
@@ -93,47 +91,47 @@ id: newId, // Include the UUID in the insert data
 
         <FormControl id="company-name" isRequired>
           <FormLabel>Company Name</FormLabel>
-          <Input 
+          <Input
             name="companyName"
             type="text"
             value={formData.companyName}
-            onChange={handleChange} 
+            onChange={handleChange}
           />
         </FormControl>
 
         <FormControl id="contact-name" isRequired>
           <FormLabel>Contact Name</FormLabel>
-          <Input 
+          <Input
             name="contactName"
             type="text"
             value={formData.contactName}
-            onChange={handleChange} 
+            onChange={handleChange}
           />
         </FormControl>
 
         <FormControl id="email" isRequired>
           <FormLabel>Email Address</FormLabel>
-          <Input 
+          <Input
             name="email"
             type="email"
             value={formData.email}
-            onChange={handleChange} 
+            onChange={handleChange}
           />
         </FormControl>
 
         <FormControl id="phone">
           <FormLabel>Phone Number</FormLabel>
-          <Input 
+          <Input
             name="phone"
             type="tel"
             value={formData.phone}
-            onChange={handleChange} 
+            onChange={handleChange}
           />
         </FormControl>
 
         <FormControl id="service-type" isRequired>
           <FormLabel>Type of Service</FormLabel>
-          <Select 
+          <Select
             name="serviceType"
             placeholder="Select service"
             value={formData.serviceType}
@@ -147,11 +145,11 @@ id: newId, // Include the UUID in the insert data
 
         <FormControl id="needs">
           <FormLabel>Quels sont vos besoins ?</FormLabel>
-          <Textarea 
+          <Textarea
             name="needs"
             value={formData.needs}
             onChange={handleChange}
-            placeholder="Describe your needs" 
+            placeholder="Describe your needs"
           />
         </FormControl>
 
