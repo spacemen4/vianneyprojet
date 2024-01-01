@@ -36,7 +36,7 @@ function CustomerContactForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     // Generate a new UUID for the submission
     const newId = uuidv4();
   
@@ -44,7 +44,7 @@ function CustomerContactForm() {
       .from('customer_contacts')
       .insert([
         {
-          id: newId, // Include the UUID in the insert data
+id: newId, // Include the UUID in the insert data
           company_name: formData.companyName,
           contact_name: formData.contactName,
           email: formData.email,
@@ -67,19 +67,23 @@ function CustomerContactForm() {
       return;
     }
   
-    console.log('Data inserted:', data);
-    // Access the UUID of the newly inserted record
-    console.log('UUID of the new record:', data[0].id);
+    if (data && data.length > 0) {
+      console.log('Data inserted:', data);
+      console.log('UUID of the new record:', data[0].id);
   
-    toast({
-      title: "Succès",
-      description: "Les détails du contact ont été envoyés avec succès.",
-      status: "success",
-      duration: 5000,
-      isClosable: true,
-      position: "top",
-    });
+      toast({
+        title: "Succès",
+        description: "Les détails du contact ont été envoyés avec succès.",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+        position: "top",
+      });
+    } else {
+      console.log('No data returned from the database.');
+    }
   };
+  
   
 
   return (
