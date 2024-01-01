@@ -6,7 +6,6 @@ import {
   Input,
   Button,
   Box,
-  VStack,
   Heading,
   Select,
   Textarea,
@@ -91,15 +90,15 @@ function CustomerContactForm() {
   };
 
   return (
-    <Box pt={{ base: '130px', md: '80px', xl: '80px' }}>
-      <VStack spacing={4}>
+    <Box width="100%" pt={{ base: '130px', md: '80px', xl: '80px' }}>
+      <Box spacing={4}>
         <Heading as="h3" size="lg">
           Détails du Contact Client
         </Heading>
 
         {renderAlert()}
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} width="100%">
           <FormControl id="nom-entreprise" isRequired>
             <FormLabel>Nom de l'Entreprise</FormLabel>
             <Input
@@ -198,7 +197,7 @@ function CustomerContactForm() {
             Soumettre
           </Button>
         </form>
-      </VStack>
+      </Box>
     </Box>
   );
 }
