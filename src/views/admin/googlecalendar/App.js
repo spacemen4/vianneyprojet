@@ -162,6 +162,8 @@ const App = () => {
               fontSize="sm"
               placement="right"
               hasArrow
+              color={isTeamSelected(event) ? "white" : "transparent"}
+              bg={isTeamSelected(event) ? event.color || 'gray.200' : 'transparent'}
             >
               <Badge
                 onClick={(e) => {
