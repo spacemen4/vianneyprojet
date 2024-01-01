@@ -71,20 +71,22 @@ const App = () => {
     // Fetch data from Supabase when the component mounts
     async function fetchTeamMembers() {
       const { data, error } = await supabase.from("vianney_teams").select("*");
-
+  
       if (error) {
         console.error("Error fetching team members:", error.message);
         return;
       }
-
-      // Initialize the selectedTeams array with false values for each team
-      setSelectedTeams(Array(data.length).fill(false));
+  
       // Store the team members in state
       setTeamMembers(data);
+  
+      // Initialize the selectedTeams array with true values for each team
+      setSelectedTeams(Array(data.length).fill(true));
     }
-
+  
     fetchTeamMembers();
   }, []);
+  
 
   const DayComponent = ({ day, rowIdx, teamMembers }) => {
     const [dayEvents, setDayEvents] = useState([]);
