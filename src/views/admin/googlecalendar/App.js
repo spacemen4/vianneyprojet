@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import SmallCalendar from "./components/SmallCalendar";
 import { getMonth } from "./util";
-import { ChakraProvider, Flex, Box, Text, VStack, Tooltip, Grid, Badge,Checkbox } from "@chakra-ui/react";
+import { ChakraProvider, Flex, Box, Text, VStack, Tooltip, Grid, Badge, Checkbox } from "@chakra-ui/react";
 import CalendarHeader from "./components/CalendarHeader";
 import GlobalContext from "./context/GlobalContext";
 import EventModal from "./components/EventModal";
@@ -38,10 +38,10 @@ const formatTooltipContent = (event) => {
 
 const App = () => {
   const [currentMonth, setCurrentMonth] = useState(getMonth());
-  const { monthIndex, showEventModal } = useContext(GlobalContext); 
+  const { monthIndex, showEventModal } = useContext(GlobalContext);
   const [showModifyForm] = useState(false);
   const [selectedActionData, setSelectedActionData] = useState(null);
-  const [selectedAction, setSelectedAction] = useState(null); 
+  const [selectedAction, setSelectedAction] = useState(null);
   const { setDaySelected, setShowEventModal, setSelectedEvent } = useContext(GlobalContext);
   const [ModifyActionModalOpen, setModifyActionModalOpen] = useState(false);
   const [selectedTeams, setSelectedTeams] = useState([]);
@@ -52,7 +52,7 @@ const App = () => {
     setSelectedTeams(updatedSelectedTeams);
     console.log('Updated Selected Teams:', updatedSelectedTeams); // Debugging line
   };
-  
+
 
   const modifyActionButtonStyle = {
     display: 'none', // This style will hide the button
@@ -62,8 +62,8 @@ const App = () => {
   }, [monthIndex]);
   useEffect(() => {
     if (selectedAction) {
-      setSelectedActionData(selectedAction); 
-      setModifyActionModalOpen(true); 
+      setSelectedActionData(selectedAction);
+      setModifyActionModalOpen(true);
     }
   }, [selectedAction, ModifyActionModalOpen]);
 
@@ -86,9 +86,13 @@ const App = () => {
     fetchTeamMembers();
   }, []);
 
-  const DayComponent = ({ day, rowIdx }) => {
+  const DayComponent = ({ day, rowIdx, teamMembers }) => {
     const [dayEvents, setDayEvents] = useState([]);
-    
+    const isTeamSelected = (event) => {
+      const teamIndex = teamMembers.findIndex(member => member.id === event.team_id);
+      return teamIndex !== -1 && selectedTeams[teamIndex];
+    };
+
     useEffect(() => {
       const fetchActions = async () => {
         try {
@@ -112,16 +116,16 @@ const App = () => {
           console.error('Error fetching actions:', error);
         }
       };
-    
+
       fetchActions();
     }, [day]); // Dependency only on day
-  
+
     function getCurrentDayClass() {
       return day.format("DD-MM-YY") === dayjs().format("DD-MM-YY")
         ? { bg: "blue.600", color: "white", borderRadius: "full", w: "7" }
         : {};
     }
-  
+
     return (
       <Box border="1px" borderColor="gray.200" flexDir="column" display="flex">
         <Flex flexDir="column" alignItems="center">
@@ -164,7 +168,7 @@ const App = () => {
                   setSelectedEvent(event.id);
                   setSelectedAction(event);
                 }}
-                bg={event.color || 'gray.200'}
+                bg={isTeamSelected(event) ? event.color || 'gray.200' : 'red'} // Background color based on team selection
                 p={1}
                 color="gray.600"
                 fontSize="sm"
@@ -177,11 +181,11 @@ const App = () => {
               </Box>
             </Tooltip>
           ))}
-</Flex>
+        </Flex>
       </Box>
     );
   };
-  
+
 
   return (
     <ChakraProvider>
@@ -203,9 +207,9 @@ const App = () => {
               </Box>
               <div style={modifyActionButtonStyle}>
                 <ModifyAction initialActionData={selectedActionData} />
-                <ActionIdDisplay actionId={selectedActionData?.action_id} /> 
+                <ActionIdDisplay actionId={selectedActionData?.action_id} />
               </div>
-              <ModifyActionBis/>
+              <ModifyActionBis />
             </Flex>
             <Box display={["none", "block"]}>
               <SmallCalendar />
@@ -215,8 +219,8 @@ const App = () => {
                   <li key={index}>
                     <Flex alignItems="center">
                       <Checkbox
-                      onChange={() => handleCheckboxChange(index)}
-                      isChecked={selectedTeams[index]}
+                        onChange={() => handleCheckboxChange(index)}
+                        isChecked={selectedTeams[index]}
                       />
                       <Badge marginLeft="2" color={member.color || "blue"}>{`${member.nom} ${member.prenom}`}</Badge>
                     </Flex>
@@ -232,9 +236,10 @@ const App = () => {
                   <DayComponent
                     day={day}
                     rowIdx={i}
-key={idx}
-setSelectedAction={setSelectedAction}
-                 selectedTeams={selectedTeams} // Add this line
+                    key={idx}
+                    setSelectedAction={setSelectedAction}
+                    selectedTeams={selectedTeams} // Add this line
+                    teamMembers={teamMembers} // Add this line
                   />
                 ))}
               </React.Fragment>
