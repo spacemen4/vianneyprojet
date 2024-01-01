@@ -10,6 +10,12 @@ import {
   Select,
   Textarea,
 } from '@chakra-ui/react';
+import { createClient } from '@supabase/supabase-js';
+
+const supabaseUrl = 'https://pvpsmyizvorwwccuwbuq.supabase.co';
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB2cHNteWl6dm9yd3djY3V3YnVxIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTcwMjgzMDg2MCwiZXhwIjoyMDE4NDA2ODYwfQ.9YDEN41__xBFJU91XY9e3r119A03yQ2oq5azmrx1aqY';
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
 
 function CustomerContactForm() {
   const [formData, setFormData] = useState({
@@ -24,11 +30,29 @@ function CustomerContactForm() {
     setFormData(prevState => ({ ...prevState, [name]: value }));
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle the form submission logic here
-    console.log('Form Data:', formData);
-  }
+  
+    const { data, error } = await supabase
+      .from('customer_contacts')
+      .insert([
+        {
+          company_name: formData.companyName,
+          contact_name: formData.contactName,
+          email: formData.email,
+          phone: formData.phone,
+          service_type: formData.serviceType,
+          needs: formData.needs,
+        },
+      ]);
+  
+    if (error) {
+      console.error('Error inserting data:', error);
+      return;
+    }
+  
+    console.log('Data inserted:', data);
+  };
 
   return (
     <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
