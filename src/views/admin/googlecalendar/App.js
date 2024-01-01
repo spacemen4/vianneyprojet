@@ -47,13 +47,12 @@ const App = () => {
   const [selectedTeams, setSelectedTeams] = useState([]);
   const [teamMembers, setTeamMembers] = useState([]);
   const handleCheckboxChange = (index) => {
-    // Create a copy of the selectedTeams array
     const updatedSelectedTeams = [...selectedTeams];
-    // Toggle the value at the specified index
     updatedSelectedTeams[index] = !updatedSelectedTeams[index];
-    // Update the state with the new selectedTeams array
     setSelectedTeams(updatedSelectedTeams);
+    console.log('Updated Selected Teams:', updatedSelectedTeams); // Debugging line
   };
+  
 
   const modifyActionButtonStyle = {
     display: 'none', // This style will hide the button
@@ -100,25 +99,24 @@ const App = () => {
             console.error('Error fetching actions:', error);
           } else {
             // Filter actions based on selected teams
-            const events = data.filter((action) =>
+            const filteredActions = data.filter(action =>
               dayjs(day).isBetween(
                 dayjs(action.starting_date).subtract(1, 'day'),
                 dayjs(action.ending_date),
                 null,
                 '[]'
-              ) &&
-              (selectedTeams.length === 0 || selectedTeams.includes(action.name_of_the_team))
+              ) && selectedTeams[action.teamIndex] // Assume 'teamIndex' is the index of the team in the teamMembers array
             );
-            setDayEvents(events);
+            setDayEvents(filteredActions);
           }
         } catch (error) {
           console.error('Error fetching actions:', error);
         }
       };
-    
+  
       fetchActions();
-    }, [day]);
-
+    }, [day, selectedTeams]); // Add selectedTeams as a dependency
+  
     function getCurrentDayClass() {
       return day.format("DD-MM-YY") === dayjs().format("DD-MM-YY")
         ? { bg: "blue.600", color: "white", borderRadius: "full", w: "7" }
@@ -184,6 +182,7 @@ const App = () => {
       </Box>
     );
   };
+  
 
   return (
     <ChakraProvider>
