@@ -24,7 +24,9 @@ function CustomerContactForm() {
     contactName: '',
     email: '',
     phone: '',
-  });
+    serviceType: '', // New field for service type
+    needs: '',      // New field for needs
+  });  
   const toast = useToast();
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -37,7 +39,14 @@ function CustomerContactForm() {
     const { data, error } = await supabase
       .from('customer_contacts')
       .insert([
-        // ... form data
+        {
+          company_name: formData.companyName,
+          contact_name: formData.contactName,
+          email: formData.email,
+          phone: formData.phone,
+          service_type: formData.serviceType, // Include service type
+          needs: formData.needs,             // Include needs
+        },
       ]);
   
     if (error) {
