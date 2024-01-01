@@ -161,7 +161,7 @@ const App = () => {
               placement="right"
               hasArrow
             >
-              <Box
+              <Badge
                 onClick={(e) => {
                   e.stopPropagation();
                   setDaySelected(day);
@@ -170,16 +170,16 @@ const App = () => {
                 }}
                 bg={isTeamSelected(event) ? event.color || 'gray.200' : 'transparent'} // Background color based on team selection
                 p={1}
-                color={isTeamSelected(event) ? "gray.600" : "transparent"} 
+                color={isTeamSelected(event) ? "gray.600" : "transparent"} // Text color based on team selection
                 fontSize="sm"
                 borderRadius="md"
                 mb={1}
                 width="100%"
+                textAlign="center" // Align text to the center
                 isTruncated
               >
                 {event.action_name}
-              </Box>
-
+              </Badge>
             </Tooltip>
           ))}
         </Flex>
