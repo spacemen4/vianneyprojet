@@ -168,7 +168,7 @@ const App = () => {
                   setSelectedEvent(event.id);
                   setSelectedAction(event);
                 }}
-                bg={isTeamSelected(event) ? event.color || 'gray.200' : 'red'} // Background color based on team selection
+                bg={isTeamSelected(event) ? event.color || 'gray.200' : 'transparent'} // Background color based on team selection
                 p={1}
                 color="gray.600"
                 fontSize="sm"
