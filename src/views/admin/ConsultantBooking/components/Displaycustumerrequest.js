@@ -37,9 +37,12 @@ function DisplayCustomerRequests() {
             <AlertIcon />
             <Box>
               <Badge colorScheme="teal" fontSize="0.8em">Société: {contact.company_name}</Badge>
-              <Text fontWeight="bold">Contact: {contact.contact_name}</Text>
               <Flex alignItems="center">
-                <Text  marginRight="2">Email:</Text>
+                <Text marginRight="2">Contact:</Text>
+                <Text fontWeight="bold">{contact.contact_name}</Text>
+              </Flex>
+              <Flex alignItems="center">
+                <Text marginRight="2">Email:</Text>
                 <Text fontWeight="bold">{contact.email}</Text>
               </Flex>
 
