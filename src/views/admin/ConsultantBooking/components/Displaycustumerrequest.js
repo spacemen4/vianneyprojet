@@ -36,7 +36,7 @@ function DisplayCustomerRequests() {
           >
             <AlertIcon />
             <VStack align="start">
-            <Badge colorScheme="teal" fontSize="0.8em">Société: {contact.company_name}</Badge>
+              <Badge colorScheme="teal" fontSize="0.8em">Société: {contact.company_name}</Badge>
               <Flex alignItems="center">
                 <Text marginRight="2">Contact:</Text>
                 <Text fontWeight="bold">{contact.contact_name}</Text>
@@ -45,9 +45,36 @@ function DisplayCustomerRequests() {
                 <Text marginRight="2">Email:</Text>
                 <Text fontWeight="bold">{contact.email}</Text>
               </Flex>
-              <Text><strong>Téléphone:</strong> {contact.phone}</Text>
-              <Text><strong>Type de Service:</strong> {contact.service_type}</Text>
-              <Text><strong>Besoins:</strong> {contact.needs}</Text>
+              <Flex alignItems="center">
+              <Text marginRight="2">Téléphone:</Text>
+              <Text
+                fontWeight="bold"
+                color="blue.500" // Change the color to your desired style
+                textDecoration="underline" // Add an underline
+              >
+                {contact.phone}
+              </Text>
+              </Flex>
+              <Flex alignItems="center">
+              <Text marginRight="2">Type de Service:</Text>
+              <Text
+                fontWeight="bold"
+                color="green.500" // Change the color to your desired style
+                fontStyle="italic" // Add italic style
+              >
+                {contact.service_type}
+              </Text>
+              </Flex>
+              <Flex alignItems="center">
+              <Text  marginRight="2">Besoins:</Text>
+              <Text
+                fontWeight="bold"
+                color="purple.500" // Change the color to your desired style
+                textTransform="uppercase" // Convert text to uppercase
+              >
+                {contact.needs}
+              </Text>
+              </Flex>
             </VStack>
           </Alert>
         ))}
