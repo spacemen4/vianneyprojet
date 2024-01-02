@@ -1,4 +1,4 @@
-import { ChakraProvider, Alert, AlertIcon, Text, Box } from "@chakra-ui/react";
+import { ChakraProvider, Alert, AlertIcon, Text, Box, Badge, Flex } from "@chakra-ui/react";
 import { createClient } from '@supabase/supabase-js';
 import { useEffect, useState } from 'react';
 
@@ -36,9 +36,13 @@ function DisplayCustomerRequests() {
           >
             <AlertIcon />
             <Box>
-              <Text fontWeight="bold">Société: {contact.company_name}</Text>
+              <Badge colorScheme="teal" fontSize="0.8em">Société: {contact.company_name}</Badge>
               <Text fontWeight="bold">Contact: {contact.contact_name}</Text>
-              <Text fontWeight="bold">Email: {contact.email}</Text>
+              <Flex alignItems="center">
+                <Text  marginRight="2">Email:</Text>
+                <Text fontWeight="bold">{contact.email}</Text>
+              </Flex>
+
             </Box>
           </Alert>
         ))}
