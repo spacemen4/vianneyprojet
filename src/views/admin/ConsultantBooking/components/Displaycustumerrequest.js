@@ -1,4 +1,4 @@
-import { ChakraProvider, Alert, AlertIcon } from "@chakra-ui/react";
+import { ChakraProvider, Alert, AlertIcon, Text } from "@chakra-ui/react";
 import { createClient } from '@supabase/supabase-js';
 import { useEffect, useState } from 'react';
 
@@ -35,11 +35,11 @@ function DisplayCustomerRequests() {
             mb={2} // Add margin at the bottom to separate each item
           >
             <AlertIcon />
-            Company: {contact.company_name}
-            <br /> {/* Line break */}
-            Contact: {contact.contact_name}
-            <br /> {/* Line break */}
-            Email: {contact.email}
+            <Text fontWeight="bold">Société: {contact.company_name}</Text>
+            <br /> 
+            <Text fontWeight="bold">Contact: {contact.contact_name}</Text>
+            <br /> 
+            <Text fontWeight="bold">Email: {contact.email}</Text>
           </Alert>
         ))}
       </div>
