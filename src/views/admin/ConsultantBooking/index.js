@@ -217,7 +217,9 @@ function CustomerContactForm() {
           </Button>
         </form>
       </Box>
+      <Box mt="20px">
       <Displaycustumerrequest/>
+      </Box>
     </Box>
   );
 }
