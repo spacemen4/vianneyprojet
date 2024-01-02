@@ -25,6 +25,9 @@ const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYm
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 function CustomerContactForm() {
+  const isFormValid = () => {
+    return formData.nomEntreprise && formData.nomContact && formData.email && formData.typeService;
+  };
   const [formData, setFormData] = useState({
     nomEntreprise: '',
     nomContact: '',
@@ -211,14 +214,18 @@ function CustomerContactForm() {
               <FormHelperText>Décrivez vos besoins en détail.</FormHelperText>
             )}
           </FormControl>
-
-          <Button type="submit" colorScheme="blue" mt="10px">
+          <Button
+            type="submit"
+            colorScheme={isFormValid() ? "blue" : "gray"}
+            mt="10px"
+            disabled={!isFormValid()}
+          >
             Soumettre
           </Button>
         </form>
       </Box>
       <Box mt="20px">
-      <Displaycustumerrequest/>
+        <Displaycustumerrequest />
       </Box>
     </Box>
   );
