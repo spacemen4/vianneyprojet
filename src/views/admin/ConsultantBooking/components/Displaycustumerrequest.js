@@ -1,4 +1,4 @@
-import { ChakraProvider, Alert, AlertIcon, Text, Box, Badge, Flex } from "@chakra-ui/react";
+import { ChakraProvider, Alert, AlertIcon, Text, Box, Badge, Flex, VStack } from "@chakra-ui/react";
 import { createClient } from '@supabase/supabase-js';
 import { useEffect, useState } from 'react';
 
@@ -35,8 +35,8 @@ function DisplayCustomerRequests() {
             mb={2} // Add margin at the bottom to separate each item
           >
             <AlertIcon />
-            <Box>
-              <Badge colorScheme="teal" fontSize="0.8em">Société: {contact.company_name}</Badge>
+            <VStack align="start">
+            <Badge colorScheme="teal" fontSize="0.8em">Société: {contact.company_name}</Badge>
               <Flex alignItems="center">
                 <Text marginRight="2">Contact:</Text>
                 <Text fontWeight="bold">{contact.contact_name}</Text>
@@ -45,8 +45,10 @@ function DisplayCustomerRequests() {
                 <Text marginRight="2">Email:</Text>
                 <Text fontWeight="bold">{contact.email}</Text>
               </Flex>
-
-            </Box>
+              <Text><strong>Téléphone:</strong> {contact.phone}</Text>
+              <Text><strong>Type de Service:</strong> {contact.service_type}</Text>
+              <Text><strong>Besoins:</strong> {contact.needs}</Text>
+            </VStack>
           </Alert>
         ))}
       </div>
