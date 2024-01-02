@@ -18,6 +18,7 @@ import {
   FormHelperText,
 } from '@chakra-ui/react';
 import { createClient } from '@supabase/supabase-js';
+import Displaycustumerrequest from './components/Displaycustumerrequest';
 
 const supabaseUrl = 'https://pvpsmyizvorwwccuwbuq.supabase.co';
 const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB2cHNteWl6dm9yd3djY3V3YnVxIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTcwMjgzMDg2MCwiZXhwIjoyMDE4NDA2ODYwfQ.9YDEN41__xBFJU91XY9e3r119A03yQ2oq5azmrx1aqY';
@@ -32,7 +33,7 @@ function CustomerContactForm() {
     typeService: '',
     besoins: '',
   });
-  const [alertData, setAlertData] = useState(null);
+  const [alertData] = useState(null);
   const toast = useToast();
 
   const showToast = (title, description, status) => {
@@ -216,6 +217,7 @@ function CustomerContactForm() {
           </Button>
         </form>
       </Box>
+      <Displaycustumerrequest/>
     </Box>
   );
 }
