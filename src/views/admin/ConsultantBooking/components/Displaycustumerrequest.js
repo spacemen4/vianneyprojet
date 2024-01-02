@@ -27,7 +27,12 @@ function DisplayCustomerRequests() {
   return (
     <ChakraProvider>
       {contacts.map((contact) => (
-        <Alert key={contact.id} status="info">
+        <Alert
+          key={contact.id}
+          status="info"
+          borderRadius="md" // You can adjust the value for the desired border radius
+          my={2} // You can adjust the margin (spacing) between alerts
+        >
           <AlertIcon />
           Company: {contact.company_name} | Contact: {contact.contact_name} | Email: {contact.email}
         </Alert>
