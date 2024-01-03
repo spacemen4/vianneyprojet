@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {
     Button, Icon, Text, Modal, ModalOverlay, ModalContent, ModalHeader,
     ModalCloseButton, ModalBody, FormControl, Input,
-    Box, useToast, Badge, Heading, Flex,
+    Box, useToast, Badge, Heading, Flex, Checkbox,
 } from '@chakra-ui/react';
 import { FaEdit } from 'react-icons/fa';
 import { createClient } from '@supabase/supabase-js';
@@ -67,6 +67,10 @@ const ModifyAction = ({ initialActionData }) => {
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setAction({ ...action, [name]: value });
+    };
+    const handleReservedActionChange = (e) => {
+        const { checked } = e.target;
+        setAction({ ...action, reservedAction: checked });
     };
 
     const handleSubmit = async (e) => {
@@ -241,14 +245,14 @@ const ModifyAction = ({ initialActionData }) => {
                                         <Box flex="1">
                                             <Heading size="sm">Action réservée</Heading>
                                         </Box>
-                                        <Box flex="2" ml="2">
-                                            <Input
-                                                type="text"
+                                        
+                                            <Checkbox
+                                                
                                                 name="reservedAction"
-                                                value={action.reservedAction}
-                                                onChange={handleInputChange}
+                                                checked={action.reservedAction}
+                                                onChange={handleReservedActionChange}
                                             />
-                                        </Box>
+                                        
                                     </Flex>
                                     <Flex p="2" mb="2" alignItems="center">
                                         <Box flex="1">
