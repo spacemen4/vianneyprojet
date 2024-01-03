@@ -32,6 +32,8 @@ const ModifyAction = ({ initialActionData }) => {
                 startingDate: initialActionData.starting_date,
                 endingDate: initialActionData.ending_date,
                 actionComment: initialActionData.action_comment,
+                reservedAction: initialActionData.reserved_action,
+                nameOfTheClientThatReservedIt: initialActionData.name_of_the_client_that_reserved_it,
                 teamName: '',
             });
             setModalOpen(true);
@@ -77,6 +79,8 @@ const ModifyAction = ({ initialActionData }) => {
             starting_date: action.startingDate,
             ending_date: action.endingDate,
             action_comment: action.actionComment,
+            reserved_action: action.reservedAction,
+            name_of_the_client_that_reserved_it: action.nameOfTheClientThatReservedIt,
         };
 
         try {
