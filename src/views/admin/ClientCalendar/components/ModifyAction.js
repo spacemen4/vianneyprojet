@@ -189,16 +189,34 @@ const ModifyAction = ({ initialActionData }) => {
                                     </Box>
                                     <Box p="2" mb="2">
                                         <FormLabel>Date de début</FormLabel>
-                                        <Text>{action.startingDate}</Text>
+                                        <Text>
+                                            {new Date(action.startingDate).toLocaleDateString('fr-FR', {
+                                                year: 'numeric',
+                                                month: 'long',
+                                                day: 'numeric',
+                                                hour: 'numeric',
+                                                minute: 'numeric',
+                                                second: 'numeric',
+                                            })}
+                                        </Text>
                                     </Box>
                                     <Box p="2" mb="2">
                                         <FormLabel>Date de fin</FormLabel>
-                                        <Text>{action.endingDate}</Text>
+                                        <Text>
+                                            {new Date(action.endingDate).toLocaleDateString('fr-FR', {
+                                                year: 'numeric',
+                                                month: 'long',
+                                                day: 'numeric',
+                                                hour: 'numeric',
+                                                minute: 'numeric',
+                                                second: 'numeric',
+                                            })}
+                                        </Text>
                                     </Box>
                                     <Box p="2" mb="2">
                                         <FormLabel>Commentaire</FormLabel>
                                         <Text>{action.actionComment}</Text>
-                                    </Box>                              
+                                    </Box>
 
                                     {/* Add input fields for reserved_action and name_of_the_client_that_reserved_it */}
                                     <FormControl isRequired>
