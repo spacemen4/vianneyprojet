@@ -240,7 +240,6 @@ const ModifyAction = ({ initialActionData }) => {
                                             value={action.nameOfTheClientThatReservedIt}
                                             onChange={handleInputChange}
                                         />
-
                                     </FormControl>
                                     <Button m="10px" colorScheme="blue" type="submit">
                                         Modifier l'action
