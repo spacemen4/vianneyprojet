@@ -1,4 +1,4 @@
-import { ChakraProvider, Alert, AlertIcon, Text, Box, Badge, Flex, VStack } from "@chakra-ui/react";
+import { ChakraProvider, Alert, AlertIcon, Text, Badge, Flex, VStack } from "@chakra-ui/react";
 import { FaUser, FaEnvelope, FaPhone, FaToolbox } from 'react-icons/fa'; // Import the Font Awesome icons
 import { createClient } from '@supabase/supabase-js';
 import { useEffect, useState } from 'react';
