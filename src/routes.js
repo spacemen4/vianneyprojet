@@ -14,6 +14,7 @@ import Calendar from "views/admin/Calendar";
 import Parameters from "views/admin/Parameters";
 import GlobalCalendar from "views/admin/googlecalendar";
 import ConsultantBooking from "views/admin/ConsultantBooking";
+import ClientCalendar from 'views/admin/ClientCalendar';
 
 const routes = [
   {
@@ -68,6 +69,15 @@ const routes = [
     component: ConsultantBooking, // Reference your new component
     // Add any additional properties if needed
   },
+  {
+    name: "Calendrier côté client",
+    layout: "/admin",
+    path: "/client-calendar", // Choose an appropriate path
+    icon: <Icon as={FcCalendar} width='20px' height='20px' color='inherit' />, // Choose an appropriate icon
+    component: ClientCalendar, // Reference your new component
+    // Add any additional properties if needed
+  },
+
 ];
 
 export default routes;
