@@ -186,6 +186,7 @@ const ModifyAction = ({ initialActionData }) => {
                                             name="actionName"
                                             value={action.actionName}
                                             onChange={handleInputChange}
+                                            readOnly // Add the readOnly attribute here
                                         />
                                     </FormControl>
                                     <FormControl isRequired>
@@ -195,6 +196,7 @@ const ModifyAction = ({ initialActionData }) => {
                                             name="startingDate"
                                             value={action.startingDate}
                                             onChange={handleInputChange}
+                                            readOnly // Add the readOnly attribute here
                                         />
                                     </FormControl>
                                     <FormControl isRequired>
@@ -204,6 +206,7 @@ const ModifyAction = ({ initialActionData }) => {
                                             name="endingDate"
                                             value={action.endingDate}
                                             onChange={handleInputChange}
+                                            readOnly // Add the readOnly attribute here
                                         />
                                     </FormControl>
                                     <FormControl>
@@ -212,6 +215,7 @@ const ModifyAction = ({ initialActionData }) => {
                                             name="actionComment"
                                             value={action.actionComment}
                                             onChange={handleInputChange}
+                                            readOnly // Add the readOnly attribute here
                                         />
                                     </FormControl>
                                     <Button m="10px" colorScheme="blue" type="submit">

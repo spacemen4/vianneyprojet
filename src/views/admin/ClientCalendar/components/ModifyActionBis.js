@@ -162,7 +162,7 @@ const ModifyActionBis = () => {
             <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
                 <ModalOverlay />
                 <ModalContent>
-                    <ModalHeader>Modifier l'action</ModalHeader>
+                    <ModalHeader>Modifier l'actionbis</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
                         <Box>
