@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import {
     Button, Icon, Text, Modal, ModalOverlay, ModalContent, ModalHeader,
-    ModalCloseButton, ModalBody, FormControl, FormLabel, Input,
-    Box, useToast, Badge
+    ModalCloseButton, ModalBody, FormControl, Input,
+    Box, useToast, Badge, Heading, Flex, 
 } from '@chakra-ui/react';
 import { FaEdit } from 'react-icons/fa';
 import { createClient } from '@supabase/supabase-js';
@@ -171,24 +171,26 @@ const ModifyAction = ({ initialActionData }) => {
                             {/* Form elements here */}
                             <Box>
                                 {teamData && (
-                                    <Badge
-                                        bgColor="lightblue"
-                                        color="black"
-                                        p="2"
-                                        mb="2"
-                                        borderRadius={5}
-                                    >
-                                        Consultant : {teamData.team_nom} {teamData.team_prenom}
-                                    </Badge>
+                                    <Flex alignItems="center" mb="2">
+                                        <Badge
+                                            bgColor="lightblue"
+                                            color="black"
+                                            p="2"
+                                            borderRadius={5}
+                                        >
+                                            Consultant : {teamData.team_nom} {teamData.team_prenom}
+                                        </Badge>
+                                        
+                                    </Flex>
                                 )}
                                 <form onSubmit={handleSubmit}>
 
                                     <Box p="2" mb="2">
-                                        <FormLabel>Nom de l'action</FormLabel>
+                                        <Heading size="sm">Nom de l'action</Heading>
                                         <Text>{action.actionName}</Text>
                                     </Box>
                                     <Box p="2" mb="2">
-                                        <FormLabel>Date de début</FormLabel>
+                                        <Heading size="sm">Date de début</Heading>
                                         <Text>
                                             {new Date(action.startingDate).toLocaleDateString('fr-FR', {
                                                 year: 'numeric',
@@ -201,7 +203,7 @@ const ModifyAction = ({ initialActionData }) => {
                                         </Text>
                                     </Box>
                                     <Box p="2" mb="2">
-                                        <FormLabel>Date de fin</FormLabel>
+                                        <Heading size="sm">Date de fin</Heading>
                                         <Text>
                                             {new Date(action.endingDate).toLocaleDateString('fr-FR', {
                                                 year: 'numeric',
@@ -214,13 +216,13 @@ const ModifyAction = ({ initialActionData }) => {
                                         </Text>
                                     </Box>
                                     <Box p="2" mb="2">
-                                        <FormLabel>Commentaire</FormLabel>
+                                        <Heading size="sm">Commentaire</Heading>
                                         <Text>{action.actionComment}</Text>
                                     </Box>
 
                                     {/* Add input fields for reserved_action and name_of_the_client_that_reserved_it */}
                                     <FormControl isRequired>
-                                        <FormLabel>Action réservée</FormLabel>
+                                        <Heading size="sm">Action réservée</Heading>
                                         <Input
                                             type="text"
                                             name="reservedAction"
@@ -229,7 +231,7 @@ const ModifyAction = ({ initialActionData }) => {
                                         />
                                     </FormControl>
                                     <FormControl isRequired>
-                                        <FormLabel>Nom du client qui l'a réservée</FormLabel>
+                                        <Heading size="sm">Nom du client qui l'a réservée</Heading>
                                         <Input
                                             type="text"
                                             name="nameOfTheClientThatReservedIt"
