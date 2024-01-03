@@ -236,10 +236,11 @@ const ModifyAction = ({ initialActionData }) => {
                                         <FormLabel>Nom du client qui l'a réservée</FormLabel>
                                         <Input
                                             type="text"
-                                            name="clientName"
-                                            value={action.clientName}
+                                            name="nameOfTheClientThatReservedIt"
+                                            value={action.nameOfTheClientThatReservedIt}
                                             onChange={handleInputChange}
                                         />
+
                                     </FormControl>
                                     <Button m="10px" colorScheme="blue" type="submit">
                                         Modifier l'action
