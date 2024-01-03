@@ -185,11 +185,11 @@ const ModifyAction = ({ initialActionData }) => {
                                 )}
                                 <form onSubmit={handleSubmit}>
 
-                                    <Box p="2" mb="2">
+                                    <Flex p="2" mb="2">
                                         <Heading size="sm">Nom de l'action</Heading>
                                         <Text>{action.actionName}</Text>
-                                    </Box>
-                                    <Box p="2" mb="2">
+                                    </Flex>
+                                    <Flex p="2" mb="2">
                                         <Heading size="sm">Date de début</Heading>
                                         <Text>
                                             {new Date(action.startingDate).toLocaleDateString('fr-FR', {
@@ -201,8 +201,8 @@ const ModifyAction = ({ initialActionData }) => {
                                                 second: 'numeric',
                                             })}
                                         </Text>
-                                    </Box>
-                                    <Box p="2" mb="2">
+                                    </Flex>
+                                    <Flex p="2" mb="2">
                                         <Heading size="sm">Date de fin</Heading>
                                         <Text>
                                             {new Date(action.endingDate).toLocaleDateString('fr-FR', {
@@ -214,11 +214,11 @@ const ModifyAction = ({ initialActionData }) => {
                                                 second: 'numeric',
                                             })}
                                         </Text>
-                                    </Box>
-                                    <Box p="2" mb="2">
+                                    </Flex>
+                                    <Flex p="2" mb="2">
                                         <Heading size="sm">Commentaire</Heading>
                                         <Text>{action.actionComment}</Text>
-                                    </Box>
+                                    </Flex>
 
                                     {/* Add input fields for reserved_action and name_of_the_client_that_reserved_it */}
                                     <FormControl isRequired>
