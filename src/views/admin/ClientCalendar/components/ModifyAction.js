@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {
     Button, Icon, Text, Modal, ModalOverlay, ModalContent, ModalHeader,
-    ModalCloseButton, ModalBody, FormControl, FormLabel, Input, Textarea,
+    ModalCloseButton, ModalBody, FormControl, FormLabel, Input,
     Box, useToast, Badge
 } from '@chakra-ui/react';
 import { FaEdit } from 'react-icons/fa';
@@ -183,45 +183,23 @@ const ModifyAction = ({ initialActionData }) => {
                                 )}
                                 <form onSubmit={handleSubmit}>
 
-                                    <FormControl isRequired>
+                                    <Box p="2" mb="2">
                                         <FormLabel>Nom de l'action</FormLabel>
-                                        <Input
-                                            type="text"
-                                            name="actionName"
-                                            value={action.actionName}
-                                            onChange={handleInputChange}
-                                            readOnly
-                                        />
-                                    </FormControl>
-                                    <FormControl isRequired>
+                                        <Text>{action.actionName}</Text>
+                                    </Box>
+                                    <Box p="2" mb="2">
                                         <FormLabel>Date de début</FormLabel>
-                                        <Input
-                                            type="datetime-local"
-                                            name="startingDate"
-                                            value={action.startingDate}
-                                            onChange={handleInputChange}
-                                            readOnly
-                                        />
-                                    </FormControl>
-                                    <FormControl isRequired>
+                                        <Text>{action.startingDate}</Text>
+                                    </Box>
+                                    <Box p="2" mb="2">
                                         <FormLabel>Date de fin</FormLabel>
-                                        <Input
-                                            type="datetime-local"
-                                            name="endingDate"
-                                            value={action.endingDate}
-                                            onChange={handleInputChange}
-                                            readOnly
-                                        />
-                                    </FormControl>
-                                    <FormControl>
+                                        <Text>{action.endingDate}</Text>
+                                    </Box>
+                                    <Box p="2" mb="2">
                                         <FormLabel>Commentaire</FormLabel>
-                                        <Textarea
-                                            name="actionComment"
-                                            value={action.actionComment}
-                                            onChange={handleInputChange}
-                                            readOnly
-                                        />
-                                    </FormControl>
+                                        <Text>{action.actionComment}</Text>
+                                    </Box>                              
+
                                     {/* Add input fields for reserved_action and name_of_the_client_that_reserved_it */}
                                     <FormControl isRequired>
                                         <FormLabel>Action réservée</FormLabel>
