@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {
     Button, Icon, Text, Modal, ModalOverlay, ModalContent, ModalHeader,
-    ModalCloseButton, ModalBody, FormControl, Input,
+    ModalCloseButton, ModalBody, Input,
     Box, useToast, Badge, Heading, Flex, Checkbox,
 } from '@chakra-ui/react';
 import { FaEdit } from 'react-icons/fa';
