@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {
     Button, Icon, Text, Modal, ModalOverlay, ModalContent, ModalHeader,
     ModalCloseButton, ModalBody, FormControl, Input,
-    Box, useToast, Badge, Heading, Flex, 
+    Box, useToast, Badge, Heading, Flex,
 } from '@chakra-ui/react';
 import { FaEdit } from 'react-icons/fa';
 import { createClient } from '@supabase/supabase-js';
@@ -180,65 +180,89 @@ const ModifyAction = ({ initialActionData }) => {
                                         >
                                             Consultant : {teamData.team_nom} {teamData.team_prenom}
                                         </Badge>
-                                        
+
                                     </Flex>
                                 )}
                                 <form onSubmit={handleSubmit}>
 
-                                    <Flex p="2" mb="2">
-                                        <Heading size="sm">Nom de l'action</Heading>
-                                        <Text>{action.actionName}</Text>
+                                    <Flex p="2" mb="2" alignItems="center">
+                                        <Box flex="1">
+                                            <Heading size="sm">Nom de l'action</Heading>
+                                        </Box>
+                                        <Box flex="2" ml="2">
+                                            <Text>{action.actionName}</Text>
+                                        </Box>
                                     </Flex>
-                                    <Flex p="2" mb="2">
-                                        <Heading size="sm">Date de début</Heading>
-                                        <Text>
-                                            {new Date(action.startingDate).toLocaleDateString('fr-FR', {
-                                                year: 'numeric',
-                                                month: 'long',
-                                                day: 'numeric',
-                                                hour: 'numeric',
-                                                minute: 'numeric',
-                                                second: 'numeric',
-                                            })}
-                                        </Text>
+                                    <Flex p="2" mb="2" alignItems="center">
+                                        <Box flex="1">
+                                            <Heading size="sm">Date de début</Heading>
+                                        </Box>
+                                        <Box flex="2" ml="2">
+                                            <Text>
+                                                {new Date(action.startingDate).toLocaleDateString('fr-FR', {
+                                                    year: 'numeric',
+                                                    month: 'long',
+                                                    day: 'numeric',
+                                                    hour: 'numeric',
+                                                    minute: 'numeric',
+                                                    second: 'numeric',
+                                                })}
+                                            </Text>
+                                        </Box>
                                     </Flex>
-                                    <Flex p="2" mb="2">
-                                        <Heading size="sm">Date de fin</Heading>
-                                        <Text>
-                                            {new Date(action.endingDate).toLocaleDateString('fr-FR', {
-                                                year: 'numeric',
-                                                month: 'long',
-                                                day: 'numeric',
-                                                hour: 'numeric',
-                                                minute: 'numeric',
-                                                second: 'numeric',
-                                            })}
-                                        </Text>
+                                    <Flex p="2" mb="2" alignItems="center">
+                                        <Box flex="1">
+                                            <Heading size="sm">Date de fin</Heading>
+                                        </Box>
+                                        <Box flex="2" ml="2">
+                                            <Text>
+                                                {new Date(action.endingDate).toLocaleDateString('fr-FR', {
+                                                    year: 'numeric',
+                                                    month: 'long',
+                                                    day: 'numeric',
+                                                    hour: 'numeric',
+                                                    minute: 'numeric',
+                                                    second: 'numeric',
+                                                })}
+                                            </Text>
+                                        </Box>
                                     </Flex>
-                                    <Flex p="2" mb="2">
-                                        <Heading size="sm">Commentaire</Heading>
-                                        <Text>{action.actionComment}</Text>
+                                    <Flex p="2" mb="2" alignItems="center">
+                                        <Box flex="1">
+                                            <Heading size="sm">Commentaire</Heading>
+                                        </Box>
+                                        <Box flex="2" ml="2">
+                                            <Text>{action.actionComment}</Text>
+                                        </Box>
                                     </Flex>
 
                                     {/* Add input fields for reserved_action and name_of_the_client_that_reserved_it */}
-                                    <FormControl isRequired>
-                                        <Heading size="sm">Action réservée</Heading>
-                                        <Input
-                                            type="text"
-                                            name="reservedAction"
-                                            value={action.reservedAction}
-                                            onChange={handleInputChange}
-                                        />
-                                    </FormControl>
-                                    <FormControl isRequired>
-                                        <Heading size="sm">Nom du client qui l'a réservée</Heading>
-                                        <Input
-                                            type="text"
-                                            name="nameOfTheClientThatReservedIt"
-                                            value={action.nameOfTheClientThatReservedIt}
-                                            onChange={handleInputChange}
-                                        />
-                                    </FormControl>
+                                    <Flex p="2" mb="2" alignItems="center">
+                                        <Box flex="1">
+                                            <Heading size="sm">Action réservée</Heading>
+                                        </Box>
+                                        <Box flex="2" ml="2">
+                                            <Input
+                                                type="text"
+                                                name="reservedAction"
+                                                value={action.reservedAction}
+                                                onChange={handleInputChange}
+                                            />
+                                        </Box>
+                                    </Flex>
+                                    <Flex p="2" mb="2" alignItems="center">
+                                        <Box flex="1">
+                                            <Heading size="sm">Nom du client qui l'a réservée</Heading>
+                                        </Box>
+                                        <Box flex="2" ml="2">
+                                            <Input
+                                                type="text"
+                                                name="nameOfTheClientThatReservedIt"
+                                                value={action.nameOfTheClientThatReservedIt}
+                                                onChange={handleInputChange}
+                                            />
+                                        </Box>
+                                    </Flex>
                                     <Button m="10px" colorScheme="blue" type="submit">
                                         Modifier l'action
                                     </Button>
