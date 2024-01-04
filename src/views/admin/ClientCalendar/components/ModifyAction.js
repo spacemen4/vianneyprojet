@@ -129,8 +129,6 @@ const ModifyAction = ({ initialActionData }) => {
         }
     };
 
-    // ... (previous code remains the same)
-
     return (
         <div>
             <Button
@@ -165,11 +163,9 @@ const ModifyAction = ({ initialActionData }) => {
                                         >
                                             Consultant : {teamData.team_nom} {teamData.team_prenom}
                                         </Badge>
-
                                     </Flex>
                                 )}
                                 <form onSubmit={handleSubmit}>
-
                                     <Flex p="2" mb="2" alignItems="center">
                                         <Box flex="1">
                                             <Heading size="sm">Nom de l'action</Heading>
@@ -226,7 +222,6 @@ const ModifyAction = ({ initialActionData }) => {
                                         <Box flex="1">
                                             <Heading size="sm">Action réservée</Heading>
                                         </Box>
-
                                         <Checkbox
                                             name="reservedAction"
                                             checked={action.reservedAction}
@@ -235,6 +230,7 @@ const ModifyAction = ({ initialActionData }) => {
                                         {formErrors.reservedAction && (
                                             <Text color="red">Action réservée est requise</Text>
                                         )}
+                                        <FormHelperText ml="2">Cochez si l'action est réservée.</FormHelperText>
                                     </Flex>
                                     <Flex p="2" mb="2" alignItems="center">
                                         <Box flex="1">
@@ -250,9 +246,9 @@ const ModifyAction = ({ initialActionData }) => {
                                             {formErrors.nameOfTheClientThatReservedIt && (
                                                 <Text color="red">Nom du client qui l'a réservée est requis</Text>
                                             )}
+                                            <FormHelperText ml="2">Entrez le nom du client qui a réservé l'action.</FormHelperText>
                                         </Box>
                                     </Flex>
-
                                     <Button m="10px" colorScheme="blue" type="submit" isDisabled={Object.values(formErrors).some(Boolean)}>
                                         Modifier l'action
                                     </Button>
