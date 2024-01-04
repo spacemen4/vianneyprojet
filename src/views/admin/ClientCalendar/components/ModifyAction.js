@@ -10,6 +10,7 @@ import { createClient } from '@supabase/supabase-js';
 const ModifyAction = ({ initialActionData }) => {
     const [isModalOpen, setModalOpen] = useState(false);
     const [teamData, setTeamData] = useState(null);
+    const [formErrors, setFormErrors] = useState({});
     const [action, setAction] = useState({
         actionId: '',
         actionName: '',
@@ -75,6 +76,19 @@ const ModifyAction = ({ initialActionData }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        // Check if the required fields are empty
+        if (!action.reservedAction || action.nameOfTheClientThatReservedIt.trim() === '') {
+            setFormErrors({
+                reservedAction: !action.reservedAction,
+                nameOfTheClientThatReservedIt: action.nameOfTheClientThatReservedIt.trim() === '',
+            });
+            return; // Don't submit the form if there are validation errors
+        }
+
+        // Clear any previous form errors
+        setFormErrors({});
+
         console.log('Updating action with ID:', action.actionId);
 
         const updatedAction = {
@@ -116,38 +130,8 @@ const ModifyAction = ({ initialActionData }) => {
     };
 
 
-    const handleDelete = async () => {
-        console.log('Deleting action with ID:', action.actionId);
 
-        try {
-            const { error } = await supabase
-                .from('vianney_actions')
-                .delete()
-                .eq('id', action.actionId);
-
-            if (error) {
-                toast({
-                    title: "Erreur",
-                    description: "Une erreur s'est produite lors de la suppression de l'action.",
-                    status: "error",
-                    duration: 5000,
-                    isClosable: true,
-                });
-            } else {
-                toast({
-                    title: "Succès",
-                    description: "L'action a été supprimée avec succès.",
-                    status: "success",
-                    duration: 5000,
-                    isClosable: true,
-                });
-                setModalOpen(false);
-                // Handle deletion success, e.g., close the modal or refresh the list
-            }
-        } catch (error) {
-            console.error('An error occurred while deleting action:', error);
-        }
-    };
+    
 
 
     return (
@@ -245,14 +229,15 @@ const ModifyAction = ({ initialActionData }) => {
                                         <Box flex="1">
                                             <Heading size="sm">Action réservée</Heading>
                                         </Box>
-                                        
-                                            <Checkbox
-                                                
-                                                name="reservedAction"
-                                                checked={action.reservedAction}
-                                                onChange={handleReservedActionChange}
-                                            />
-                                        
+
+                                        <Checkbox
+                                            name="reservedAction"
+                                            checked={action.reservedAction}
+                                            onChange={handleReservedActionChange}
+                                        />
+                                        {formErrors.reservedAction && (
+                                            <Text color="red">Action réservée est requise</Text>
+                                        )}
                                     </Flex>
                                     <Flex p="2" mb="2" alignItems="center">
                                         <Box flex="1">
@@ -265,14 +250,16 @@ const ModifyAction = ({ initialActionData }) => {
                                                 value={action.nameOfTheClientThatReservedIt}
                                                 onChange={handleInputChange}
                                             />
+                                            {formErrors.nameOfTheClientThatReservedIt && (
+                                                <Text color="red">Nom du client qui l'a réservée est requis</Text>
+                                            )}
                                         </Box>
                                     </Flex>
+
                                     <Button m="10px" colorScheme="blue" type="submit">
                                         Modifier l'action
                                     </Button>
-                                    <Button m="10px" colorScheme="red" onClick={handleDelete}>
-                                        Supprimer
-                                    </Button>
+                                    
                                 </form>
                             </Box>
                         </ModalBody>
