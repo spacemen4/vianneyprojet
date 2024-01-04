@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {
     Button, Icon, Text, Modal, ModalOverlay, ModalContent, ModalHeader,
     ModalCloseButton, ModalBody, Input, FormErrorMessage, FormHelperText,
-    Box, useToast, Badge, Heading, Flex, Checkbox,
+    Box, useToast, Badge, Heading, Flex, Checkbox, FormControl,
 } from '@chakra-ui/react';
 import { FaEdit } from 'react-icons/fa';
 import { createClient } from '@supabase/supabase-js';
@@ -129,43 +129,44 @@ const ModifyAction = ({ initialActionData }) => {
         }
     };
 
-    return (
-        <div>
-            <Button
-                onClick={() => setModalOpen(true)}
-                p={1}
-                borderRadius="full"
-                display="flex"
-                alignItems="center"
-                boxShadow="md"
-                _hover={{ boxShadow: "2xl" }}
-            >
-                <Icon as={FaEdit} w={7} h={7} />
-                <Text pl={3} pr={7}>Modifier</Text>
-            </Button>
+return (
+    <div>
+        <Button
+            onClick={() => setModalOpen(true)}
+            p={1}
+            borderRadius="full"
+            display="flex"
+            alignItems="center"
+            boxShadow="md"
+            _hover={{ boxShadow: "2xl" }}
+        >
+            <Icon as={FaEdit} w={7} h={7} />
+            <Text pl={3} pr={7}>Modifier</Text>
+        </Button>
 
-            {isModalOpen && (
-                <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
-                    <ModalOverlay />
-                    <ModalContent>
-                        <ModalHeader>Modifier l'action</ModalHeader>
-                        <ModalCloseButton />
-                        <ModalBody>
-                            {/* Form elements here */}
-                            <Box>
-                                {teamData && (
-                                    <Flex alignItems="center" mb="2">
-                                        <Badge
-                                            bgColor="lightblue"
-                                            color="black"
-                                            p="2"
-                                            borderRadius={5}
-                                        >
-                                            Consultant : {teamData.team_nom} {teamData.team_prenom}
-                                        </Badge>
-                                    </Flex>
-                                )}
-                                <form onSubmit={handleSubmit}>
+        {isModalOpen && (
+            <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
+                <ModalOverlay />
+                <ModalContent>
+                    <ModalHeader>Modifier l'action</ModalHeader>
+                    <ModalCloseButton />
+                    <ModalBody>
+                        {/* Form elements here */}
+                        <Box>
+                            {teamData && (
+                                <Flex alignItems="center" mb="2">
+                                    <Badge
+                                        bgColor="lightblue"
+                                        color="black"
+                                        p="2"
+                                        borderRadius={5}
+                                    >
+                                        Consultant : {teamData.team_nom} {teamData.team_prenom}
+                                    </Badge>
+                                </Flex>
+                            )}
+                            <form onSubmit={handleSubmit}>
+                                <FormControl isRequired>
                                     <Flex p="2" mb="2" alignItems="center">
                                         <Box flex="1">
                                             <Heading size="sm">Nom de l'action</Heading>
@@ -216,8 +217,9 @@ const ModifyAction = ({ initialActionData }) => {
                                             <Text>{action.actionComment}</Text>
                                         </Box>
                                     </Flex>
-
-                                    {/* Add input fields for reserved_action and name_of_the_client_that_reserved_it */}
+                                </FormControl>
+                                {/* Add input fields for reserved_action and name_of_the_client_that_reserved_it */}
+                                <FormControl isRequired>
                                     <Flex p="2" mb="2" alignItems="center">
                                         <Box flex="1">
                                             <Heading size="sm">Action réservée</Heading>
@@ -232,6 +234,8 @@ const ModifyAction = ({ initialActionData }) => {
                                         )}
                                         <FormHelperText ml="2">Cochez si l'action est réservée.</FormHelperText>
                                     </Flex>
+                                </FormControl>
+                                <FormControl isRequired>
                                     <Flex p="2" mb="2" alignItems="center">
                                         <Box flex="1">
                                             <Heading size="sm">Nom du client qui l'a réservée</Heading>
@@ -249,20 +253,21 @@ const ModifyAction = ({ initialActionData }) => {
                                             <FormHelperText ml="2">Entrez le nom du client qui a réservé l'action.</FormHelperText>
                                         </Box>
                                     </Flex>
-                                    <Button m="10px" colorScheme="blue" type="submit" isDisabled={Object.values(formErrors).some(Boolean)}>
-                                        Modifier l'action
-                                    </Button>
-                                    {Object.values(formErrors).some(Boolean) && (
-                                        <FormErrorMessage color="red">Tous les champs requis doivent être remplis.</FormErrorMessage>
-                                    )}
-                                </form>
-                            </Box>
-                        </ModalBody>
-                    </ModalContent>
-                </Modal>
-            )}
-        </div>
-    );
+                                </FormControl>
+                                <Button m="10px" colorScheme="blue" type="submit" isDisabled={Object.values(formErrors).some(Boolean)}>
+                                    Modifier l'action
+                                </Button>
+                                {Object.values(formErrors).some(Boolean) && (
+                                    <FormErrorMessage color="red">Tous les champs requis doivent être remplis.</FormErrorMessage>
+                                )}
+                            </form>
+                        </Box>
+                    </ModalBody>
+                </ModalContent>
+            </Modal>
+        )}
+    </div>
+);
 };
 
 export default ModifyAction;
