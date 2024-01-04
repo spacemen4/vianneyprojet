@@ -152,7 +152,6 @@ function CustomerContactForm() {
               <FormHelperText>Entrez le nom du contact.</FormHelperText>
             )}
           </FormControl>
-
           <FormControl id="email" mt="10px">
             <FormLabel>Adresse Email</FormLabel>
             <Input
@@ -180,7 +179,6 @@ function CustomerContactForm() {
               onChange={(e) => setFormData({ ...formData, telephone: e.target.value })}
             />
           </FormControl>
-
           <FormControl id="type-service" mt="10px">
             <FormLabel>Type de Service</FormLabel>
             <Select
@@ -201,7 +199,6 @@ function CustomerContactForm() {
               <FormHelperText>Sélectionnez le type de service.</FormHelperText>
             )}
           </FormControl>
-
           <FormControl id="besoins" mt="10px">
             <FormLabel>Besoins</FormLabel>
             <Textarea
