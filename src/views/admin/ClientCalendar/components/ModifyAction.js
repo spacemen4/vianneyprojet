@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {
     Button, Icon, Text, Modal, ModalOverlay, ModalContent, ModalHeader,
-    ModalCloseButton, ModalBody, Input,
+    ModalCloseButton, ModalBody, Input, FormErrorMessage, FormHelperText,
     Box, useToast, Badge, Heading, Flex, Checkbox,
 } from '@chakra-ui/react';
 import { FaEdit } from 'react-icons/fa';
@@ -129,10 +129,7 @@ const ModifyAction = ({ initialActionData }) => {
         }
     };
 
-
-
-    
-
+    // ... (previous code remains the same)
 
     return (
         <div>
@@ -256,10 +253,12 @@ const ModifyAction = ({ initialActionData }) => {
                                         </Box>
                                     </Flex>
 
-                                    <Button m="10px" colorScheme="blue" type="submit">
+                                    <Button m="10px" colorScheme="blue" type="submit" isDisabled={Object.values(formErrors).some(Boolean)}>
                                         Modifier l'action
                                     </Button>
-                                    
+                                    {Object.values(formErrors).some(Boolean) && (
+                                        <FormErrorMessage color="red">Tous les champs requis doivent être remplis.</FormErrorMessage>
+                                    )}
                                 </form>
                             </Box>
                         </ModalBody>
