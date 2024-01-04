@@ -258,10 +258,11 @@ const ModifyAction = ({ initialActionData }) => {
                                         m="10px"
                                         colorScheme="blue"
                                         type="submit"
-                                        isDisabled={!action.reservedAction || action.nameOfTheClientThatReservedIt.trim() === ''}
+                                        isDisabled={!action.reservedAction || (action.nameOfTheClientThatReservedIt === undefined || action.nameOfTheClientThatReservedIt.trim() === '')}
                                     >
                                         Modifier l'action
                                     </Button>
+
                                     {Object.values(formErrors).some(Boolean) && (
                                         <FormErrorMessage color="red">Tous les champs requis doivent être remplis.</FormErrorMessage>
                                     )}
