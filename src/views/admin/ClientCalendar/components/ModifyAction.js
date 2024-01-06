@@ -5,7 +5,7 @@ import {
     Box, useToast, Badge, Heading, Flex, Checkbox, FormControl,
 } from '@chakra-ui/react';
 import { FaEdit } from 'react-icons/fa';
-import { createClient } from '@supabase/supabase-js';
+import supabase from './../../../../supabaseClient';
 
 const ModifyAction = ({ initialActionData }) => {
     const [isModalOpen, setModalOpen] = useState(false);
@@ -20,9 +20,6 @@ const ModifyAction = ({ initialActionData }) => {
         teamName: '',
     });
     const toast = useToast();
-    const supabaseUrl = 'https://pvpsmyizvorwwccuwbuq.supabase.co';
-    const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB2cHNteWl6dm9yd3djY3V3YnVxIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTcwMjgzMDg2MCwiZXhwIjoyMDE4NDA2ODYwfQ.9YDEN41__xBFJU91XY9e3r119A03yQ2oq5azmrx1aqY';
-    const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
     useEffect(() => {
         console.log("Initial Action Data:", initialActionData); // Log to check the structure
@@ -42,28 +39,29 @@ const ModifyAction = ({ initialActionData }) => {
     }, [initialActionData]);
 
     useEffect(() => {
-        // Fetch team data from the view
         const fetchTeamData = async () => {
-            try {
-                const { data, error } = await supabase
-                    .from('team_member_view')
-                    .select('team_nom, team_prenom')
-                    .eq('action_id', action.actionId); // Filter by action ID
-
-                if (error) {
-                    console.error('Error fetching team data:', error);
-                } else if (data && data.length > 0) {
-                    // Store the team data in state
-                    setTeamData(data[0]);
+            // Ensure action.actionId is a non-empty string
+            if (typeof action.actionId === 'string' && action.actionId.trim() !== '') {
+                try {
+                    const { data, error } = await supabase
+                        .from('team_member_view')
+                        .select('team_nom, team_prenom')
+                        .eq('action_id', action.actionId);
+    
+                    if (error) {
+                        console.error('Error fetching team data:', error);
+                    } else if (data && data.length > 0) {
+                        setTeamData(data[0]);
+                    }
+                } catch (error) {
+                    console.error('An error occurred while fetching team data:', error);
                 }
-            } catch (error) {
-                console.error('An error occurred while fetching team data:', error);
             }
         };
-
-        // Call the fetchTeamData function
+    
         fetchTeamData();
-    }, [action.actionId, supabase]);
+    }, [action.actionId]);
+    
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
