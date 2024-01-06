@@ -10,7 +10,6 @@ import isBetween from "dayjs/plugin/isBetween";
 import 'dayjs/locale/fr';
 import CreateEventButton from "./components/CreateEventButton";
 import ModifyAction from "./components/ModifyAction";
-import ActionIdDisplay from "./components/ActionIdDisplay"; // Import the ActionIdDisplay component
 import supabase from './../../../supabaseClient';
 import ModifyActionBis from "./components/ModifyActionBis";
 
@@ -210,7 +209,6 @@ const App = () => {
               </Box>
               <div style={modifyActionButtonStyle}>
                 <ModifyAction initialActionData={selectedActionData} />
-                <ActionIdDisplay actionId={selectedActionData?.action_id} />
               </div>
               <ModifyActionBis />
             </Flex>
