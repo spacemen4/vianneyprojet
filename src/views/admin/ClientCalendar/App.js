@@ -11,14 +11,12 @@ import 'dayjs/locale/fr';
 import CreateEventButton from "./components/CreateEventButton";
 import ModifyAction from "./components/ModifyAction";
 import ActionIdDisplay from "./components/ActionIdDisplay"; // Import the ActionIdDisplay component
-import { createClient } from '@supabase/supabase-js';
+import supabase from './../../../supabaseClient';
 import ModifyActionBis from "./components/ModifyActionBis";
 
 dayjs.locale('fr');
 dayjs.extend(isBetween);
-const supabaseUrl = 'https://pvpsmyizvorwwccuwbuq.supabase.co';
-const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB2cHNteWl6dm9yd3djY3V3YnVxIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTcwMjgzMDg2MCwiZXhwIjoyMDE4NDA2ODYwfQ.9YDEN41__xBFJU91XY9e3r119A03yQ2oq5azmrx1aqY';
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
 
 const formatDate = (date) => {
   return dayjs(date).format('DD/MM/YYYY');
