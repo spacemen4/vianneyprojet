@@ -1,24 +1,31 @@
-import React, { useEffect } from 'react';
-import { useHistory } from 'react-router-dom'; // Import useHistory
+import React from 'react';
+import { Button } from '@chakra-ui/react';
 import { createClient } from '@supabase/supabase-js';
+import { useHistory } from 'react-router-dom';
 
 const supabaseUrl = 'https://pvpsmyizvorwwccuwbuq.supabase.co';
 const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB2cHNteWl6dm9yd3djY3V3YnVxIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTcwMjgzMDg2MCwiZXhwIjoyMDE4NDA2ODYwfQ.9YDEN41__xBFJU91XY9e3r119A03yQ2oq5azmrx1aqY';
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-const Logout = () => {
-  const history = useHistory(); // Use useHistory
+const LogoutButton = () => {
+  const history = useHistory();
 
-  useEffect(() => {
-    const logout = async () => {
-      await supabase.auth.signOut();
-      history.push('/login'); // Redirect using history.push
-    };
+  const handleLogout = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      console.error('Error logging out:', error);
+    } else {
+      history.push('/login'); // Redirect to login page after logout
+    }
+  };
 
-    logout();
-  }, [history]);
-
-  return <div>Logging out...</div>;
+  return (
+    <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
+    <Button colorScheme="blue" onClick={handleLogout}>
+      Logout
+    </Button>
+    </Box>
+  );
 };
 
-export default Logout;
+export default LogoutButton;
