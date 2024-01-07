@@ -52,8 +52,9 @@ const App = () => {
 				top="1rem"
 				right="1rem"
 				align="center"
-				zIndex={1000} 
+				zIndex={1000}
 				onClick={handleLogout}
+				_hover={{ cursor: 'pointer' }} // Change cursor on hover
 			  >
 				<IconButton
 				  colorScheme="blue"
@@ -62,7 +63,13 @@ const App = () => {
 				  aria-label="Logout"
 				  size="sm"
 				/>
-				<Text size="sm" ml="2">Déconnexion</Text>
+				<Text 
+				  ml="2"
+				  fontSize={{ base: '0', md: 'sm' }} // Hide text on small screens
+				  display={{ base: 'none', md: 'inline' }} // Hide on small screens, show on medium and larger screens
+				>
+				  Déconnexion
+				</Text>
 			  </Flex>
               )}
               {!session ? (
