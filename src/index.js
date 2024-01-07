@@ -5,12 +5,14 @@ import { HashRouter, Route, Switch, Redirect } from 'react-router-dom';
 import AuthLayout from 'layouts/auth';
 import AdminLayout from 'layouts/admin';
 import RtlLayout from 'layouts/rtl';
-import { ChakraProvider, Button, Box } from '@chakra-ui/react';
+import { ChakraProvider, IconButton, Box } from '@chakra-ui/react';
 import theme from 'theme/theme';
 import { ThemeEditorProvider } from '@hypertheme-editor/chakra-ui';
 import { Auth } from '@supabase/auth-ui-react';
 import { ThemeSupa } from '@supabase/auth-ui-shared';
 import supabase from './supabaseClient';
+import { FcDataEncryption } from "react-icons/fc";
+
 
 const App = () => {
   const [session, setSession] = useState(null);
@@ -45,16 +47,17 @@ const App = () => {
           <HashRouter>
             <Box position="relative">
               {session && (
-                <Button
+                <IconButton
                   position="absolute"
                   top="1rem"
                   right="1rem"
                   colorScheme="blue"
                   zIndex={1000} // Set the z-index to 1000
                   onClick={handleLogout}
-                >
-                  Déconnexion
-                </Button>
+                  icon={<FcDataEncryption />}
+                  aria-label="Logout"
+                  size="sm"
+                />
               )}
               {!session ? (
                 <Box
@@ -83,7 +86,7 @@ const App = () => {
                     localization={{
                       variables: {
                         sign_in: {
-											email_label: 'Adresse e-mail', // French translation for 'Email address'
+                          email_label: 'Adresse e-mail', // French translation for 'Email address'
 											password_label: 'Votre mot de passe', // French translation for 'Your Password'
 											email_input_placeholder: 'Saisissez votre adresse e-mail', // French translation for 'Your email address'
 											password_input_placeholder: 'Saisissez votre mot de passe', // French translation for 'Your password'
@@ -138,13 +141,13 @@ const App = () => {
                   />
                 </Box>
               ) : (
-                
-                  <Switch>
-                    <Route path={`/auth`} component={AuthLayout} />
-                    <Route path={`/admin`} component={AdminLayout} />
-                    <Route path={`/rtl`} component={RtlLayout} />
-                    <Redirect from='/' to='/admin' />
-                  </Switch>
+
+                <Switch>
+                  <Route path={`/auth`} component={AuthLayout} />
+                  <Route path={`/admin`} component={AdminLayout} />
+                  <Route path={`/rtl`} component={RtlLayout} />
+                  <Redirect from='/' to='/admin' />
+                </Switch>
 
               )}
             </Box>
