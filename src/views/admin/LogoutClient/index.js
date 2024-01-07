@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from '@chakra-ui/react';
+import { Button, Box } from '@chakra-ui/react';
 import { createClient } from '@supabase/supabase-js';
 import { useHistory } from 'react-router-dom';
 
