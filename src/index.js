@@ -5,7 +5,7 @@ import { HashRouter, Route, Switch, Redirect } from 'react-router-dom';
 import AuthLayout from 'layouts/auth';
 import AdminLayout from 'layouts/admin';
 import RtlLayout from 'layouts/rtl';
-import { ChakraProvider, Button } from '@chakra-ui/react';
+import { ChakraProvider, Button, Box } from '@chakra-ui/react';
 import theme from 'theme/theme';
 import { ThemeEditorProvider } from '@hypertheme-editor/chakra-ui';
 import { Auth } from '@supabase/auth-ui-react';
@@ -45,6 +45,14 @@ const App = () => {
 				<ThemeEditorProvider>
 					<HashRouter>
 						{!session ? (
+							<Box
+							width="90%"  // Set the width to 90%
+							margin="auto" // Center horizontally
+							height="90vh" // Set the height to 90% of the viewport height
+							display="flex" // Use flexbox for centering vertically
+							justifyContent="center" // Center horizontally
+							alignItems="center" // Center vertically
+						  >
 							<Auth
 								supabaseClient={supabase}
 								theme="default"
@@ -59,7 +67,7 @@ const App = () => {
 										},
 									},
 								}}
-								providers={['google']}
+								providers={['google']}								
 								localization={{
 									variables: {
 										sign_in: {
@@ -116,6 +124,7 @@ const App = () => {
 									},
 								}}
 							/>
+							</Box>
 						) : (
 							<>
 								<Button colorScheme="blue" onClick={handleLogout}>Logout</Button>
