@@ -15,7 +15,7 @@ import Parameters from "views/admin/Parameters";
 import GlobalCalendar from "views/admin/googlecalendar";
 import ConsultantBooking from "views/admin/ConsultantBooking";
 import ClientCalendar from 'views/admin/ClientCalendar';
-import Logout from 'views/admin/Logout'
+import LogoutClient from 'views/admin/LogoutClient'
 
 const routes = [
   {
@@ -81,9 +81,9 @@ const routes = [
   {
     name: "Logout",
     layout: "/admin",
-    path: "/logout",
+    path: "/logout-client",
     icon: <Icon as={FcBusinessman} width='20px' height='20px' color='inherit' />,
-    component: Logout, // This should be a component that handles the logout process
+    component: LogoutClient, // This should be a component that handles the logout process
   },
   
 

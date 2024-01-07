@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useHistory } from 'react-router-dom'; // Import useHistory
 import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = 'https://pvpsmyizvorwwccuwbuq.supabase.co';
@@ -7,16 +7,16 @@ const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYm
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 const Logout = () => {
-  const navigate = useNavigate();
+  const history = useHistory(); // Use useHistory
 
   useEffect(() => {
     const logout = async () => {
       await supabase.auth.signOut();
-      navigate('/login'); // Redirect to login or any other page after logout
+      history.push('/login'); // Redirect using history.push
     };
 
     logout();
-  }, [navigate]);
+  }, [history]);
 
   return <div>Logging out...</div>;
 };
