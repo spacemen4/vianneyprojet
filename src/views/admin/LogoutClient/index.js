@@ -1,30 +1,23 @@
 import React from 'react';
-import { Button, Box } from '@chakra-ui/react';
-import { createClient } from '@supabase/supabase-js';
-import { useHistory } from 'react-router-dom';
+import { Button } from '@chakra-ui/react';
+import supabase from './../../../supabaseClient';
 
-const supabaseUrl = 'https://pvpsmyizvorwwccuwbuq.supabase.co';
-const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB2cHNteWl6dm9yd3djY3V3YnVxIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTcwMjgzMDg2MCwiZXhwIjoyMDE4NDA2ODYwfQ.9YDEN41__xBFJU91XY9e3r119A03yQ2oq5azmrx1aqY';
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
-
-const LogoutButton = () => {
-  const history = useHistory();
+const LogoutButton = ({ onLogout }) => {
+  console.log('onLogout prop:', onLogout); // Add this line for debugging
 
   const handleLogout = async () => {
-    const { error } = await supabase.auth.signOut();
-    if (error) {
-      console.error('Error logging out:', error);
-    } else {
-      history.push('/login'); // Redirect to login page after logout
-    }
+      const { error } = await supabase.auth.signOut();
+      if (!error && typeof onLogout === 'function') {
+          onLogout(null); 
+      } else if (error) {
+          console.error('Logout Error:', error);
+      }
   };
 
   return (
-    <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
-    <Button colorScheme="blue" onClick={handleLogout}>
-      Logout
-    </Button>
-    </Box>
+      <Button colorScheme="blue" onClick={handleLogout}>
+          Sign Out
+      </Button>
   );
 };
 

@@ -11,40 +11,49 @@ import { ThemeEditorProvider } from '@hypertheme-editor/chakra-ui';
 import { Auth } from '@supabase/auth-ui-react';
 import { ThemeSupa } from '@supabase/auth-ui-shared';
 import supabase from './supabaseClient';
+import LogoutButton from 'views/admin/LogoutClient';
 
 const App = () => {
-  const [session, setSession] = useState(null);
+	const [session, setSession] = useState(null);
+	useEffect(() => {
+		const updateSessionState = (session) => {
+			setSession(session);
+		}
 
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-    });
+		supabase.auth.getSession().then(({ data: { session } }) => {
+			updateSessionState(session);
+		});
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-    });
+		const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+			updateSessionState(session);
+		});
 
-    return () => subscription.unsubscribe();
-  }, []);
+		return () => subscription.unsubscribe();
+	}, []);
 
-  return !session ? (
-    <Auth supabaseClient={supabase} appearance={{ theme: ThemeSupa }} />
-  ) : (
-    <ChakraProvider theme={theme}>
-      <React.StrictMode>
-        <ThemeEditorProvider>
-          <HashRouter>
-            <Switch>
-              <Route path={`/auth`} component={AuthLayout} />
-              <Route path={`/admin`} component={AdminLayout} />
-              <Route path={`/rtl`} component={RtlLayout} />
-              <Redirect from='/' to='/admin' />
-            </Switch>
-          </HashRouter>
-        </ThemeEditorProvider>
-      </React.StrictMode>
-    </ChakraProvider>
-  );
+	const handleLogout = () => {
+		setSession(null); // Resets the session state on logout
+	};
+
+	return !session ? (
+		<Auth supabaseClient={supabase} appearance={{ theme: ThemeSupa }} />
+	) : (
+		<ChakraProvider theme={theme}>
+			<React.StrictMode>
+				<ThemeEditorProvider>
+					<HashRouter>
+						<LogoutButton onLogout={handleLogout} />
+						<Switch>
+							<Route path={`/auth`} component={AuthLayout} />
+							<Route path={`/admin`} component={AdminLayout} />
+							<Route path={`/rtl`} component={RtlLayout} />
+							<Redirect from='/' to='/admin' />
+						</Switch>
+					</HashRouter>
+				</ThemeEditorProvider>
+			</React.StrictMode>
+		</ChakraProvider>
+	);
 };
 
 ReactDOM.render(<App />, document.getElementById('root'));

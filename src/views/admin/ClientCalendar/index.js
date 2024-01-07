@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer, useMemo, useContext } from "react";
+import React, { useState, useEffect,  useContext } from "react";
 import "./index.css";
 import { getMonth } from "./util";
 import {
@@ -684,27 +684,6 @@ const CalendarHeader = () => {
   );
 };
 
-function savedEventsReducer(state, { type, payload }) {
-  switch (type) {
-    case "push":
-      return [...state, payload];
-    case "update":
-      return state.map((evt) =>
-        evt.id === payload.id ? payload : evt
-      );
-    case "delete":
-      return state.filter((evt) => evt.id !== payload.id);
-    default:
-      throw new Error();
-  }
-}
-
-function initEvents() {
-  const storageEvents = localStorage.getItem("savedEvents");
-  const parsedEvents = storageEvents ? JSON.parse(storageEvents) : [];
-  return parsedEvents;
-}
-
 const App = () => {
 
   const [currentMonth, setCurrentMonth] = useState(getMonth());
@@ -717,7 +696,6 @@ const App = () => {
   const [selectedTeams, setSelectedTeams] = useState([]);
   const [teamMembers, setTeamMembers] = useState([]);
   const [monthIndex, setMonthIndex] = useState(dayjs().month());
-  const [savedEvents, dispatchCalEvent] = useReducer(savedEventsReducer, [], initEvents);
   const handleCheckboxChange = (index) => {
     const updatedSelectedTeams = [...selectedTeams];
     updatedSelectedTeams[index] = !updatedSelectedTeams[index];
