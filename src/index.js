@@ -5,72 +5,84 @@ import { HashRouter, Route, Switch, Redirect } from 'react-router-dom';
 import AuthLayout from 'layouts/auth';
 import AdminLayout from 'layouts/admin';
 import RtlLayout from 'layouts/rtl';
-import { ChakraProvider, Button, Box } from '@chakra-ui/react';
+import { ChakraProvider, Button, Box, VStack } from '@chakra-ui/react';
 import theme from 'theme/theme';
 import { ThemeEditorProvider } from '@hypertheme-editor/chakra-ui';
 import { Auth } from '@supabase/auth-ui-react';
 import { ThemeSupa } from '@supabase/auth-ui-shared';
 import supabase from './supabaseClient';
 
-
 const App = () => {
-	const [session, setSession] = useState(null);
-	useEffect(() => {
-		const updateSessionState = (session) => {
-			setSession(session);
-		}
+  const [session, setSession] = useState(null);
+  useEffect(() => {
+    const updateSessionState = (session) => {
+      setSession(session);
+    }
 
-		supabase.auth.getSession().then(({ data: { session } }) => {
-			updateSessionState(session);
-		});
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      updateSessionState(session);
+    });
 
-		const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-			updateSessionState(session);
-		});
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      updateSessionState(session);
+    });
 
-		return () => subscription.unsubscribe();
-	}, []);
+    return () => subscription.unsubscribe();
+  }, []);
 
-	const handleLogout = async () => {
-		const { error } = await supabase.auth.signOut();
-		if (error) {
-			console.error('Error logging out:', error);
-		}
-		setSession(null); // Resets the session state on logout
-	};	
+  const handleLogout = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      console.error('Error logging out:', error);
+    }
+    setSession(null); // Resets the session state on logout
+  };	
 
-	return (
-		<ChakraProvider theme={theme}>
-			<React.StrictMode>
-				<ThemeEditorProvider>
-					<HashRouter>
-						{!session ? (
-							<Box
-							width="90%"  // Set the width to 90%
-							margin="auto" // Center horizontally
-							height="90vh" // Set the height to 90% of the viewport height
-							display="flex" // Use flexbox for centering vertically
-							justifyContent="center" // Center horizontally
-							alignItems="center" // Center vertically
-						  >
-							<Auth
-								supabaseClient={supabase}
-								theme="default"
-								appearance={{
-									theme: ThemeSupa,
-									variables: {
-										default: {
-											colors: {
-												brand: 'rgb(0, 128, 255)',
-												brandAccent: 'rgb(0, 128, 255)',
-											},
-										},
-									},
-								}}
-								providers={['google']}								
-								localization={{
-									variables: {
-										sign_in: {
+  return (
+    <ChakraProvider theme={theme}>
+      <React.StrictMode>
+        <ThemeEditorProvider>
+          <HashRouter>
+            <Box position="relative">
+              {session && (
+                <Button
+                  position="absolute"
+                  top="1rem"
+                  right="1rem"
+                  colorScheme="blue"
+                  zIndex={1000} // Set the z-index to 1000
+                  onClick={handleLogout}
+                >
+                  Déconnexion
+                </Button>
+              )}
+              {!session ? (
+                <Box
+                  width="90%"
+                  margin="auto"
+                  height="90vh"
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                >
+                  <Auth
+                    supabaseClient={supabase}
+                    theme="default"
+                    appearance={{
+                      theme: ThemeSupa,
+                      variables: {
+                        default: {
+                          colors: {
+                            brand: 'rgb(0, 128, 255)',
+                            brandAccent: 'rgb(0, 128, 255)',
+                          },
+                        },
+                      },
+                    }}
+                    providers={['google']}
+                    localization={{
+                      variables: {
+                        sign_in: {
 											email_label: 'Adresse e-mail', // French translation for 'Email address'
 											password_label: 'Votre mot de passe', // French translation for 'Your Password'
 											email_input_placeholder: 'Saisissez votre adresse e-mail', // French translation for 'Your email address'
@@ -121,26 +133,26 @@ const App = () => {
 											button_label: 'Vérifier le jeton',
 											loading_button_label: 'Vérification en cours...',
 										},
-									},
-								}}
-							/>
-							</Box>
-						) : (
-							<>
-								<Button colorScheme="blue" onClick={handleLogout}>Logout</Button>
-								<Switch>
-									<Route path={`/auth`} component={AuthLayout} />
-									<Route path={`/admin`} component={AdminLayout} />
-									<Route path={`/rtl`} component={RtlLayout} />
-									<Redirect from='/' to='/admin' />
-								</Switch>
-							</>
-						)}
-					</HashRouter>
-				</ThemeEditorProvider>
-			</React.StrictMode>
-		</ChakraProvider>
-	);
+                      },
+                    }}
+                  />
+                </Box>
+              ) : (
+                
+                  <Switch>
+                    <Route path={`/auth`} component={AuthLayout} />
+                    <Route path={`/admin`} component={AdminLayout} />
+                    <Route path={`/rtl`} component={RtlLayout} />
+                    <Redirect from='/' to='/admin' />
+                  </Switch>
+
+              )}
+            </Box>
+          </HashRouter>
+        </ThemeEditorProvider>
+      </React.StrictMode>
+    </ChakraProvider>
+  );
 };
 
 ReactDOM.render(<App />, document.getElementById('root'));
