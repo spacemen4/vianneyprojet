@@ -5,7 +5,7 @@ import { HashRouter, Route, Switch, Redirect } from 'react-router-dom';
 import AuthLayout from 'layouts/auth';
 import AdminLayout from 'layouts/admin';
 import RtlLayout from 'layouts/rtl';
-import { ChakraProvider, IconButton, Box } from '@chakra-ui/react';
+import { ChakraProvider, IconButton, Box, Flex, Text } from '@chakra-ui/react';
 import theme from 'theme/theme';
 import { ThemeEditorProvider } from '@hypertheme-editor/chakra-ui';
 import { Auth } from '@supabase/auth-ui-react';
@@ -47,17 +47,23 @@ const App = () => {
           <HashRouter>
             <Box position="relative">
               {session && (
-                <IconButton
-                  position="absolute"
-                  top="1rem"
-                  right="1rem"
-                  colorScheme="blue"
-                  zIndex={1000} // Set the z-index to 1000
-                  onClick={handleLogout}
-                  icon={<FcDataEncryption />}
-                  aria-label="Logout"
-                  size="sm"
-                />
+                <Flex
+				position="absolute"
+				top="1rem"
+				right="1rem"
+				align="center"
+				zIndex={1000} 
+				onClick={handleLogout}
+			  >
+				<IconButton
+				  colorScheme="blue"
+				  onClick={handleLogout}
+				  icon={<FcDataEncryption />}
+				  aria-label="Logout"
+				  size="sm"
+				/>
+				<Text size="sm" ml="2">Déconnexion</Text>
+			  </Flex>
               )}
               {!session ? (
                 <Box
