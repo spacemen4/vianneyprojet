@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { ChakraProvider, Alert, AlertIcon, Text, Badge, Flex, VStack, Icon } from "@chakra-ui/react";
-import { FaUser, FaCalendar, FaComment, FaClock, FaHistory, FaUserAlt } from 'react-icons/fa'; // Import the Font Awesome icons
+import { FaCalendar, FaComment, FaClock, FaUserAlt } from 'react-icons/fa'; // Import the Font Awesome icons
 import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = 'https://pvpsmyizvorwwccuwbuq.supabase.co';
@@ -23,7 +23,7 @@ function DisplayVianneyActions() {
     }
 
     fetchActions();
-  }, []); // Empty dependency array ensures this effect runs once on mount
+  }, []);
 
   return (
     <ChakraProvider>
@@ -33,7 +33,9 @@ function DisplayVianneyActions() {
             key={action.id}
             status="info"
             borderRadius="md"
-            mb={2} // Add margin at the bottom to separate each item
+            mb={2}
+            bgColor="gray.100" // Background color
+            color="gray.900" // Text color
           >
             <AlertIcon />
             <VStack align="start">
