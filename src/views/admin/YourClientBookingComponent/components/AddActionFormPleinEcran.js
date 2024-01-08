@@ -40,35 +40,38 @@ function DisplayVianneyActions() {
             <AlertIcon />
             <VStack align="start">
               <Flex alignItems="center">
-                <FaUserAlt />
+                <Badge colorScheme="teal" fontSize="0.8em" mr={2}>
+                  {action.status}
+                </Badge>
+                <Icon as={FaUserAlt} boxSize={6} mr={2} />
                 <Text margin="2">
                   Action Name:
                 </Text>
                 <Text fontWeight="bold">{action.action_name}</Text>
               </Flex>
               <Flex alignItems="center">
-                <FaCalendar />
+                <Icon as={FaCalendar} boxSize={6} mr={2} />
                 <Text margin="2">
                   Starting Date:
                 </Text>
                 <Text fontWeight="bold">{action.starting_date}</Text>
               </Flex>
               <Flex alignItems="center">
-                <FaCalendar />
+                <Icon as={FaCalendar} boxSize={6} mr={2} />
                 <Text margin="2">
                   Ending Date:
                 </Text>
                 <Text fontWeight="bold">{action.ending_date}</Text>
               </Flex>
               <Flex alignItems="center">
-                <FaComment />
+                <Icon as={FaComment} boxSize={6} mr={2} />
                 <Text margin="2">
                   Action Comment:
                 </Text>
                 <Text fontWeight="bold">{action.action_comment}</Text>
               </Flex>
               <Flex alignItems="center">
-                <FaClock />
+                <Icon as={FaClock} boxSize={6} mr={2} />
                 <Text margin="2">
                   Last Updated:
                 </Text>
