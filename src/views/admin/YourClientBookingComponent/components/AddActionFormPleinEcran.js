@@ -1,120 +1,83 @@
-import React, { useState, useEffect } from 'react';
-import { v4 as uuidv4 } from 'uuid';
-import { Box, Button, FormControl, FormLabel, Input, Select, Alert, AlertIcon, AlertTitle, AlertDescription, CloseButton } from '@chakra-ui/react';
+import React, { useEffect, useState } from 'react';
+import { ChakraProvider, Alert, AlertIcon, Text, Badge, Flex, VStack, Icon } from "@chakra-ui/react";
+import { FaUser, FaCalendar, FaComment, FaClock, FaHistory, FaUserAlt } from 'react-icons/fa'; // Import the Font Awesome icons
 import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = 'https://pvpsmyizvorwwccuwbuq.supabase.co';
 const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB2cHNteWl6dm9yd3djY3V3YnVxIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTcwMjgzMDg2MCwiZXhwIjoyMDE4NDA2ODYwfQ.9YDEN41__xBFJU91XY9e3r119A03yQ2oq5azmrx1aqY';
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-const AddActionFormPleinEcran = () => {
-  const [teams, setTeams] = useState([]);
-  const [action, setAction] = useState({
-    teamId: '',
-    actionName: '',
-    startingDateTime: '',
-    endingDateTime: '',
-    comment: ''
-  });
-  const [alert, setAlert] = useState({ status: '', message: '', isVisible: false });
+function DisplayVianneyActions() {
+  const [actions, setActions] = useState([]);
 
   useEffect(() => {
-    const fetchTeams = async () => {
-      const { data, error } = await supabase.from('vianney_teams').select('*');
+    async function fetchActions() {
+      const { data, error } = await supabase.from("vianney_actions").select();
+
       if (error) {
-        console.error('Erreur lors de la récupération des équipes:', error);
-      } else {
-        setTeams(data);
+        console.error("Error fetching data:", error);
+        return;
       }
-    };
 
-    fetchTeams();
-  }, []);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-  
-    const newAction = {
-      id: uuidv4(),
-      team_to_which_its_attached: action.teamId,
-      action_name: action.actionName,
-      starting_date: action.startingDateTime,
-      ending_date: action.endingDateTime,
-      action_comment: action.comment
-    };
-  
-    const { error } = await supabase
-      .from('vianney_actions')
-      .insert([newAction]);
-  
-    if (error) {
-      console.error('Erreur lors de l insertion des données: ', error);
-      setAlert({
-        status: 'error',
-        message: "Un problème est survenu lors de l'ajout de l'action.",
-        isVisible: true
-      });
-    } else {
-      setAlert({
-        status: 'success',
-        message: "L'action a été ajoutée avec succès.",
-        isVisible: true
-      });
-      setAction({
-        teamId: '',
-        actionName: '',
-        startingDateTime: '',
-        endingDateTime: '',
-        comment: ''
-      });
+      setActions(data);
     }
-  };
 
-  const closeAlert = () => {
-    setAlert({ ...alert, isVisible: false });
-  };
+    fetchActions();
+  }, []); // Empty dependency array ensures this effect runs once on mount
 
   return (
-    <Box p={4}>
-      {alert.isVisible && (
-        <Alert status={alert.status} mb={4}>
-          <AlertIcon />
-          <Box flex="1">
-            <AlertTitle>{alert.status === 'error' ? 'Erreur!' : 'Succès!'}</AlertTitle>
-            <AlertDescription display="block">{alert.message}</AlertDescription>
-          </Box>
-          <CloseButton position="absolute" right="8px" top="8px" onClick={closeAlert} />
-        </Alert>
-      )}
-      <form onSubmit={handleSubmit}>
-        <FormControl isRequired>
-          <FormLabel>Équipe</FormLabel>
-          <Select placeholder="Sélectionner une équipe" onChange={(e) => setAction({ ...action, teamId: e.target.value })}>
-            {teams.map(team => (
-              <option key={team.id} value={team.id}>{team.nom}</option>
-            ))}
-          </Select>
-        </FormControl>
-        <FormControl isRequired mt={4}>
-          <FormLabel>Nom de l'action</FormLabel>
-          <Input placeholder="Nom de l'action" onChange={(e) => setAction({ ...action, actionName: e.target.value })} />
-        </FormControl>
-        <FormControl mt={4}>
-          <FormLabel>Date de début</FormLabel>
-          <Input type="datetime-local" onChange={(e) => setAction({ ...action, startingDateTime: e.target.value })} />
-        </FormControl>
-        <FormControl mt={4}>
-          <FormLabel>Date de fin</FormLabel>
-          <Input type="datetime-local" onChange={(e) => setAction({ ...action, endingDateTime: e.target.value })} />
-        </FormControl>
-        <FormControl mt={4}>
-          <FormLabel>Commentaire</FormLabel>
-          <Input placeholder="Commentaire" onChange={(e) => setAction({ ...action, comment: e.target.value })} />
-        </FormControl>
-        <Button mt={4} colorScheme="blue" type="submit">Ajouter une disponibilité</Button>
-      </form>
-    </Box>
+    <ChakraProvider>
+      <div>
+        {actions.map((action) => (
+          <Alert
+            key={action.id}
+            status="info"
+            borderRadius="md"
+            mb={2} // Add margin at the bottom to separate each item
+          >
+            <AlertIcon />
+            <VStack align="start">
+              <Flex alignItems="center">
+                <FaUserAlt />
+                <Text margin="2">
+                  Action Name:
+                </Text>
+                <Text fontWeight="bold">{action.action_name}</Text>
+              </Flex>
+              <Flex alignItems="center">
+                <FaCalendar />
+                <Text margin="2">
+                  Starting Date:
+                </Text>
+                <Text fontWeight="bold">{action.starting_date}</Text>
+              </Flex>
+              <Flex alignItems="center">
+                <FaCalendar />
+                <Text margin="2">
+                  Ending Date:
+                </Text>
+                <Text fontWeight="bold">{action.ending_date}</Text>
+              </Flex>
+              <Flex alignItems="center">
+                <FaComment />
+                <Text margin="2">
+                  Action Comment:
+                </Text>
+                <Text fontWeight="bold">{action.action_comment}</Text>
+              </Flex>
+              <Flex alignItems="center">
+                <FaClock />
+                <Text margin="2">
+                  Last Updated:
+                </Text>
+                <Text fontWeight="bold">{action.last_updated}</Text>
+              </Flex>
+            </VStack>
+          </Alert>
+        ))}
+      </div>
+    </ChakraProvider>
   );
-};
+}
 
-export default AddActionFormPleinEcran;
+export default DisplayVianneyActions;
