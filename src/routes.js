@@ -6,6 +6,7 @@ import {
   FcBusinessman,
   FcCalendar,
   FcSettings,
+  FcFaq,
 } from "react-icons/fc";
 import VideoChatRoom from "views/admin/videoChatRoom";
 import Company from "views/admin/default";
@@ -15,7 +16,7 @@ import Parameters from "views/admin/Parameters";
 import GlobalCalendar from "views/admin/googlecalendar";
 import ConsultantBooking from "views/admin/ConsultantBooking";
 import ClientCalendar from 'views/admin/ClientCalendar';
-import LogoutClient from 'views/admin/LogoutClient'
+import YourClientBookingComponent from 'views/admin/YourClientBookingComponent';
 
 const routes = [
   {
@@ -79,14 +80,13 @@ const routes = [
     // Add any additional properties if needed
   },
   {
-    name: "Logout",
+    name: "Réservation des clients",
     layout: "/admin",
-    path: "/logout-client",
-    icon: <Icon as={FcBusinessman} width='20px' height='20px' color='inherit' />,
-    component: LogoutClient, // This should be a component that handles the logout process
+    path: "/client-booking", // Update the path as needed
+    icon: <Icon as={FcFaq} width='20px' height='20px' color='inherit' />,
+    component: YourClientBookingComponent, // Replace with your new component when ready
+    // Add any additional properties if needed
   },
-  
-
 ];
 
 export default routes;
