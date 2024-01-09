@@ -52,8 +52,8 @@ function DisplayVianneyActions() {
 function ColumnActions({ actions, title, badgeColor, icon }) {
   return (
     <div>
-      <Text fontSize="xl" fontWeight="bold" mb={4}>
-        <Flex alignItems="center">
+      <Text fontSize="xl" fontWeight="bold" mb={4} textAlign="center"> {/* Center the title */}
+        <Flex alignItems="center" justifyContent="center"> {/* Center the content horizontally */}
           <Badge colorScheme={badgeColor} borderRadius="full" px="2" fontSize="xl" mr={2}>
             {icon}
           </Badge>
