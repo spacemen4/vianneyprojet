@@ -72,26 +72,35 @@ function ColumnActions({ actions, title }) {
               </Badge>
             </Flex>
             <Flex alignItems="center">
-                <Icon as={FcCalendar} boxSize={6} mr={2} />
-                <Text margin="2">
-                  Date de début:
-                </Text>
-                <Text fontWeight="bold">{action.starting_date}</Text>
-              </Flex>
+              <Icon as={FcCalendar} boxSize={6} mr={2} />
+              <Text margin="2">
+                Date de début:
+              </Text>
+              <Text fontWeight="bold">{action.starting_date}</Text>
+            </Flex>
+            <Flex alignItems="center">
+              <Icon as={FcCalendar} boxSize={6} mr={2} />
+              <Text margin="2">
+                Date de fin:
+              </Text>
+              <Text fontWeight="bold">{action.ending_date}</Text>
+            </Flex>
+            <Flex alignItems="center">
+              <Icon as={FcVoicePresentation} boxSize={6} mr={2} />
+              <Text margin="2">
+                Commentaires:
+              </Text>
+              <Text fontWeight="bold">{action.action_comment}</Text>
+            </Flex>
+            {action.reserved_action === "true" && (
               <Flex alignItems="center">
-                <Icon as={FcCalendar} boxSize={6} mr={2} />
+                <Icon as={FaComment} boxSize={6} mr={2} />
                 <Text margin="2">
-                  Date de fin:
+                  Client Name:
                 </Text>
-                <Text fontWeight="bold">{action.ending_date}</Text>
+                <Text fontWeight="bold">{action.name_of_the_client_that_reserved_it}</Text>
               </Flex>
-              <Flex alignItems="center">
-                <Icon as={FcVoicePresentation} boxSize={6} mr={2} />
-                <Text margin="2">
-                  Commentaires:
-                </Text>
-                <Text fontWeight="bold">{action.action_comment}</Text>
-              </Flex>
+            )}
           </VStack>
         </Alert>
       ))}
