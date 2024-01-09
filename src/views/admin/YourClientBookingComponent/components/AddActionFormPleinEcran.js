@@ -41,13 +41,8 @@ function DisplayVianneyActions() {
             <VStack align="start">
               <Flex alignItems="center">
                 <Badge colorScheme="teal" fontSize="0.8em" mr={2}>
-                  {action.status}
+                {action.action_name}
                 </Badge>
-                <Icon as={FaUserAlt} boxSize={6} mr={2} />
-                <Text margin="2">
-                  Action Name:
-                </Text>
-                <Text fontWeight="bold">{action.action_name}</Text>
               </Flex>
               <Flex alignItems="center">
                 <Icon as={FaCalendar} boxSize={6} mr={2} />
