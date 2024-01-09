@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { ChakraProvider, Alert, AlertIcon, Text, Badge, Flex, VStack, Icon, Grid } from "@chakra-ui/react";
 import { FaCalendar, FaComment } from 'react-icons/fa';
 import { createClient } from '@supabase/supabase-js';
-import { FcCalendar, FcVoicePresentation,FcApproval } from "react-icons/fc";
+import { FcCalendar, FcVoicePresentation, FcApproval, FcAdvertising, FcCableRelease } from "react-icons/fc";
 
 const supabaseUrl = 'https://pvpsmyizvorwwccuwbuq.supabase.co';
 const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB2cHNteWl6dm9yd3djY3V3YnVxIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTcwMjgzMDg2MCwiZXhwIjoyMDE4NDA2ODYwfQ.9YDEN41__xBFJU91XY9e3r119A03yQ2oq5azmrx1aqY';
@@ -42,20 +42,25 @@ function DisplayVianneyActions() {
   return (
     <ChakraProvider>
       <Grid templateColumns="repeat(2, 1fr)" gap={4}>
-        <ColumnActions actions={reservedActions} title="Mission de conseils bookée" badgeColor="teal" />
-        <ColumnActions actions={nonReservedActions} title="Mission on sale" badgeColor="purple" />
+        <ColumnActions actions={reservedActions} title="Mission de conseils bookée" badgeColor="teal" icon={<FcCableRelease />} />
+        <ColumnActions actions={nonReservedActions} title="Mission on sale" badgeColor="purple" icon={<FcAdvertising />} />
       </Grid>
     </ChakraProvider>
   );
 }
 
-function ColumnActions({ actions, title, badgeColor }) {
+function ColumnActions({ actions, title, badgeColor, icon }) {
   return (
     <div>
       <Text fontSize="xl" fontWeight="bold" mb={4}>
-        <Badge colorScheme={badgeColor} borderRadius="full" px="2">
-          {title}
-        </Badge>
+        <Flex alignItems="center">
+          <Badge colorScheme={badgeColor} borderRadius="full" px="2" fontSize="xl" mr={2}>
+            {icon}
+          </Badge>
+          <Text fontSize="xl" fontWeight="bold">
+            {title}
+          </Text>
+        </Flex>
       </Text>
       {actions.map((action) => (
         <Alert
