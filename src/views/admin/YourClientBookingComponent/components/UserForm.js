@@ -1,6 +1,5 @@
 import { ChakraProvider, Alert, AlertIcon, Text, Badge, Flex, VStack } from "@chakra-ui/react";
-import { FaUser, FaEnvelope, FaPhone, FaToolbox } from 'react-icons/fa';
-import { FcCalendar, FcPhone as FcPhoneIcon, FcBusinessman, FcBookmark, FcFeedback, FcInvite, FcHome } from "react-icons/fc";
+import {  FcKindle, FcPhone as FcPhoneIcon, FcBusinessman, FcBookmark, FcInvite } from "react-icons/fc";
 import { createClient } from '@supabase/supabase-js';
 import { useEffect, useState } from 'react';
 
@@ -47,7 +46,7 @@ function DisplayCustomerRequests() {
                 <Text fontWeight="bold">{contact.contact_name}</Text>
               </Flex>
               <Flex alignItems="center">
-                <FaEnvelope />
+              <FcInvite />
                 <Text margin="2">
                   Email:
                 </Text>
@@ -67,7 +66,7 @@ function DisplayCustomerRequests() {
                 </Text>
               </Flex>
               <Flex alignItems="center">
-                <FaToolbox />
+                <FcKindle />
                 <Text margin="2">
                   Type de Service:
                 </Text>
@@ -79,7 +78,7 @@ function DisplayCustomerRequests() {
                   {contact.service_type}
                 </Text>
               </Flex>
-              <Flex alignItems="center">
+                            <Flex alignItems="center">
                 <FcBookmark />
                 <Text margin="2">
                   Besoins:

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { ChakraProvider, Alert, AlertIcon, Text, Badge, Flex, VStack, Icon, Grid } from "@chakra-ui/react";
-import { FaCalendar, FaComment } from 'react-icons/fa';
 import { createClient } from '@supabase/supabase-js';
 import { FcCalendar, FcVoicePresentation, FcApproval, FcAdvertising, FcCableRelease } from "react-icons/fc";
 
