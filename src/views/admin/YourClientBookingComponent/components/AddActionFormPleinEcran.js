@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { ChakraProvider, Alert, AlertIcon, Text, Badge, Flex, VStack, Icon } from "@chakra-ui/react";
-import { FaCalendar, FaComment, FaClock, FaUserAlt } from 'react-icons/fa'; // Import the Font Awesome icons
+import { FaCalendar, FaComment } from 'react-icons/fa'; // Import the Font Awesome icons
 import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = 'https://pvpsmyizvorwwccuwbuq.supabase.co';
