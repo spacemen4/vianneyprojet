@@ -1,5 +1,6 @@
 import { ChakraProvider, Alert, AlertIcon, Text, Badge, Flex, VStack } from "@chakra-ui/react";
-import { FaUser, FaEnvelope, FaPhone, FaToolbox } from 'react-icons/fa'; // Import the Font Awesome icons
+import { FaUser, FaEnvelope, FaPhone, FaToolbox } from 'react-icons/fa';
+import { FcCalendar, FcPhone as FcPhoneIcon, FcBusinessman, FcBookmark, FcFeedback, FcInvite, FcHome } from "react-icons/fc";
 import { createClient } from '@supabase/supabase-js';
 import { useEffect, useState } from 'react';
 
@@ -25,7 +26,6 @@ function DisplayCustomerRequests() {
     fetchContacts();
   }, []); // Empty dependency array ensures this effect runs once on mount
 
-
   return (
     <ChakraProvider>
       <div>
@@ -40,54 +40,54 @@ function DisplayCustomerRequests() {
             <VStack align="start">
               <Badge colorScheme="teal" fontSize="0.8em">Société: {contact.company_name}</Badge>
               <Flex alignItems="center">
-              <FaUser />
+                <FcBusinessman />
                 <Text margin="2">
-                   Contact:
+                  Contact:
                 </Text>
                 <Text fontWeight="bold">{contact.contact_name}</Text>
               </Flex>
               <Flex alignItems="center">
-              <FaEnvelope />
+                <FaEnvelope />
                 <Text margin="2">
-                   Email:
+                  Email:
                 </Text>
                 <Text fontWeight="bold">{contact.email}</Text>
               </Flex>
               <Flex alignItems="center">
-              <FaPhone />
+                <FcPhoneIcon />
                 <Text margin="2">
                   Téléphone:
                 </Text>
                 <Text
                   fontWeight="bold"
-                  color="blue.500" // Change the color to your desired style
-                  textDecoration="underline" // Add an underline
+                  color="blue.500"
+                  textDecoration="underline"
                 >
                   {contact.phone}
                 </Text>
               </Flex>
               <Flex alignItems="center">
-              <FaToolbox />
+                <FaToolbox />
                 <Text margin="2">
-                   Type de Service:
+                  Type de Service:
                 </Text>
                 <Text
                   fontWeight="bold"
-                  color="green.500" // Change the color to your desired style
-                  fontStyle="italic" // Add italic style
+                  color="green.500"
+                  fontStyle="italic"
                 >
                   {contact.service_type}
                 </Text>
               </Flex>
               <Flex alignItems="center">
-              <FaToolbox />
+                <FcBookmark />
                 <Text margin="2">
                   Besoins:
                 </Text>
                 <Text
                   fontWeight="bold"
-                  color="purple.500" // Change the color to your desired style
-                  textTransform="uppercase" // Convert text to uppercase
+                  color="purple.500"
+                  textTransform="uppercase"
                 >
                   {contact.needs}
                 </Text>
