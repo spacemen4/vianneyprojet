@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { ChakraProvider, Alert, AlertIcon, Text, Badge, Flex, VStack, Icon, Grid } from "@chakra-ui/react";
 import { FaCalendar, FaComment } from 'react-icons/fa';
 import { createClient } from '@supabase/supabase-js';
-import { FcCalendar, FcVoicePresentation } from "react-icons/fc";
+import { FcCalendar, FcVoicePresentation,FcApproval } from "react-icons/fc";
 
 const supabaseUrl = 'https://pvpsmyizvorwwccuwbuq.supabase.co';
 const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB2cHNteWl6dm9yd3djY3V3YnVxIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTcwMjgzMDg2MCwiZXhwIjoyMDE4NDA2ODYwfQ.9YDEN41__xBFJU91XY9e3r119A03yQ2oq5azmrx1aqY';
@@ -94,9 +94,9 @@ function ColumnActions({ actions, title }) {
             </Flex>
             {action.reserved_action === "true" && (
               <Flex alignItems="center">
-                <Icon as={FaComment} boxSize={6} mr={2} />
+                <Icon as={FcApproval} boxSize={6} mr={2} />
                 <Text margin="2">
-                  Nom du client qui a réservé:
+                  Nom de la société qui a réservé:
                 </Text>
                 <Text fontWeight="bold">{action.name_of_the_client_that_reserved_it}</Text>
               </Flex>
