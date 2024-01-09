@@ -64,14 +64,7 @@ function DisplayVianneyActions() {
                   Action Comment:
                 </Text>
                 <Text fontWeight="bold">{action.action_comment}</Text>
-              </Flex>
-              <Flex alignItems="center">
-                <Icon as={FaClock} boxSize={6} mr={2} />
-                <Text margin="2">
-                  Last Updated:
-                </Text>
-                <Text fontWeight="bold">{action.last_updated}</Text>
-              </Flex>
+              </Flex>              
             </VStack>
           </Alert>
         ))}
