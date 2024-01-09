@@ -96,7 +96,7 @@ function ColumnActions({ actions, title }) {
               <Flex alignItems="center">
                 <Icon as={FaComment} boxSize={6} mr={2} />
                 <Text margin="2">
-                  Client Name:
+                  Nom du client qui a réservé:
                 </Text>
                 <Text fontWeight="bold">{action.name_of_the_client_that_reserved_it}</Text>
               </Flex>
