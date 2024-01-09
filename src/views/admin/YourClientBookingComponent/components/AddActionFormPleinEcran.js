@@ -60,21 +60,21 @@ function DisplayVianneyActions() {
               <Flex alignItems="center">
                 <Icon as={FcCalendar} boxSize={6} mr={2} />
                 <Text margin="2">
-                  Starting Date:
+                  Date de début:
                 </Text>
                 <Text fontWeight="bold">{action.starting_date}</Text>
               </Flex>
               <Flex alignItems="center">
                 <Icon as={FcCalendar} boxSize={6} mr={2} />
                 <Text margin="2">
-                  Ending Date:
+                  Date de fin:
                 </Text>
                 <Text fontWeight="bold">{action.ending_date}</Text>
               </Flex>
               <Flex alignItems="center">
                 <Icon as={FcVoicePresentation} boxSize={6} mr={2} />
                 <Text margin="2">
-                  Action Comment:
+                  Commentaires:
                 </Text>
                 <Text fontWeight="bold">{action.action_comment}</Text>
               </Flex>
