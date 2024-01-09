@@ -42,18 +42,20 @@ function DisplayVianneyActions() {
   return (
     <ChakraProvider>
       <Grid templateColumns="repeat(2, 1fr)" gap={4}>
-        <ColumnActions actions={reservedActions} title="Reserved Actions" />
-        <ColumnActions actions={nonReservedActions} title="Non-Reserved Actions" />
+        <ColumnActions actions={reservedActions} title="Mission de conseils bookée" badgeColor="teal" />
+        <ColumnActions actions={nonReservedActions} title="Mission on sale" badgeColor="purple" />
       </Grid>
     </ChakraProvider>
   );
 }
 
-function ColumnActions({ actions, title }) {
+function ColumnActions({ actions, title, badgeColor }) {
   return (
     <div>
       <Text fontSize="xl" fontWeight="bold" mb={4}>
-        {title}
+        <Badge colorScheme={badgeColor} borderRadius="full" px="2">
+          {title}
+        </Badge>
       </Text>
       {actions.map((action) => (
         <Alert
@@ -67,7 +69,7 @@ function ColumnActions({ actions, title }) {
           <AlertIcon />
           <VStack align="start">
             <Flex alignItems="center">
-              <Badge colorScheme="teal" fontSize="0.8em" mr={2}>
+              <Badge colorScheme={badgeColor} fontSize="0.8em" mr={2}>
                 {action.action_name}
               </Badge>
             </Flex>
