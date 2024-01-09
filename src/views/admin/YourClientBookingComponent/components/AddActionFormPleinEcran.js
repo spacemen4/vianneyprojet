@@ -19,7 +19,19 @@ function DisplayVianneyActions() {
         return;
       }
 
-      setActions(data);
+      // Format the date to French locale
+      const formattedActions = data.map((action) => {
+        const startingDate = new Date(action.starting_date).toLocaleDateString('fr-FR');
+        const endingDate = new Date(action.ending_date).toLocaleDateString('fr-FR');
+
+        return {
+          ...action,
+          starting_date: startingDate,
+          ending_date: endingDate,
+        };
+      });
+
+      setActions(formattedActions);
     }
 
     fetchActions();
@@ -44,21 +56,21 @@ function DisplayVianneyActions() {
                 {action.action_name}
                 </Badge>
               </Flex>
-              <Flex alignItems="center">
-                <Icon as={FaCalendar} boxSize={6} mr={2} />
-                <Text margin="2">
-                  Starting Date:
-                </Text>
-                <Text fontWeight="bold">{action.starting_date}</Text>
-              </Flex>
-              <Flex alignItems="center">
-                <Icon as={FaCalendar} boxSize={6} mr={2} />
-                <Text margin="2">
-                  Ending Date:
-                </Text>
-                <Text fontWeight="bold">{action.ending_date}</Text>
-              </Flex>
-              <Flex alignItems="center">
+            <Flex alignItems="center">
+              <Icon as={FaCalendar} boxSize={6} mr={2} />
+              <Text margin="2">
+                Starting Date:
+              </Text>
+              <Text fontWeight="bold">{action.starting_date}</Text>
+            </Flex>
+            <Flex alignItems="center">
+              <Icon as={FaCalendar} boxSize={6} mr={2} />
+              <Text margin="2">
+                Ending Date:
+              </Text>
+              <Text fontWeight="bold">{action.ending_date}</Text>
+            </Flex>
+            <Flex alignItems="center">
                 <Icon as={FaComment} boxSize={6} mr={2} />
                 <Text margin="2">
                   Action Comment:
