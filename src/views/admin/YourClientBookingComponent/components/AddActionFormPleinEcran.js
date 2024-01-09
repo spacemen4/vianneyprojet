@@ -22,8 +22,8 @@ function DisplayVianneyActions() {
       }
 
       // Filter actions based on reserved_action
-      const reservedActions = data.filter(action => action.reserved_action === true);
-      const nonReservedActions = data.filter(action => action.reserved_action !== true);
+      const reservedActions = data.filter(action => action.reserved_action === "true");
+      const nonReservedActions = data.filter(action => action.reserved_action !== "true");
 
       // Format the date to French locale
       const formatActions = actions => actions.map(action => ({
@@ -67,11 +67,11 @@ function ColumnActions({ actions, title }) {
           <AlertIcon />
           <VStack align="start">
             <Flex alignItems="center">
-                <Badge colorScheme="teal" fontSize="0.8em" mr={2}>
-                  {action.action_name}
-                </Badge>
-              </Flex>
-              <Flex alignItems="center">
+              <Badge colorScheme="teal" fontSize="0.8em" mr={2}>
+                {action.action_name}
+              </Badge>
+            </Flex>
+            <Flex alignItems="center">
                 <Icon as={FcCalendar} boxSize={6} mr={2} />
                 <Text margin="2">
                   Date de début:
