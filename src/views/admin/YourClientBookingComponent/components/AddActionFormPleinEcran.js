@@ -91,8 +91,10 @@ function ColumnActions({ actions, title, badgeColor, icon }) {
               </Badge>
             </Flex>
             <Flex alignItems="center">
-              <Badge colorScheme={action.team.color || "gray"} mr={2}>{/* Use team color or default to "gray" */}
-                <Text fontWeight="bold">{action.team.nom} {action.team.prenom}</Text>
+              <Badge style={{ backgroundColor: action.team.color || "#b52f59" }} mr={2}>
+                <Text fontWeight="bold" color="white">{/* Use team color or default to "#b52f59" */}
+                  {action.team.nom} {action.team.prenom}
+                </Text>
               </Badge>
             </Flex>
             <Flex alignItems="center">
