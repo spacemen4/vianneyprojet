@@ -13,16 +13,29 @@ function DisplayVianneyActions() {
 
   useEffect(() => {
     async function fetchActions() {
-      const { data, error } = await supabase.from("vianney_actions").select();
+      const { data: actionsData, error: actionsError } = await supabase.from("vianney_actions").select();
+      const { data: teamsData, error: teamsError } = await supabase.from("vianney_teams").select();
 
-      if (error) {
-        console.error("Error fetching data:", error);
+      if (actionsError || teamsError) {
+        console.error("Error fetching data:", actionsError || teamsError);
         return;
       }
 
+      // Map teams data to an object for easy lookup
+      const teamsMap = teamsData.reduce((acc, team) => {
+        acc[team.id] = team;
+        return acc;
+      }, {});
+
+      // Merge team information into actions data
+      const actionsWithTeamInfo = actionsData.map(action => ({
+        ...action,
+        team: teamsMap[action.team_to_which_its_attached],
+      }));
+
       // Filter actions based on reserved_action
-      const reservedActions = data.filter(action => action.reserved_action === "true");
-      const nonReservedActions = data.filter(action => action.reserved_action !== "true");
+      const reservedActions = actionsWithTeamInfo.filter(action => action.reserved_action === "true");
+      const nonReservedActions = actionsWithTeamInfo.filter(action => action.reserved_action !== "true");
 
       // Format the date to French locale
       const formatActions = actions => actions.map(action => ({
@@ -76,6 +89,10 @@ function ColumnActions({ actions, title, badgeColor, icon }) {
               <Badge colorScheme={badgeColor} fontSize="0.8em" mr={2}>
                 {action.action_name}
               </Badge>
+            </Flex>
+            <Flex alignItems="center">
+              <Text fontWeight="bold">{action.team.nom}</Text>              
+              <Text fontWeight="bold">{action.team.prenom}</Text>
             </Flex>
             <Flex alignItems="center">
               <Icon as={FcCalendar} boxSize={6} mr={2} />
