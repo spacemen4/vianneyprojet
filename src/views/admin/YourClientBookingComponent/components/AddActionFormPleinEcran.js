@@ -91,8 +91,9 @@ function ColumnActions({ actions, title, badgeColor, icon }) {
               </Badge>
             </Flex>
             <Flex alignItems="center">
-              <Text fontWeight="bold">{action.team.nom}</Text>              
-              <Text fontWeight="bold">{action.team.prenom}</Text>
+              <Badge colorScheme={action.team.color || "gray"} mr={2}>{/* Use team color or default to "gray" */}
+                <Text fontWeight="bold">{action.team.nom} {action.team.prenom}</Text>
+              </Badge>
             </Flex>
             <Flex alignItems="center">
               <Icon as={FcCalendar} boxSize={6} mr={2} />
