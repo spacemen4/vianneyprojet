@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, memo } from "react";
 import "./index.css";
 import { getMonth } from "./util";
 import {
@@ -113,7 +113,7 @@ const ModifyAction = ({ initialActionData }) => {
   }, [action.actionId]);
 
 
-  const handleInputChange = (e) => {
+    const handleInputChange = (e) => {
     const { name, value } = e.target;
     setAction({ ...action, [name]: value });
   };
@@ -728,7 +728,7 @@ const App = () => {
   }, []);
 
 
-  const DayComponent = ({ day, rowIdx, teamMembers }) => {
+  const DayComponent = memo(({ day, rowIdx, teamMembers }) => {
     const [dayEvents, setDayEvents] = useState([]);
     const isTeamSelected = (event) => {
       const teamIndex = teamMembers.findIndex(member => member.id === event.team_id);
@@ -752,13 +752,13 @@ const App = () => {
                 '[]'
               )
             );
-            setDayEvents(actionsForDay); 
+            setDayEvents(actionsForDay);
           }
         } catch (error) {
           console.error('Error fetching actions:', error);
         }
       };
-
+    
       fetchActions();
     }, [day]); 
 
@@ -829,7 +829,7 @@ const App = () => {
         </Flex>
       </Box>
     );
-  };
+  });
 
 
   return (
