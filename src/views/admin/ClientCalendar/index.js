@@ -1,4 +1,4 @@
-import React, { useState, useEffect,  useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "./index.css";
 import { getMonth } from "./util";
 import {
@@ -87,18 +87,16 @@ const ModifyAction = ({ initialActionData }) => {
   }, [initialActionData]);
 
   useEffect(() => {
-    // Fetch team data from the view
     const fetchTeamData = async () => {
       try {
         if (!action.actionId) {
           console.log("No actionId available for fetching team data.");
-          return; // Exit if actionId is not set
-        }
-        // Additional UUID format validation can be added here if necessary
+          return; 
+        }        
 
         const { data, error } = await supabase
-          .from('team_member_view')
-          .select('team_nom, team_prenom')
+          .from('team_action_view_rendering')
+          .select('nom, prenom')
           .eq('action_id', action.actionId); // Filter by action ID
 
         if (error) {
@@ -129,16 +127,15 @@ const ModifyAction = ({ initialActionData }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Check if the required fields are empty
     if (!action.reservedAction || action.nameOfTheClientThatReservedIt.trim() === '') {
       setFormErrors({
         reservedAction: !action.reservedAction,
         nameOfTheClientThatReservedIt: action.nameOfTheClientThatReservedIt.trim() === '',
       });
-      return; // Don't submit the form if there are validation errors
+      return; 
     }
 
-    // Clear any previous form errors
+
     setFormErrors({});
 
     console.log('Updating action with ID:', action.actionId);
@@ -157,7 +154,7 @@ const ModifyAction = ({ initialActionData }) => {
       const { error } = await supabase
         .from('vianney_actions')
         .update(updatedAction)
-        .eq('id', action.actionId); // Ensure actionId is correctly set
+        .eq('id', action.actionId); 
 
       if (error) {
         toast({
@@ -213,7 +210,7 @@ const ModifyAction = ({ initialActionData }) => {
                       p="2"
                       borderRadius={5}
                     >
-                      Consultant : {teamData.team_nom} {teamData.team_prenom}
+                      Consultant : {teamData.nom} {teamData.prenom}
                     </Badge>
                   </Flex>
                 )}

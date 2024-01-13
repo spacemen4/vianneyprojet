@@ -43,8 +43,8 @@ const ModifyAction = ({ initialActionData }) => {
         const fetchTeamData = async () => {
             try {
                 const { data, error } = await supabase
-                    .from('team_member_view')
-                    .select('team_nom, team_prenom')
+                    .from('team_action_view_rendering')
+                    .select('nom, prenom')
                     .eq('action_id', action.actionId); // Filter by action ID
 
                 if (error) {
@@ -174,7 +174,7 @@ const ModifyAction = ({ initialActionData }) => {
                                         mb="2"
                                         borderRadius={5}
                                     >
-                                        Consultant : {teamData.team_nom} {teamData.team_prenom}
+                                        Consultant : {teamData.nom} {teamData.prenom}
                                     </Badge>
                                 )}
                                 <form onSubmit={handleSubmit}>
