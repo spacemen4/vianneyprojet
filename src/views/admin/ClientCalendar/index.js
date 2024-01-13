@@ -70,7 +70,7 @@ const ModifyAction = ({ initialActionData }) => {
   const toast = useToast();
 
   useEffect(() => {
-    console.log("Initial Action Data:", initialActionData); // Log to check the structure
+    console.log("Initial Action Data:", initialActionData); 
     if (initialActionData) {
       setAction({
         actionId: initialActionData.action_id,
@@ -97,12 +97,11 @@ const ModifyAction = ({ initialActionData }) => {
         const { data, error } = await supabase
           .from('team_action_view_rendering')
           .select('nom, prenom')
-          .eq('action_id', action.actionId); // Filter by action ID
+          .eq('action_id', action.actionId); 
 
         if (error) {
           console.error('Error fetching team data:', error);
         } else if (data && data.length > 0) {
-          // Store the team data in state
           setTeamData(data[0]);
         }
       } catch (error) {
@@ -110,7 +109,6 @@ const ModifyAction = ({ initialActionData }) => {
       }
     };
 
-    // Call the fetchTeamData function
     fetchTeamData();
   }, [action.actionId]);
 
@@ -267,7 +265,7 @@ const ModifyAction = ({ initialActionData }) => {
                       </Box>
                     </Flex>
                   </FormControl>
-                  {/* Add input fields for reserved_action and name_of_the_client_that_reserved_it */}
+                 
                   <FormControl isRequired>
                     <Flex p="2" mb="2" alignItems="center">
                       <Box flex="1">
@@ -432,9 +430,9 @@ const ModifyActionBis = () => {
 
   const handleActionSelect = async (selectedActionId) => {
     try {
-      // Fetching action data
+      
       const { data: actionData, error: actionError } = await supabase
-        .from('team_action_view_rendering') // Using the view for easier data retrieval
+        .from('team_action_view_rendering') 
         .select('*')
         .eq('action_id', selectedActionId)
         .single();
@@ -697,10 +695,10 @@ const App = () => {
     const updatedSelectedTeams = [...selectedTeams];
     updatedSelectedTeams[index] = !updatedSelectedTeams[index];
     setSelectedTeams(updatedSelectedTeams);
-    console.log('Updated Selected Teams:', updatedSelectedTeams); // Debugging line
+    console.log('Updated Selected Teams:', updatedSelectedTeams); 
   };
   const modifyActionButtonStyle = {
-    display: 'none', // This style will hide the button
+    display: 'none', 
   };
   useEffect(() => {
     setCurrentMonth(getMonth(monthIndex));
@@ -713,7 +711,6 @@ const App = () => {
   }, [selectedAction, ModifyActionModalOpen]);
 
   useEffect(() => {
-    // Fetch data from Supabase when the component mounts
     async function fetchTeamMembers() {
       const { data, error } = await supabase.from("vianney_teams").select("*");
 
@@ -722,10 +719,8 @@ const App = () => {
         return;
       }
 
-      // Store the team members in state
       setTeamMembers(data);
 
-      // Initialize the selectedTeams array with true values for each team
       setSelectedTeams(Array(data.length).fill(true));
     }
 
@@ -757,7 +752,7 @@ const App = () => {
                 '[]'
               )
             );
-            setDayEvents(actionsForDay); // Set actions for the specific day
+            setDayEvents(actionsForDay); 
           }
         } catch (error) {
           console.error('Error fetching actions:', error);
@@ -765,7 +760,7 @@ const App = () => {
       };
 
       fetchActions();
-    }, [day]); // Dependency only on day
+    }, [day]); 
 
     function getCurrentDayClass() {
       return day.format("DD-MM-YY") === dayjs().format("DD-MM-YY")
@@ -817,14 +812,14 @@ const App = () => {
                   setSelectedEvent(event.id);
                   setSelectedAction(event);
                 }}
-                bg={isTeamSelected(event) ? event.color || 'gray.200' : 'transparent'} // Background color based on team selection
+                bg={isTeamSelected(event) ? event.color || 'gray.200' : 'transparent'} 
                 p={1}
-                color={isTeamSelected(event) ? "gray.600" : "transparent"} // Text color based on team selection
+                color={isTeamSelected(event) ? "gray.600" : "transparent"} 
                 fontSize="sm"
                 borderRadius="md"
                 mb={1}
                 width="100%"
-                textAlign="center" // Align text to the center
+                textAlign="center" 
                 isTruncated
               >
                 {event.action_name}
@@ -893,8 +888,8 @@ const App = () => {
                         rowIdx={i}
                         key={idx}
                         setSelectedAction={setSelectedAction}
-                        selectedTeams={selectedTeams} // Add this line
-                        teamMembers={teamMembers} // Add this line
+                        selectedTeams={selectedTeams} 
+                        teamMembers={teamMembers} 
                       />
                     ))}
                   </React.Fragment>
