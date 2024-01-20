@@ -45,7 +45,7 @@ const App = () => {
       mutations.forEach((mutation) => {
         if (mutation.type !== "childList" || mutation.addedNodes.length === 0)
           return;
-
+  
         for (const node of mutation.addedNodes) {
           if (
             node instanceof HTMLElement &&
@@ -53,8 +53,8 @@ const App = () => {
               node.classList.contains("supabase-auth-ui_ui-message"))
           ) {
             const originErrorMessage = node.innerHTML.trim();
-
-            let translatedErrorMessage = "<DEFAULT MESSAGE>";
+  
+            let translatedErrorMessage;
             switch (originErrorMessage) {
               case "To signup, please provide your email":
                 translatedErrorMessage = "Pour vous inscrire, veuillez fournir votre email";
@@ -89,21 +89,25 @@ const App = () => {
               case "Invalid login credentials":
                 translatedErrorMessage = "Identifiants de connexion invalides";
                 break;
+              default:
+                translatedErrorMessage = "Erreur inconnue"; // Default error message
+                break;
             }
-
+  
             if (!document.querySelector("#auth-forgot-password")) {
-              node.innerHTML = translatedErrorMessage;
+              node.innerHTML = translatedErrorMessage || originErrorMessage;
             }
           }
         }
       });
     });
-
+  
     observer.observe(document.body, {
       childList: true,
       subtree: true,
     });
   }, []);
+  
 
   return (
     <ChakraProvider theme={theme}>
